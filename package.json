@@ -31,15 +31,12 @@
     "@nestjs/typeorm": "^10.0.2",
     "@pdf-lib/fontkit": "^1.1.1",
     "body-parser": "^1.20.2",
-    "canvas": "^2.11.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express-session": "^1.18.0",
     "fs": "^0.0.1-security",
     "fs-extra": "^11.2.0",
-    "mammoth": "^1.8.0",
-    "officegen": "^0.6.5",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "path": "^0.12.7",
@@ -50,10 +47,7 @@
     "qrcode": "^1.5.3",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "sqlite3": "^5.1.7",
-    "svg-to-pdfkit": "^0.1.8",
-    "typeorm": "^0.3.20",
-    "xml2js": "^0.6.2"
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

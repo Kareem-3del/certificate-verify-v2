@@ -58,6 +58,8 @@ export class CertificatesService {
         TrainingCenterName: certificate.training_center_name,
         TrainingCenterId: certificate.training_center_id,
         eCardCode: certificate.id,
+        city: settings.tcCity,
+        training_site_name: settings.trainingSiteName,
       });
 
       const card = await this.createCardID({
@@ -106,6 +108,8 @@ export class CertificatesService {
     TrainingCenterId: string;
     instructorName: string;
     eCardCode: string;
+    city: string;
+    training_site_name: string;
   }): Promise<Buffer> {
     // Create a new PDFDocument
     const pdfDoc = await PDFDocument.create();
@@ -152,13 +156,13 @@ export class CertificatesService {
       color: fontColor,
     });
     page.drawText(data.TrainingCenterName, {
-      x: 210 - (data.TrainingCenterName.length * fontSize) / 2,
+      x: 200 - (data.TrainingCenterName.length * fontSize) / 2,
       y: 340,
       size: fontSize,
       color: fontColor,
     });
     page.drawText(data.TrainingCenterId, {
-      x: 180 - (data.TrainingCenterId.length * fontSize) / 2,
+      x: 200 - (data.TrainingCenterId.length * fontSize) / 2,
       y: 300,
       size: fontSize,
       color: fontColor,
@@ -170,7 +174,7 @@ export class CertificatesService {
       color: fontColor,
     });
     page.drawText(data.instructorId, {
-      x: 410 + data.instructorId.length,
+      x: 380 + data.instructorId.length,
       y: 300,
       size: fontSize,
       color: fontColor,
@@ -182,6 +186,18 @@ export class CertificatesService {
       color: fontColor,
     });
 
+    page.drawText(data.city, {
+      x: 190 - (data.city.length * fontSize) / 2,
+      y: 260,
+      size: fontSize,
+      color: fontColor,
+    });
+    page.drawText(data.training_site_name, {
+      x: 190 - (data.training_site_name.length * fontSize) / 2,
+      y: 220,
+      size: fontSize,
+      color: fontColor,
+    });
     // Generate QR code
     console.log(toDataURL);
     const qrCodeUrl = await toDataURL(
@@ -296,6 +312,7 @@ export class CertificatesService {
       size: fontSize,
       color: fontColor,
     });
+
     page.drawText(data.training_site_name, {
       x: 348,
       y: 685,
@@ -320,6 +337,7 @@ export class CertificatesService {
       size: 8,
       color: fontColor,
     });
+
     page.drawText(this.formatDate(data.expires), {
       x: 118,
       y: 660,
