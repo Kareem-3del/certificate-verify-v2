@@ -291,7 +291,7 @@ export class CertificatesService {
       color: fontColor,
     });
     page.drawText(data.TrainingCenterName, {
-      x: 348,
+      x: 375 - data.TrainingCenterName.length * fontSize * 0.4,
       y: 745,
       size: fontSize,
       color: fontColor,

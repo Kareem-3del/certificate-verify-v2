@@ -24,10 +24,17 @@
       </div>
     </div>
   </nav>
+  <div class="ml-auto text-right p-3">
+    <ul class="flex gap-4 text-right ml-auto">
+      <li><a href="https://ecards.heart.org/">Find a Class</a></li>
+      <li><a href="https://ecards.heart.org/">ShopCPR</a></li>
+      <li><a href="https://ecards.heart.org/">DONATE</a></li>
+    </ul>
+  </div>
 </header>
 
-<div class=" mx-auto flex items-center max-sm:mt-20 max-w-3xl  lg:max-w-5xl  justify-center min-h-screen">
-  <div class="container h-fit bg-gray-100  mx-auto bg-gray-100 p-4">
+<div class=" mx-auto flex items-center max-sm:mt-36 max-w-3xl  lg:max-w-5xl  justify-center min-h-screen">
+  <div class="container h-fit mt-32 md:mt-none  bg-gray-100  mx-auto bg-gray-100 p-4">
     <div class="border-b pb-4">
       <div class="flex justify-between items-center  border-gray-200">
         <h1 class="text-2xl font-semibold text-red-800 flex-none mr-3">Hello, <%= name %></h1>
@@ -38,21 +45,21 @@
       </h2>
     </div>
 
-    <div class="border-2 p-3 shadow-xl ">
+    <div class="border-2 p-3 shadow-xl pb-10 md:pb-3" style="border-top: #20976c 3px solid;">
       <span class="font-bold pb-2 bg-green-600 w-14 rounded flex justify-center items-center text-sm h-6 pt-2 text-white">Active</span>
       <div class="text-xl font-bold pb-2">Advanced Cardiovascular Life Support Course</div>
-      <div class="flex justify-between">
-        <div class="w-2/3">
+      <div class="flex md:flex-row flex-col justify-start items-start md:justify-between">
+        <div class="md:w-2/3 w-full">
           <div class="text-xs  ">
             <h1 class="font-medium">E-CARD CODE</h1>
-            <span class="text-sm"><%= id %></span>
+            <span class="text-sm text-blue-600 font-semibold"><%= id %></span>
           </div>
           <div class="text-xs  ">
             <h1 class="font-medium">Name</h1>
             <span class="text-sm"><%= name %></span>
           </div>
         </div>
-        <div class="grid mr-auto ml-24 grid-cols-1 mt-4 md:grid-cols-1 gap-1">
+        <div class="grid mr-auto md:ml-24 grid-cols-1 mt-4 md:grid-cols-1 gap-1">
           <div class="text-xs  ">
             <h1 class="font-medium">TRAINING CENTER</h1>
             <span class="text-sm"><%= training_center_name %></span>
@@ -74,7 +81,8 @@
             <label class="text-sm font-bold" for="cars">SELECT TO VIEW ECARD</label>
             <select name="type" id="cars" class="w-full border p-1 border-gray-300">
               <option value="certificate">Full Size eCard - English International Version</option>
-              <option value="id">Full Size eCard - English International Version</option>
+              <option value="id">Wallet Size eCard - English International Version</option>
+              <option value="full">Full + Wallet Size eCard - English International Version</option>
             </select>
 
             <button type="submit" class="bg-red-800 text-white px-2 text-sm py-1  rounded-sm hover:bg-red-700 mt-4">VIEW</button>
