@@ -5,15 +5,12 @@ import {
   Get,
   Post,
   Body,
-  Render,
   Redirect,
-  UseGuards,
   Session,
   Res,
 } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { Settings } from './settings.entity';
-import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../users/user.entity';
 import { Response } from 'express';
 @Controller('settings')
@@ -27,13 +24,13 @@ export class SettingsController {
   ) {
     const currentUser: User = session.user;
     if (!currentUser) {
-      res.redirect('/auth/login');
+      res.redirect('/login');
     }
     const settings = await this.settingsService.findOne(1);
     if (currentUser.role !== 'admin') {
-      res.render('settings/mod');
+      res.render('settings/mod', { settings });
     }
-    return { settings };
+    return res.render('settings/index', { settings });
   }
 
   @Redirect('/settings')
