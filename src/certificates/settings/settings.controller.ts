@@ -21,7 +21,6 @@ export class SettingsController {
   constructor(private readonly settingsService: SettingsService) {}
 
   @Get()
-  @Render('settings/index')
   async showSettings(
     @Session() session: Record<string, any>,
     @Res() res: Response,
@@ -31,6 +30,9 @@ export class SettingsController {
       res.redirect('/auth/login');
     }
     const settings = await this.settingsService.findOne(1);
+    if (currentUser.role !== 'admin') {
+      res.render('settings/mod');
+    }
     return { settings };
   }
 

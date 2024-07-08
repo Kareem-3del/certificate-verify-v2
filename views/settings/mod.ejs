@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+<div class="min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="#" class="text-xl font-semibold text-gray-700">Dashboard</a>
+            <div>
+                <a href="#" class="px-4 py-2 text-gray-600 hover:text-gray-800">Certificates</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="flex flex-1">
+        <!-- Sidebar -->
+        <aside class="bg-white shadow-md w-64 py-6">
+            <nav class="px-4">
+                <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">Certificates</a>
+            </nav>
+            <a href="/auth/logout/" id="logoutBtn" class="px-8 py-2 text-gray-600 hover:text-gray-800 w-full">Logout</a>
+
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 bg-gray-100 p-8">
+            <section id="certificates" >
+                <h1 class="text-2xl font-semibold mb-6">Certificates</h1>
+                <div id="message" class="text-green-400 px-4 py-2 mb-4"></div>
+                <button id="delete-selected-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg mb-4">Delete
+                    Selected
+                </button>
+                <input type="text" id="searchInput" placeholder="Search certificates..."
+                       class="w-full p-2 border rounded-lg mb-4">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white">
+                        <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b"><input type="checkbox" id="selectAll"></th>
+                            <th class="py-2 px-4 border-b">ID</th>
+                            <th class="py-2 px-4 border-b">Name</th>
+                            <th class="py-2 px-4 border-b">City</th>
+                            <th class="py-2 px-4 border-b">Training Site Name</th>
+                            <th class="py-2 px-4 border-b">Issued</th>
+                            <th class="py-2 px-4 border-b">Express</th>
+                            <th class="py-2 px-4 border-b">Instructor ID</th>
+                            <th class="py-2 px-4 border-b">Instructor Name</th>
+                            <th class="py-2 px-4 border-b">Renew By</th>
+                            <th class="py-2 px-4 border-b">Training Center Name</th>
+                            <th class="py-2 px-4 border-b">Training Center ID</th>
+                            <th class="py-2 px-4 border-b">Created At</th>
+                            <th class="py-2 px-4 border-b">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="certificatesList">
+                        <!-- Certificates will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                <button id="loadMoreBtn" class="hidden px-4 py-2 bg-blue-500 text-white rounded-lg mt-4">Load More
+                </button>
+            </section>
+        </main>
+    </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+    const sections = {
+      "Certificates": document.getElementById("certificates"),
+    };
+
+    const navLinks = document.querySelectorAll("nav a");
+
+    navLinks.forEach(link => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        const sectionName = event.target.textContent;
+        Object.values(sections).forEach(section => section.classList.add("hidden"));
+        sections[sectionName].classList.remove("hidden");
+        if (sectionName === "Certificates") {
+          loadCertificates();
+        }
+      });
+    });
+
+
+    let offset = 0;
+    const limit = 10;
+    let loading = false;
+
+    async function loadCertificates(searchQuery = "") {
+      if (loading) return;
+      loading = true;
+      const response = await fetch(`/certificates?limit=${limit}&offset=${offset}&search=${searchQuery}`);
+      const data = await response.json();
+      const certificatesList = document.getElementById("certificatesList");
+      data.certificates.forEach(cert => {
+        const row = document.createElement("tr");
+        row.classList.add("bg-white", "border-b");
+        row.innerHTML = `
+                    <td class="py-2 px-4 border-b"><input value="${cert.id}" type="checkbox" class="certificateCheckbox"></td>
+                    <td class="py-2 px-4">${cert.id}</td>
+                    <td class="py-2 px-4">${cert.name}</td>
+                    <td class="py-2 px-4">${cert.city}</td>
+                    <td class="py-2 px-4">${cert.training_site_name}</td>
+                    <td class="py-2 px-4">${new Date(cert.issued).toLocaleDateString("en-US")}</td>
+                    <td class="py-2 px-4">${new Date(cert.express).toLocaleDateString("en-US")}</td>
+                    <td class="py-2 px-4">${cert.instructor_id || ""}</td>
+                    <td class="py-2 px-4">${cert.instructor_name || ""}</td>
+                    <td class="py-2 px-4">${cert.renew_by || ""}</td>
+                    <td class="py-2 px-4">${cert.training_center_name || ""}</td>
+                    <td class="py-2 px-4">${cert.training_center_id || ""}</td>
+                    <td class="py-2 px-4">${new Date(cert.created_at).toLocaleDateString("en-US")}</td>
+                    <td class="py-2 px-4 flex flex-col text-center items-center justify-center">
+                        <a href="/certificates/verify/${cert.id}" class="text-blue-500 hover:underline mr-2">View</a>
+                        <button class="text-red-500 hover:underline delete-btn" data-id="${cert.id}">Delete</button>
+                        <button class="text-green-500 hover:underline renew-btn" data-id="${cert.id}">Renew</button>
+                        <button class="text-black hover:underline resend-btn" data-id="${cert.id}">Send</button>
+                    </td>
+                `;
+        certificatesList.appendChild(row);
+      });
+      offset += limit;
+      loading = false;
+
+      // Show load more button if there are more certificates to load
+      if (offset < data.total) {
+        document.getElementById("loadMoreBtn").classList.remove("hidden");
+      } else {
+        document.getElementById("loadMoreBtn").classList.add("hidden");
+      }
+    }
+
+    loadCertificates(document.getElementById("searchInput").value);
+
+
+    window.addEventListener("scroll", () => {
+      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+      if (scrollTop + clientHeight >= scrollHeight - 20 && !loading) {
+        loadCertificates(document.getElementById("searchInput").value);
+      }
+    });
+    // Delete certificate event listener
+    document.getElementById("certificatesList").addEventListener("click", async (event) => {
+      if (event.target.classList.contains("delete-btn")) {
+        const certificateId = event.target.getAttribute("data-id");
+        if (confirm(`Are you sure you want to delete certificate ${certificateId}?`)) {
+          try {
+            const response = await fetch(`/certificates/${certificateId}`, {
+              method: "DELETE"
+            });
+            if (response.ok) {
+              // Remove the deleted certificate from the UI
+              event.target.closest("tr").remove();
+              // show message in top right corner
+              document.getElementById("message").innerText = `Certificate ${certificateId} deleted successfully.`;
+            } else {
+              throw new Error("Failed to delete certificate.");
+            }
+          } catch (error) {
+            console.error("Error deleting certificate:", error);
+            alert("An error occurred while deleting the certificate.");
+          }
+        }
+      }
+    });
+
+    document.getElementById("selectAll").onclick = (event) => {
+      const checkboxes = document.querySelectorAll(".certificateCheckbox");
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = event.target.checked;
+      });
+    };
+
+    document.getElementById("delete-selected-btn").onclick = () => {
+      const checkboxes = document.querySelectorAll(".certificateCheckbox");
+      const selectedCertificates = Array.from(checkboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+      if (selectedCertificates.length === 0) {
+        alert("Please select certificates to delete.");
+        return;
+      }
+      if (confirm(`Are you sure you want to delete ${selectedCertificates.length} certificates?`)) {
+        selectedCertificates.forEach(async (certificateId) => {
+          try {
+            const response = await fetch(`/certificates/${certificateId}`, {
+              method: "DELETE"
+            });
+            if (response.ok) {
+              // Remove the deleted certificate from the UI
+              document.querySelector(`input[value="${certificateId}"]`).closest("tr").remove();
+              // alert(`Certificate ${certificateId} deleted successfully.`);
+              document.getElementById("message").innerText = `Certificate ${certificateId} deleted successfully.`;
+            } else {
+              throw new Error("Failed to delete certificate.");
+            }
+          } catch (error) {
+            console.error("Error deleting certificate:", error);
+            alert("An error occurred while deleting the certificate.");
+          }
+        });
+      }
+    };
+
+    document.getElementById("certificatesList").addEventListener("click", async (event) => {
+      if (event.target.classList.contains("renew-btn")) {
+        const certificateId = event.target.getAttribute("data-id");
+        if (confirm(`Are you sure you want to delete certificate ${certificateId}?`)) {
+          try {
+            const response = await fetch(`/certificates/renew/${certificateId}`, {
+              method: "POST"
+            });
+            if (response.ok) {
+              alert(`Certificate ${certificateId} renewed successfully.`);
+            } else {
+              throw new Error("Failed to renew certificate.");
+            }
+          } catch (error) {
+            console.error("Error deleting certificate:", error);
+            alert("An error occurred while deleting the certificate.");
+          }
+        }
+      }
+      if (event.target.classList.contains("resend-btn")) {
+        const certificateId = event.target.getAttribute("data-id");
+        try {
+          const response = await fetch(`/certificates/resend/${certificateId}`, {
+            method: "POST"
+          });
+          if (response.ok) {
+            document.getElementById("message").innerText = `Certificate ${certificateId} sent successfully.`;
+          } else {
+            throw new Error("Failed to renew certificate.");
+          }
+        } catch (error) {
+          console.error("Error deleting certificate:", error);
+          alert("An error occurred while deleting the certificate.");
+        }
+      }
+    });
+
+    // Initially show settings section
+    sections["Settings"].classList.remove("hidden");
+  });
+</script>
+
+</body>
+</html>
