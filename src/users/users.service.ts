@@ -11,15 +11,19 @@ export class UsersService {
   ) {
     this.userRepository.find().then((users) => {
       if (users.length === 0) {
-        this.create('admin', 'admin').then((r) =>
+        this.create('admin', 'admin', 'admin').then((r) =>
           console.log('Admin user created', r),
         );
       }
     });
   }
 
-  async create(username: string, password: string): Promise<User> {
-    const newUser = this.userRepository.create({ username, password });
+  async create(
+    username: string,
+    password: string,
+    role: 'admin' | 'moderator',
+  ): Promise<User> {
+    const newUser = this.userRepository.create({ username, password, role });
     return await this.userRepository.save(newUser);
   }
 

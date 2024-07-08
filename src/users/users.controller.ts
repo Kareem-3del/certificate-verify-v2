@@ -7,10 +7,15 @@ export class UsersController {
 
   @Post()
   async createUser(
-    @Body() createUserDto: { username: string; password: string },
+    @Body()
+    createUserDto: {
+      username: string;
+      password: string;
+      role: 'admin' | 'moderator';
+    },
   ) {
-    const { username, password } = createUserDto;
-    return await this.usersService.create(username, password);
+    const { username, password, role } = createUserDto;
+    return await this.usersService.create(username, password, role);
   }
 
   @Delete(':id')
