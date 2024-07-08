@@ -214,9 +214,23 @@ export class CertificatesService {
   formatDate(date: string) {
     const issuedDate = new Date(date);
     const year = issuedDate.getFullYear();
-    const month = (issuedDate.getMonth() + 1).toString().padStart(2, '0');
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    const month = monthNames[issuedDate.getMonth()];
     const day = issuedDate.getDate().toString().padStart(2, '0');
-    return `${year}/${month}/${day}`;
+    return `${day} ${month} ${year}`;
   }
 
   async createCardID(data: {
