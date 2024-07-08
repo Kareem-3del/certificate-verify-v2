@@ -12,5 +12,7 @@ export class User {
   @Column()
   password: string; // Ensure to hash passwords before storing
 
+  @Column({ default: 'moderator' })
+  role: 'admin' | 'moderator';
   // Add other properties as needed
 }
