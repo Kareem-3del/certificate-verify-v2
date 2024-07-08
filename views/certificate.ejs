@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0">
+  <title>Certificate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+      * {
+          font-family: "Rubik", sans-serif;
+      }
+  </style>
+</head>
+
+<body>
+
+<div class="certificate max-w-[920px] border-2">
+  <h1 class="bg-blue-900 text-white  h-20 flex font-bold justify-center items-center text-2xl uppercase">Heartsaver</h1>
+  <div class="flex justify-between items-center w-full px-20">
+    <h2 class="text-4xl text-blue-800 font-bold">
+      Heartsaver (R)
+      <br>
+      First Aid CPR AED
+    </h2>
+    <img src="logo.png" alt="Logo" class="">
+
+  </div>
+  <h1 class="text-center mt-20 text-xl">
+    <%= FullName %>
+  </h1>
+  <p class="text-center max-w-xl mx-auto font-semibold text-xl mt-2">
+    has successfully completed the cognitive and skills evaluations in accordance with the curriculum of the American
+    Heart Association Heartsaver First Aid CPR AED Program.
+  </p>
+
+  <div class="p-10 flex justify-between max-w-2xl mx-auto flex  items-start">
+
+    <div class="w-fit justify-center items-center flex flex-col gap-4">
+      <div>
+        <h2 class="text-xl font-bold capitalize text-center">issued Date</h2>
+        <h1><%= issued %></h1>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold capitalize text-center">Training Center Name</h2>
+        <h1><%= TrainingCenterName %></h1>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold capitalize text-center">Training Center ID</h2>
+        <h1><%= TrainingCenterID %></h1>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold capitalize text-center">Training Site Name</h2>
+        <h1><%= TrainingSiteName %></h1>
+      </div>
+    </div>
+    <div class="w-fit justify-center items-center flex flex-col">
+      <div>
+        <h2 class="text-xl font-bold capitalize text-center">Renew By</h2>
+        <h1><%= RenewBy %></h1>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold capitalize text-center">Instructor Name</h2>
+        <h1><%= InstructorName %></h1>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold capitalize text-center">Instructor ID</h2>
+        <h1><%= InstructorID %></h1>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold capitalize text-center ">eCard Code</h2>
+        <h1><%= eCardCode %></h1>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-bold capitalize text-center">QR Code</h2>
+        <img src="<%= qr %>"  alt="QR Code" class="mx-auto  w-32">
+      </div>
+    </div>
+
+  </div>
+
+  <p class="text-xs text-center py-3 max-w-3xl mx-auto">
+      To view or verify authenticity, students and employers should scan this QR code with their mobile device or go to https://ecards.heart.org/international. ©2021 American Heart Association. All rights reserved. 20-2826 2/21
+  </p>
+
+</div>
+</body>
+</html>
+
