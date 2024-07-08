@@ -21,7 +21,7 @@ export class UsersService {
   async create(
     username: string,
     password: string,
-    role: 'admin' | 'moderator',
+    role: 'admin' | 'moderator' = 'moderator',
   ): Promise<User> {
     const newUser = this.userRepository.create({ username, password, role });
     return await this.userRepository.save(newUser);
@@ -45,7 +45,7 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     return this.userRepository.find({
-      select: ['id', 'username'], // We don't need to return the password
+      select: ['id', 'username', 'role'], // We don't need to return the password
     });
   }
 }

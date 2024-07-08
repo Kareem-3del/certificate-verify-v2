@@ -28,6 +28,7 @@ export class SettingsController {
     }
     const settings = await this.settingsService.findOne(1);
     if (currentUser.role !== 'admin') {
+      console.log(currentUser.role);
       res.render('settings/mod', { settings });
     }
     return res.render('settings/index', { settings });
