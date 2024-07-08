@@ -14,6 +14,7 @@ import { Response } from 'express';
 import { CertificatesService } from './certificates.service';
 import { toDataURL } from 'qrcode';
 import process from 'node:process';
+import * as fs from 'node:fs';
 
 @Controller('certificates')
 export class CertificatesController {
@@ -80,7 +81,7 @@ export class CertificatesController {
   async downloadCertificate(
     @Param('id') id: string,
     @Res() res: Response,
-    @Query('type') type: 'id' | 'certificate' = 'certificate',
+    @Query('type') type: 'id' | 'certificate' | 'full' = 'full',
   ) {
     try {
       const certificate = await this.certificatesService.verifyCertificate(id);
@@ -89,7 +90,12 @@ export class CertificatesController {
       }
       // certificate.certificate_path
       // certificate.id
-
+      if (type === 'full') {
+        const fileData = await this.certificatesService.mergeCertificate(id);
+        const filePath = `./certificates/${id}.pdf`;
+        fs.writeFileSync(filePath, fileData);
+        return res.download(filePath);
+      }
       // depending on the type, we will download the certificate or the ID
       const filePath =
         type === 'id' ? certificate.id_path : certificate.certificate_path;

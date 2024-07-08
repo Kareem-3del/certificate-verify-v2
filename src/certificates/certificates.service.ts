@@ -413,6 +413,27 @@ export class CertificatesService {
     await this.certificateRepository.delete({ id });
   }
 
+  async mergeCertificate(id: string): Promise<Buffer> {
+    const certificate = await this.certificateRepository.findOneBy({ id });
+    if (!certificate) {
+      throw new NotFoundException();
+    }
+
+    const pdfDoc = await PDFDocument.create();
+    const certificateBytes = fs.readFileSync(certificate.certificate_path);
+    const idBytes = fs.readFileSync(certificate.id_path);
+    const certificatePdf = await PDFDocument.load(certificateBytes);
+    const idPdf = await PDFDocument.load(idBytes);
+
+    const copiedCertificatePage = await pdfDoc.copyPages(certificatePdf, [0]);
+    const copiedIdPage = await pdfDoc.copyPages(idPdf, [0]);
+
+    pdfDoc.addPage(copiedCertificatePage[0]);
+    pdfDoc.addPage(copiedIdPage[0]);
+
+    const pdfBytes = await pdfDoc.save();
+    return Buffer.from(pdfBytes);
+  }
   async renewCertificate(id: string): Promise<Certificate> {
     const certificate = await this.certificateRepository.findOneBy({ id });
     certificate.express = new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000);
