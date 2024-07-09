@@ -1,5 +1,10 @@
-// src/certificates/certificate.ejs.entity.ts
-import { Entity, Column, CreateDateColumn, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  CreateDateColumn,
+  PrimaryColumn,
+  BeforeInsert,
+} from 'typeorm';
 
 @Entity()
 export class Certificate {
@@ -27,7 +32,7 @@ export class Certificate {
   @CreateDateColumn()
   issued: Date;
 
-  @Column({ default: new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000) })
+  @Column()
   express: Date;
 
   @Column({ nullable: true })
@@ -47,4 +52,9 @@ export class Certificate {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @BeforeInsert()
+  setExpressDate() {
+    this.express = new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000); // 2 years from now
+  }
 }

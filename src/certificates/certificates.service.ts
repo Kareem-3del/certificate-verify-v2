@@ -10,10 +10,14 @@ import { toDataURL } from 'qrcode';
 import fontkit from '@pdf-lib/fontkit';
 import * as process from 'node:process';
 import { SettingsService } from './settings/settings.service';
-const IMAGE_TEMPLATE_PATH_CERTIFICATE =
-  'C:\\Users\\karee\\certificate-verify\\views\\templates\\template-1.png';
-const IMAGE_TEMPLATE_PATH_ID_CARD =
-  'C:\\Users\\karee\\certificate-verify\\views\\templates\\template-2.png';
+
+const IMAGE_TEMPLATE_PATH_CERTIFICATE = path.resolve(
+  './views/templates/template-1.png',
+);
+const IMAGE_TEMPLATE_PATH_ID_CARD = path.resolve(
+  './views/templates/template-2.png',
+);
+
 @Injectable()
 export class CertificatesService {
   constructor(

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as path from 'node:path';
 
 @Module({
   imports: [
@@ -8,8 +9,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get('DATABASE_URL'),
+        type: 'sqlite',
+        database: path.join(__dirname, '..', 'database.sqlite'),
+        // url: configService.get('DATABASE_URL'),
         applicationName: 'Certification API',
         autoLoadEntities: true,
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
