@@ -6,9 +6,10 @@ import { Certificate } from './certificate.entity';
 import { SettingsService } from './settings/settings.service';
 import { SettingsController } from './settings/settings.controller';
 import { Settings } from './settings/settings.entity';
+import { EmailModule } from '../email/email.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Certificate, Settings])],
+  imports: [TypeOrmModule.forFeature([Certificate, Settings]), EmailModule],
   providers: [CertificatesService, SettingsService],
   controllers: [CertificatesController, SettingsController],
 })
