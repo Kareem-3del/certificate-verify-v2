@@ -14,6 +14,7 @@ import { UsersModule } from './users/users.module';
 import * as express from 'express';
 import { AuthModule } from './auth/auth.module';
 import { CookieParserMiddleware } from '@nest-middlewares/cookie-parser';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { CookieParserMiddleware } from '@nest-middlewares/cookie-parser';
     }),
     UsersModule,
     AuthModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

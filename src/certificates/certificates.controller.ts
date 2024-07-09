@@ -15,34 +15,45 @@ import { CertificatesService } from './certificates.service';
 import { toDataURL } from 'qrcode';
 import process from 'node:process';
 import * as fs from 'node:fs';
+import { EmailService } from '../email/email.service';
 
 @Controller('certificates')
 export class CertificatesController {
-  constructor(private readonly certificatesService: CertificatesService) {}
-
-  @Get('generate')
-  @Render('generate') // Renders generate.ejs
-  generateCertificateForm() {
-    return {
-      title: 'Generate Certificate',
-    };
-  }
+  constructor(
+    private readonly certificatesService: CertificatesService,
+    private readonly emailService: EmailService,
+  ) {}
 
   @Post('generate')
   @Render('certificate-overview') // Renders generate.ejs
   async generateCertificate(
-    @Body() body: { name: string },
+    @Body() body: { name: string; email: string },
     @Res() res: Response,
   ) {
     try {
       const certificate = await this.certificatesService.createCertificate(
         body.name,
+        body.email,
       );
+      this.emailService
+        .sendCertificateEmail(
+          body.email,
+          certificate.name,
+          certificate.issued.toDateString(),
+          certificate.certificate_path,
+        )
+        .then(() => {
+          console.log('Email sent');
+        })
+        .catch((error) => {
+          console.error('Error sending email:', error);
+        });
       return {
         ...certificate,
       };
     } catch (error) {
       console.error('Error generating certificate.ejs:', error);
+
       res.status(500).send('Error generating certificate.ejs.');
     }
   }

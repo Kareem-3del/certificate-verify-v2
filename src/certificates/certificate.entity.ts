@@ -13,6 +13,9 @@ export class Certificate {
   certificate_path: string;
 
   @Column({ nullable: true })
+  email: string;
+
+  @Column({ nullable: true })
   id_path: string;
 
   @Column({ default: '-----' })

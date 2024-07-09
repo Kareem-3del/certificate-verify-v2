@@ -1,5 +1,4 @@
 // certificates.service.ts
-
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Certificate } from './certificate.entity';
@@ -29,7 +28,7 @@ export class CertificatesService {
     const id = Math.floor(Math.random() * (max - min + 1)) + min;
     return id.toString();
   }
-  async createCertificate(name: string): Promise<Certificate> {
+  async createCertificate(name: string, email: string): Promise<Certificate> {
     try {
       const certificate = new Certificate();
       const settings = await this.settingsService.findOne(1);
@@ -37,6 +36,7 @@ export class CertificatesService {
       certificate.id = this.generateUniqueNumericID();
       certificate.name = name;
       certificate.issued = new Date();
+      certificate.email = email;
       certificate.express = new Date(
         Date.now() + 2 * 365 * 24 * 60 * 60 * 1000,
       );
@@ -438,5 +438,14 @@ export class CertificatesService {
     const certificate = await this.certificateRepository.findOneBy({ id });
     certificate.express = new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000);
     return this.certificateRepository.save(certificate);
+  }
+
+  async sendCertificateEmail(
+    email: string,
+    name: string,
+    issueDate: string,
+    certificatePath: string,
+  ) {
+    const certificateContent = fs.readFileSync(certificatePath);
   }
 }
