@@ -18,10 +18,13 @@ export class Certificate {
   certificate_path: string;
 
   @Column({ nullable: true })
-  email: string;
+  id_path: string;
 
   @Column({ nullable: true })
-  id_path: string;
+  id_and_cert_path: string;
+
+  @Column({ nullable: true })
+  email: string;
 
   @Column({ default: '-----' })
   city: string;

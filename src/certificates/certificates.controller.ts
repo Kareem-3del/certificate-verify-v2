@@ -102,10 +102,7 @@ export class CertificatesController {
       // certificate.certificate_path
       // certificate.id
       if (type === 'full') {
-        const fileData = await this.certificatesService.mergeCertificate(id);
-        const filePath = `./certificates/${id}.pdf`;
-        fs.writeFileSync(filePath, fileData);
-        return res.download(filePath);
+        return res.download(certificate.id_and_cert_path);
       }
       // depending on the type, we will download the certificate or the ID
       const filePath =
