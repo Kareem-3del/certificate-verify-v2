@@ -15,7 +15,97 @@ export class SettingsService {
     this.findOne(1).then((data) => {
       if (!data) {
         this.create({
+          name: 'TEMPLATE 1',
           id: 1,
+          instructorName: '',
+          instructorId: '',
+          trainingCenterName: '',
+          trainingCenterId: '',
+          tcCity: '',
+          trainingSiteName: '',
+        }).then((value) => {
+          console.log('SETTINGS ARE CREATED', value);
+        });
+
+        this.create({
+          name: 'TEMPLATE 2',
+          id: 2,
+          instructorName: '',
+          instructorId: '',
+          trainingCenterName: '',
+          trainingCenterId: '',
+          tcCity: '',
+          trainingSiteName: '',
+        }).then((value) => {
+          console.log('SETTINGS ARE CREATED', value);
+        });
+
+        this.create({
+          name: 'TEMPLATE 3',
+          id: 3,
+          instructorName: '',
+          instructorId: '',
+          trainingCenterName: '',
+          trainingCenterId: '',
+          tcCity: '',
+          trainingSiteName: '',
+        }).then((value) => {
+          console.log('SETTINGS ARE CREATED', value);
+        });
+
+        this.create({
+          name: 'TEMPLATE 4',
+          id: 4,
+          instructorName: '',
+          instructorId: '',
+          trainingCenterName: '',
+          trainingCenterId: '',
+          tcCity: '',
+          trainingSiteName: '',
+        }).then((value) => {
+          console.log('SETTINGS ARE CREATED', value);
+        });
+
+        this.create({
+          name: 'TEMPLATE 5',
+          id: 5,
+          instructorName: '',
+          instructorId: '',
+          trainingCenterName: '',
+          trainingCenterId: '',
+          tcCity: '',
+          trainingSiteName: '',
+        }).then((value) => {
+          console.log('SETTINGS ARE CREATED', value);
+        });
+
+        this.create({
+          name: 'TEMPLATE 6',
+          id: 6,
+          instructorName: '',
+          instructorId: '',
+          trainingCenterName: '',
+          trainingCenterId: '',
+          tcCity: '',
+          trainingSiteName: '',
+        }).then((value) => {
+          console.log('SETTINGS ARE CREATED', value);
+        });
+        this.create({
+          name: 'TEMPLATE 7',
+          id: 7,
+          instructorName: '',
+          instructorId: '',
+          trainingCenterName: '',
+          trainingCenterId: '',
+          tcCity: '',
+          trainingSiteName: '',
+        }).then((value) => {
+          console.log('SETTINGS ARE CREATED', value);
+        });
+        this.create({
+          name: 'TEMPLATE 8',
+          id: 8,
           instructorName: '',
           instructorId: '',
           trainingCenterName: '',
@@ -29,6 +119,9 @@ export class SettingsService {
     });
   }
 
+  findAll(): Promise<Settings[]> {
+    return this.settingsRepository.find();
+  }
   findOne(id: number): Promise<Settings> {
     return this.settingsRepository.findOneBy({ id });
   }

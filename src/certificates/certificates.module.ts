@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { CertificatesService } from './certificates.service';
-import { CertificatesController } from './certificates.controller';
+import {
+  AppController,
+  CertificatesController,
+} from './certificates.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Certificate } from './certificate.entity';
 import { SettingsService } from './settings/settings.service';
@@ -11,6 +14,6 @@ import { EmailModule } from '../email/email.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Certificate, Settings]), EmailModule],
   providers: [CertificatesService, SettingsService],
-  controllers: [CertificatesController, SettingsController],
+  controllers: [CertificatesController, SettingsController, AppController],
 })
 export class CertificatesModule {}

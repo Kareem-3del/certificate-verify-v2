@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Certificate</title>
+    <title>Certificate Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: "Cairo", sans-serif;
+        }
+    </style>
 </head>
+<body class="bg-gray-100">
 <header class="fixed top-0 w-full bg-white z-10">
     <nav class="border-bottom border-2 text-black">
         <div class="container mx-auto px-4 py-4">
@@ -17,30 +28,38 @@
             </div>
         </div>
     </nav>
-    <div class="ml-auto text-right p-3 flex md:hidden justify-center items-center">
-        <ul class="flex gap-4 text-right ml-auto">
-            <li><a href="https://ecards.heart.org/">Find a Class</a></li>
-            <li><a href="https://ecards.heart.org/">ShopCPR</a></li>
-            <li><a href="https://ecards.heart.org/">DONATE</a></li>
-        </ul>
-    </div>
 </header>
 
-<body class="bg-gray-100 flex  items-center justify-between flex-col min-h-screen">
-<div class="container mx-auto p-8 mt-44">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Select the Certificate You Need</h1>
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <% for(let i = 0; i < settings.length; i++) { %>
-            <button
-                    class="bg-red-700 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300"
-                    onclick="window.location.href='/certificates/generate/<%= settings[i].id %>'">
-                <%= settings[i].name %>
-            </button>
-        <% } %>
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+        <h1 class="text-2xl font-bold text-center mb-6">
+            <%= settings.name %>
+        </h1>
+        <form action="/certificates/generate" method="post" class="space-y-4">
+            <input type="hidden" name="index" value="<%= settings.id %>">
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter Email" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+            <div>
+                <button type="submit"
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-800 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Generate Certificate
+                </button>
+            </div>
+        </form>
     </div>
 </div>
-<footer class="bg-gray-300 text-black mt-auto w-full">
+
+<footer class="bg-gray-300 text-black">
     <div class="container mx-auto px-4 pt-8">
+
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1 flex  md:justify-end  items-start">
                 <img src="https://static.heart.org/ahaanywhere/sitecore/dist/images/aha_full.svg" alt="logo" class="mt-1 col-span-1 h-40 max-sm:mx-auto lg:mr-auto lg:ml-auto">
@@ -79,38 +98,48 @@
                 </ul>
             </div>
         </div>
-        <ul class="flex justify-center items-center gap-4  text-white my-4 mt-12 p-4 ">
+        <ul
+                class="flex justify-center items-center gap-4  text-white my-4 mt-12 p-4 ">
             <li>
-                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4 hover:text-blue-500">
+                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4
+          hover:text-blue-500">
                     <i class="fab fa-facebook-f"></i>
                 </a>
             </li>
             <li>
-                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4 hover:text-blue-500">
+                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4
+          hover:text-blue-500">
                     <i class="fab fa-twitter"></i>
                 </a>
             </li>
             <li>
-                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4 hover:text-blue-500">
+                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4
+          hover:text-blue-500">
                     <i class="fab fa-instagram"></i>
                 </a>
             </li>
             <li>
-                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4 hover:text-blue-500">
+                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4
+          hover:text-blue-500">
                     <i class="fab fa-linkedin"></i>
                 </a>
             </li>
             <li>
-                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4 hover:text-blue-500">
+                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4
+          hover:text-blue-500">
                     <i class="fab fa-youtube"></i>
                 </a>
             </li>
             <li>
-                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4 hover:text-blue-500">
+                <a href="https://ecards.heart.org/" class="text-white  bg-gray-400 rounded-full rounded-full px-5 py-4
+          hover:text-blue-500">
                     <i class="fab fa-pinterest"></i>
                 </a>
             </li>
         </ul>
+    </div>
+    <div>
+
     </div>
     <div class="bg-gray-400 text-center py-2">
         <p class="text-sm max-w-2xl mx-auto">
@@ -122,6 +151,4 @@
 </footer>
 
 </body>
-
-
 </html>

@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        .divider {
+            border-top: 1px solid #e2e8f0;
+            margin: 1.5rem 0;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
 
@@ -38,39 +50,93 @@
         <main class="flex-1 bg-gray-100 p-8">
             <section id="settings" class="hidden">
                 <h1 class="text-2xl font-semibold mb-6">Update Settings</h1>
-                <form action="/settings" method="POST" class="space-y-4">
-                    <div>
-                        <label for="instructorName" class="block text-gray-700">Instructor Name:</label>
-                        <input type="text" id="instructorName" name="instructorName"
-                               value="<%= settings.instructorName %>" class="w-full p-2 border rounded-lg">
+                <% settings.forEach(setting => { %>
+                    <div class="card p-6 mb-6 bg-white shadow-lg rounded-lg">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-800">Settings for <%= setting.name %></h2>
+
+                        <form action="/settings/<%= setting.id %>" method="POST">
+                            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+                                <!-- Input Field -->
+                                <div class="mb-6">
+                                    <label for="name-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Name</label>
+                                    <input type="text" id="name-<%= setting.id %>" name="name" value="<%= setting.name %>"
+                                           class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
+                                           >
+                                </div>
+
+                                <!-- Email Subject Field -->
+                                <div class="mb-6">
+                                    <label for="emailSubject-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Email Subject</label>
+                                    <input type="text" id="emailSubject-<%= setting.id %>" name="emailSubject" value="<%= setting.emailSubject %>"
+                                           class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out">
+                                </div>
+
+                                <!-- Email Body Field -->
+                                <div class="mb-6">
+                                    <label for="emailBody-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Email Body</label>
+                                    <textarea id="emailBody-<%= setting.id %>" name="emailBody" rows="4"
+                                              class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"><%= setting.emailBody %></textarea>
+                                </div>
+
+                                <!-- Instructor Name Field -->
+                                <div class="mb-6">
+                                    <label for="instructorName-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Instructor Name</label>
+                                    <input type="text" id="instructorName-<%= setting.id %>" name="instructorName" value="<%= setting.instructorName %>"
+                                           class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
+                                           >
+                                </div>
+
+                                <!-- Instructor ID Field -->
+                                <div class="mb-6">
+                                    <label for="instructorId-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Instructor ID</label>
+                                    <input type="text" id="instructorId-<%= setting.id %>" name="instructorId" value="<%= setting.instructorId %>"
+                                           class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
+                                           >
+                                </div>
+
+                                <!-- Training Center Name Field -->
+                                <div class="mb-6">
+                                    <label for="trainingCenterName-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Training Center Name</label>
+                                    <input type="text" id="trainingCenterName-<%= setting.id %>" name="trainingCenterName" value="<%= setting.trainingCenterName %>"
+                                           class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
+                                           >
+                                </div>
+
+                                <!-- Training Center ID Field -->
+                                <div class="mb-6">
+                                    <label for="trainingCenterId-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Training Center ID</label>
+                                    <input type="text" id="trainingCenterId-<%= setting.id %>" name="trainingCenterId" value="<%= setting.trainingCenterId %>"
+                                           class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
+                                           >
+                                </div>
+
+                                <!-- TC City Field -->
+                                <div class="mb-6">
+                                    <label for="tcCity-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">TC City</label>
+                                    <input type="text" id="tcCity-<%= setting.id %>" name="tcCity" value="<%= setting.tcCity %>"
+                                           class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
+                                           >
+                                </div>
+
+                                <!-- Training Site Name Field -->
+                                <div class="mb-6">
+                                    <label for="trainingSiteName-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Training Site Name</label>
+                                    <input type="text" id="trainingSiteName-<%= setting.id %>" name="trainingSiteName" value="<%= setting.trainingSiteName %>"
+                                           class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
+                                           >
+                                </div>
+
+                            </div>
+
+                            <div class="mt-6 flex justify-end">
+                                <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-indigo-700 transition duration-150 ease-in-out">Save</button>
+                            </div>
+                        </form>
                     </div>
-                    <div>
-                        <label for="instructorId" class="block text-gray-700">Instructor ID:</label>
-                        <input type="text" id="instructorId" name="instructorId" value="<%= settings.instructorId %>"
-                               class="w-full p-2 border rounded-lg">
-                    </div>
-                    <div>
-                        <label for="trainingCenterName" class="block text-gray-700">Training Center Name:</label>
-                        <input type="text" id="trainingCenterName" name="trainingCenterName"
-                               value="<%= settings.trainingCenterName %>" class="w-full p-2 border rounded-lg">
-                    </div>
-                    <div>
-                        <label for="trainingCenterId" class="block text-gray-700">Training Center ID:</label>
-                        <input type="text" id="trainingCenterId" name="trainingCenterId"
-                               value="<%= settings.trainingCenterId %>" class="w-full p-2 border rounded-lg">
-                    </div>
-                    <div>
-                        <label for="tcCity" class="block text-gray-700">TC City:</label>
-                        <input type="text" id="tcCity" name="tcCity" value="<%= settings.tcCity %>"
-                               class="w-full p-2 border rounded-lg">
-                    </div>
-                    <div>
-                        <label for="trainingSiteName" class="block text-gray-700">Training Site Name:</label>
-                        <input type="text" id="trainingSiteName" name="trainingSiteName"
-                               value="<%= settings.trainingSiteName %>" class="w-full p-2 border rounded-lg">
-                    </div>
-                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Update</button>
-                </form>
+                    <div class="divider border-t border-gray-300 my-6"></div>
+                <% }) %>
+
             </section>
 
 
@@ -80,21 +146,21 @@
                 <!-- Create User Form -->
                 <div class="mb-8">
                     <h2 class="text-xl font-semibold mb-4">Create New User</h2>
-                    <form id="createUserForm" class="space-y-4">
+                    <form id="createUserForm"  class="space-y-4">
                         <div>
                             <label for="username" class="block text-gray-700">Username:</label>
                             <input type="text" id="username" name="username" class="w-full p-2 border rounded-lg"
-                                   required>
+                                   >
                         </div>
                         <div>
                             <label for="password" class="block text-gray-700">Password:</label>
                             <input type="password" id="password" name="password" class="w-full p-2 border rounded-lg"
-                                   required>
+                                   >
                         </div>
                         <div>
                             <label for="role" class="block text-gray-700">Role:</label>
                             <select id="role" name="role" class="w-full p-2 border rounded-lg"
-                                   required>
+                                   >
                                 <option value="admin">Admin</option>
                                 <option value="moderator">Moderator</option>
                             </select>

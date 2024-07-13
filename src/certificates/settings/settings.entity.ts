@@ -6,6 +6,15 @@ export class Settings {
   id: number;
 
   @Column()
+  name: string;
+
+  @Column({ default: 'Certificate' })
+  emailSubject?: string;
+
+  @Column({ default: 'Hello, this is your certificate!' })
+  emailBody?: string;
+
+  @Column()
   instructorName: string;
 
   @Column()

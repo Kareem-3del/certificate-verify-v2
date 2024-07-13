@@ -1,61 +1,67 @@
 // src/certificates/certificates.controller.ts
 import {
-  Controller,
-  Post,
-  Get,
   Body,
-  Res,
-  Render,
-  Param,
-  Query,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  Render,
+  Res,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { CertificatesService } from './certificates.service';
 import { toDataURL } from 'qrcode';
 import process from 'node:process';
-import * as fs from 'node:fs';
 import { EmailService } from '../email/email.service';
+import { SettingsService } from './settings/settings.service';
+
+@Controller('')
+export class AppController {
+  constructor(private readonly settingsService: SettingsService) {}
+  @Get()
+  @Render('index')
+  async getHello() {
+    const settings = await this.settingsService.findAll();
+    return {
+      settings,
+    };
+  }
+}
 
 @Controller('certificates')
 export class CertificatesController {
   constructor(
     private readonly certificatesService: CertificatesService,
     private readonly emailService: EmailService,
+    private readonly settingsService: SettingsService,
   ) {}
+  @Get('generate/:id')
+  @Render('generate_v2') // Renders generate.ejs
+  async generate(@Param('id') id: string) {
+    if (!id) throw new Error('No ID provided');
+    const settings = await this.settingsService.findOne(Number(id));
+    console.log(settings);
+    return {
+      settings,
+    };
+  }
 
   @Post('generate')
-  @Render('certificate-overview') // Renders generate.ejs
+  @Render('certificate') // Renders generate.ejs
   async generateCertificate(
-    @Body() body: { name: string; email: string },
-    @Res() res: Response,
+    @Body() body: { name: string; email: string; index: number },
   ) {
-    try {
-      const certificate = await this.certificatesService.createCertificate(
-        body.name,
-        body.email,
-      );
-      this.emailService
-        .sendCertificateEmail(
-          body.email,
-          certificate.name,
-          certificate.issued.toDateString(),
-          certificate.certificate_path,
-        )
-        .then(() => {
-          console.log('Email sent');
-        })
-        .catch((error) => {
-          console.error('Error sending email:', error);
-        });
-      return {
-        ...certificate,
-      };
-    } catch (error) {
-      console.error('Error generating certificate.ejs:', error);
-
-      res.status(500).send('Error generating certificate.ejs.');
-    }
+    const certificate = await this.certificatesService.createCertificate(
+      body.name,
+      body.email,
+      Number(body.index),
+    );
+    console.log('Certificate:', certificate);
+    return {
+      ...certificate,
+    };
   }
 
   @Render('certificate-overview') // Renders verify.ejs

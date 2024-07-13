@@ -7,16 +7,46 @@ const Template_1: TemplateData = {
 
   id_card: {
     fontSize: 8,
-    fullName: { x: 180, y: 720 },
-    issued: { x: 120, y: 380 },
-    expires: { x: 390, y: 380 },
-    instructorId: { x: 380, y: 300 },
-    instructorName: { x: 400, y: 340 },
-    TrainingCenterName: { x: 200, y: 340 },
-    TrainingCenterId: { x: 200, y: 300 },
-    eCardCode: { x: 400, y: 260 },
-    city: { x: 190, y: 260 },
-    training_site_name: { x: 190, y: 220 },
+    fullName: {
+      x: 180,
+      y: 720,
+    },
+    issued: {
+      x: 59,
+      y: 660,
+    },
+    expires: {
+      x: 118,
+      y: 660,
+    },
+    instructorId: {
+      x: 348,
+      y: 652,
+    },
+    instructorName: {
+      x: 348,
+      y: 665,
+    },
+    TrainingCenterName: {
+      x: 348,
+      y: 745,
+    },
+    TrainingCenterId: {
+      x: 348,
+      y: 725,
+    },
+    eCardCode: {
+      x: 175,
+      y: 660,
+    },
+    city: {
+      x: 348,
+      y: 705,
+    },
+    training_site_name: {
+      x: 348,
+      y: 685,
+    },
     qrCode: {
       x: 233,
       y: 635,
@@ -82,23 +112,55 @@ const Template_1: TemplateData = {
 };
 const Template_2: TemplateData = {
   image_cert: path.resolve('./views/templates/template-2.png'),
-  image_id: path.resolve('./views/templates/template-1-card.png'),
-  settings: 1,
+  image_id: path.resolve('./views/templates/template-2-card.png'),
+  settings: 2,
   id_card: {
     fontSize: 8,
-    fullName: { x: 180, y: 720 },
-    issued: { x: 120, y: 380 },
-    expires: { x: 390, y: 380 },
-    instructorId: { x: 380, y: 300 },
-    instructorName: { x: 400, y: 340 },
-    TrainingCenterName: { x: 200, y: 340 },
-    TrainingCenterId: { x: 200, y: 300 },
-    eCardCode: { x: 400, y: 260 },
-    city: { x: 190, y: 260 },
-    training_site_name: { x: 190, y: 220 },
+    fullName: {
+      x: 180,
+      y: 720,
+    },
+    issued: {
+      x: 59,
+      y: 660,
+    },
+    expires: {
+      x: 118,
+      y: 660,
+    },
+    instructorId: {
+      x: 348,
+      y: 655,
+    },
+    instructorName: {
+      x: 3048,
+      y: 665,
+    },
+    TrainingCenterName: {
+      x: 348,
+      y: 745,
+    },
+    TrainingCenterId: {
+      x: 348,
+      y: 720,
+    },
+    eCardCode: {
+      x: 175,
+      y: 660,
+    },
+    city: {
+      x: 348,
+      y: 700,
+    },
+    training_site_name: {
+      x: 348,
+      y: 675,
+    },
     qrCode: {
-      x: 233,
-      y: 635,
+      w: 60,
+      h: 55,
+      x: 235,
+      y: 632,
     },
   },
   cert_card: {
@@ -159,25 +221,57 @@ const Template_2: TemplateData = {
     },
   },
 };
-const Template_7: TemplateData = {
+const Template_3: TemplateData = {
   image_cert: path.resolve('./views/templates/template-3.png'),
-  image_id: path.resolve('./views/templates/template-1-card.png'),
-  settings: 1,
+  image_id: path.resolve('./views/templates/template-3-card.png'),
+  settings: 3,
   id_card: {
     fontSize: 8,
-    fullName: { x: 180, y: 720 },
-    issued: { x: 120, y: 380 },
-    expires: { x: 390, y: 380 },
-    instructorId: { x: 380, y: 300 },
-    instructorName: { x: 400, y: 340 },
-    TrainingCenterName: { x: 200, y: 340 },
-    TrainingCenterId: { x: 200, y: 300 },
-    eCardCode: { x: 400, y: 260 },
-    city: { x: 190, y: 260 },
-    training_site_name: { x: 190, y: 220 },
+    fullName: {
+      x: 180,
+      y: 720,
+    },
+    issued: {
+      x: 59,
+      y: 660,
+    },
+    expires: {
+      x: 118,
+      y: 660,
+    },
+    instructorId: {
+      x: 348,
+      y: 655,
+    },
+    instructorName: {
+      x: 3048,
+      y: 665,
+    },
+    TrainingCenterName: {
+      x: 348,
+      y: 745,
+    },
+    TrainingCenterId: {
+      x: 348,
+      y: 720,
+    },
+    eCardCode: {
+      x: 175,
+      y: 660,
+    },
+    city: {
+      x: 348,
+      y: 700,
+    },
+    training_site_name: {
+      x: 348,
+      y: 675,
+    },
     qrCode: {
-      x: 233,
-      y: 635,
+      w: 60,
+      h: 55,
+      x: 235,
+      y: 632,
     },
   },
   cert_card: {
@@ -240,21 +334,52 @@ const Template_7: TemplateData = {
 };
 const Template_4: TemplateData = {
   image_cert: path.resolve('./views/templates/template-4.png'),
-  image_id: path.resolve('./views/templates/template-1-card.png'),
-  settings: 1,
+  image_id: path.resolve('./views/templates/template-4-card.png'),
+  settings: 4,
 
   id_card: {
     fontSize: 8,
-    fullName: { x: 180, y: 720 },
-    issued: { x: 120, y: 380 },
-    expires: { x: 390, y: 380 },
-    instructorId: { x: 380, y: 300 },
-    instructorName: { x: 400, y: 340 },
-    TrainingCenterName: { x: 200, y: 340 },
-    TrainingCenterId: { x: 200, y: 300 },
-    eCardCode: { x: 400, y: 260 },
-    city: { x: 190, y: 260 },
-    training_site_name: { x: 190, y: 220 },
+    fullName: {
+      x: 170,
+      y: 720,
+      center: true,
+    },
+    issued: {
+      x: 59,
+      y: 660,
+    },
+    expires: {
+      x: 118,
+      y: 660,
+    },
+    instructorId: {
+      x: 348,
+      y: 648,
+    },
+    instructorName: {
+      x: 348,
+      y: 665,
+    },
+    TrainingCenterName: {
+      x: 348,
+      y: 745,
+    },
+    TrainingCenterId: {
+      x: 348,
+      y: 720,
+    },
+    eCardCode: {
+      x: 175,
+      y: 655,
+    },
+    city: {
+      x: 348,
+      y: 700,
+    },
+    training_site_name: {
+      x: 348,
+      y: 685,
+    },
     qrCode: {
       x: 233,
       y: 635,
@@ -320,21 +445,53 @@ const Template_4: TemplateData = {
 };
 const Template_5: TemplateData = {
   image_cert: path.resolve('./views/templates/template-5.png'),
-  image_id: path.resolve('./views/templates/template-1-card.png'),
-  settings: 1,
+  image_id: path.resolve('./views/templates/template-5-card.png'),
+  settings: 5,
 
   id_card: {
     fontSize: 8,
-    fullName: { x: 180, y: 720 },
-    issued: { x: 120, y: 380 },
-    expires: { x: 390, y: 380 },
-    instructorId: { x: 380, y: 300 },
-    instructorName: { x: 400, y: 340 },
-    TrainingCenterName: { x: 200, y: 340 },
-    TrainingCenterId: { x: 200, y: 300 },
-    eCardCode: { x: 400, y: 260 },
-    city: { x: 190, y: 260 },
-    training_site_name: { x: 190, y: 220 },
+    fullName: {
+      x: 170,
+      y: 715,
+    },
+    TrainingCenterName: {
+      x: 348,
+      y: 740,
+    },
+    TrainingCenterId: {
+      x: 348,
+      y: 720,
+    },
+    city: {
+      x: 348,
+      y: 700,
+    },
+    training_site_name: {
+      x: 348,
+      y: 680,
+    },
+    instructorName: {
+      x: 348,
+      y: 660,
+    },
+    instructorId: {
+      x: 348,
+      y: 648,
+    },
+    issued: {
+      x: 59,
+      y: 660,
+    },
+    expires: {
+      x: 118,
+      y: 660,
+    },
+    eCardCode: {
+      x: 202,
+      y: 660,
+      center: true,
+    },
+
     qrCode: {
       x: 233,
       y: 635,
@@ -400,24 +557,61 @@ const Template_5: TemplateData = {
 };
 const Template_6: TemplateData = {
   image_cert: path.resolve('./views/templates/template-6.png'),
-  image_id: path.resolve('./views/templates/template-1-card.png'),
-  settings: 1,
+  image_id: path.resolve('./views/templates/template-7-card.png'),
+  settings: 6,
 
   id_card: {
     fontSize: 8,
-    fullName: { x: 180, y: 720 },
-    issued: { x: 120, y: 380 },
-    expires: { x: 390, y: 380 },
-    instructorId: { x: 380, y: 300 },
-    instructorName: { x: 400, y: 340 },
-    TrainingCenterName: { x: 200, y: 340 },
-    TrainingCenterId: { x: 200, y: 300 },
-    eCardCode: { x: 400, y: 260 },
-    city: { x: 190, y: 260 },
-    training_site_name: { x: 190, y: 220 },
+    fullName: {
+      x: 170,
+      y: 710,
+      center: true,
+    },
+    issued: {
+      x: 78,
+      y: 653,
+      center: true,
+    },
+    expires: {
+      x: 138,
+      y: 653,
+      center: true,
+    },
+    eCardCode: {
+      x: 194,
+      y: 653,
+      center: true,
+    },
+    instructorId: {
+      x: 352,
+      y: 640,
+    },
+    instructorName: {
+      x: 352,
+      y: 655,
+    },
+    TrainingCenterName: {
+      x: 352,
+      y: 738,
+    },
+    TrainingCenterId: {
+      x: 352,
+      y: 718,
+    },
+
+    city: {
+      x: 352,
+      y: 695,
+    },
+    training_site_name: {
+      x: 352,
+      y: 675,
+    },
     qrCode: {
-      x: 233,
-      y: 635,
+      w: 60,
+      h: 55,
+      x: 235,
+      y: 622,
     },
   },
   cert_card: {
@@ -478,10 +672,10 @@ const Template_6: TemplateData = {
     },
   },
 };
-const Template_3: TemplateData = {
+const Template_7: TemplateData = {
   image_cert: path.resolve('./views/templates/template-7.png'),
-  image_id: path.resolve('./views/templates/template-1-card.png'),
-  settings: 1,
+  image_id: path.resolve('./views/templates/template-6-card.png'),
+  settings: 7,
   cert_card: {
     fontSize: 12,
     fullName: {
@@ -542,48 +736,55 @@ const Template_3: TemplateData = {
   id_card: {
     fontSize: 8,
     fullName: {
-      x: 180,
-      y: 720,
+      x: 170,
+      y: 710,
+      center: true,
     },
     issued: {
-      x: 59,
-      y: 660,
+      x: 82,
+      y: 650,
+      center: true,
     },
     expires: {
-      x: 118,
-      y: 660,
+      x: 142,
+      y: 650,
+      center: true,
+    },
+    eCardCode: {
+      x: 194,
+      y: 650,
+      center: true,
     },
     instructorId: {
-      x: 348,
-      y: 652,
+      x: 352,
+      y: 647,
     },
     instructorName: {
-      x: 348,
+      x: 3048,
       y: 665,
     },
     TrainingCenterName: {
-      x: 348,
-      y: 745,
+      x: 352,
+      y: 735,
     },
     TrainingCenterId: {
-      x: 348,
-      y: 725,
+      x: 352,
+      y: 710,
     },
-    eCardCode: {
-      x: 175,
-      y: 660,
-    },
+
     city: {
-      x: 348,
-      y: 705,
+      x: 352,
+      y: 690,
     },
     training_site_name: {
-      x: 348,
-      y: 685,
+      x: 352,
+      y: 665,
     },
     qrCode: {
-      x: 233,
-      y: 635,
+      w: 60,
+      h: 55,
+      x: 235,
+      y: 622,
     },
   },
 };
@@ -599,6 +800,7 @@ import { toDataURL } from 'qrcode';
 import fontkit from '@pdf-lib/fontkit';
 import * as process from 'node:process';
 import { SettingsService } from './settings/settings.service';
+import { EmailService } from '../email/email.service';
 
 interface TemplatePosition {
   fontSize: number;
@@ -656,6 +858,8 @@ interface TemplatePosition {
     center?: boolean;
   };
   qrCode: {
+    w?: number;
+    h?: number;
     x: number;
     y: number;
   };
@@ -675,6 +879,7 @@ export class CertificatesService {
     @InjectRepository(Certificate)
     private readonly certificateRepository: Repository<Certificate>,
     private settingsService: SettingsService,
+    private emailService: EmailService,
   ) {}
 
   generateUniqueNumericID() {
@@ -688,9 +893,22 @@ export class CertificatesService {
   async createCertificate(
     name: string,
     email: string,
-    template: TemplateData = Template_3,
+    templateIndex: number,
   ): Promise<Certificate> {
     try {
+      const template = [
+        Template_1,
+        Template_2,
+        Template_3,
+        Template_4,
+        Template_5,
+        Template_6,
+        Template_7,
+      ][templateIndex - 1];
+      if (!template) {
+        console.log('Template not found', templateIndex);
+        throw new NotFoundException('Template not found');
+      }
       const certificate = new Certificate();
       const settings = await this.settingsService.findOne(template.settings);
       // make id is long integer with 10 digits at least & some letters should be unique
@@ -767,7 +985,11 @@ export class CertificatesService {
       fs.writeFileSync(filePath, fileData);
       fs.writeFileSync(filePathCertificate, pdf);
       fs.writeFileSync(filePathCardId, card);
-
+      this.emailService
+        .sendEmail(email, settings.emailSubject, settings.emailBody, [fileData])
+        .then(() => {
+          console.log('Email sent');
+        });
       return await this.certificateRepository.save({
         ...certificate,
         certificate_path: filePathCertificate,
@@ -969,8 +1191,8 @@ export class CertificatesService {
     const qrImage = await pdfDoc.embedPng(qrImageBuffer);
 
     // Get the dimensions of the QR code image
-    const qrWidth = 60;
-    const qrHeight = 60;
+    const qrWidth = data.positions.qrCode.w || 60;
+    const qrHeight = data.positions.qrCode.h || 60;
 
     // Draw the QR code image on the page
     page.drawImage(qrImage, {

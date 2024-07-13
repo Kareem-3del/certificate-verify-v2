@@ -8,6 +8,7 @@ import {
   Redirect,
   Session,
   Res,
+  Param,
 } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { Settings } from './settings.entity';
@@ -26,17 +27,22 @@ export class SettingsController {
     if (!currentUser) {
       res.redirect('/login');
     }
-    const settings = await this.settingsService.findOne(1);
+    const settings = await this.settingsService.findAll();
     if (currentUser.role !== 'admin') {
       console.log(currentUser.role);
       res.render('settings/mod', { settings });
     }
+    console.log('admin');
     return res.render('settings/index', { settings });
   }
 
   @Redirect('/settings')
-  @Post()
-  async updateSettings(@Body() settings: Settings): Promise<void> {
-    await this.settingsService.update(1, settings);
+  @Post(':id')
+  async updateSettings(
+    @Body() settings: Settings,
+    @Param('id') id: string,
+  ): Promise<void> {
+    if (!id) throw new Error('No ID provided');
+    await this.settingsService.update(Number(id), settings);
   }
 }
