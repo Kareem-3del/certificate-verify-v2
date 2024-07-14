@@ -10,9 +10,14 @@ import { SettingsService } from './settings/settings.service';
 import { SettingsController } from './settings/settings.controller';
 import { Settings } from './settings/settings.entity';
 import { EmailModule } from '../email/email.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Certificate, Settings]), EmailModule],
+  imports: [
+    TypeOrmModule.forFeature([Certificate, Settings]),
+    EmailModule,
+    ConfigModule,
+  ],
   providers: [CertificatesService, SettingsService],
   controllers: [CertificatesController, SettingsController, AppController],
 })

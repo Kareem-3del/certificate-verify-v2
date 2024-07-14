@@ -32,6 +32,9 @@ export class Certificate {
   @Column({ default: '-----' })
   training_site_name: string;
 
+  @Column({ default: 'Default' })
+  type: string;
+
   @CreateDateColumn()
   issued: Date;
 

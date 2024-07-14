@@ -1,4 +1,5 @@
 import * as path from 'path';
+import { Parser } from 'json2csv';
 
 const Template_1: TemplateData = {
   image_cert: path.resolve('./views/templates/template-1.png'),
@@ -941,6 +942,44 @@ export class CertificatesService {
     private emailService: EmailService,
   ) {}
 
+  async getByType(type: string | 'all') {
+    if (type == 'all') {
+      return this.certificateRepository.find();
+    } else {
+      return this.certificateRepository.find({
+        where: {
+          type: type,
+        },
+      });
+    }
+  }
+
+  async generateCSVBuffer(
+    certificates: (Certificate & { link_verify?: string })[],
+  ): Promise<Buffer> {
+    const fields = [
+      'id',
+      'name',
+      'link_verify',
+      'email',
+      'city',
+      'training_site_name',
+      'type',
+      'issued',
+      'express',
+      'instructor_id',
+      'instructor_name',
+      'renew_by',
+      'training_center_name',
+      'training_center_id',
+      'created_at',
+    ];
+
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(certificates);
+
+    return Buffer.from(csv);
+  }
   generateUniqueNumericID() {
     const min = Math.pow(10, 9); // Minimum value for a 10-digit number
     const max = Math.pow(10, 10) - 1; // Maximum value for a 10-digit number
@@ -984,6 +1023,7 @@ export class CertificatesService {
       certificate.instructor_name = settings.instructorName;
       certificate.training_center_name = settings.trainingCenterName;
       certificate.training_center_id = settings.trainingCenterId;
+      certificate.type = settings.name;
       certificate.city = settings.trainingCenterId;
       certificate.training_site_name = settings.trainingSiteName;
       certificate.training_center_id = settings.trainingCenterId;
@@ -1058,13 +1098,13 @@ export class CertificatesService {
       );
 
       fs.writeFileSync(filePathCardId, card);
-      /*     this.emailService
+      this.emailService
         .sendEmail(email, name, settings.emailSubject, settings.emailBody, [
           fileData,
         ])
         .then(() => {
           console.log('Email sent');
-        });*/
+        });
       return await this.certificateRepository.save({
         ...certificate,
         certificate_path: template.image_cert

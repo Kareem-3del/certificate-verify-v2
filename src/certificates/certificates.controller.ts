@@ -1,9 +1,11 @@
 // src/certificates/certificates.controller.ts
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  Header,
   Param,
   Post,
   Query,
@@ -11,11 +13,14 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
+
 import { CertificatesService } from './certificates.service';
 import { toDataURL } from 'qrcode';
 import process from 'node:process';
 import { EmailService } from '../email/email.service';
 import { SettingsService } from './settings/settings.service';
+import { Certificate } from './certificate.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('')
 export class AppController {
@@ -36,7 +41,40 @@ export class CertificatesController {
     private readonly certificatesService: CertificatesService,
     private readonly emailService: EmailService,
     private readonly settingsService: SettingsService,
+    private readonly configService: ConfigService,
   ) {}
+
+  @Get('export/:id/')
+  @Header('Content-Type', 'text/csv')
+  @Header('Content-Disposition', 'attachment; filename="certificates.csv"')
+  async export(@Param('id') id: string, @Res() res: Response) {
+    if (!id) {
+      throw new BadRequestException('No ID provided');
+    }
+
+    try {
+      let certificates: (Certificate & { link_verify?: string })[];
+      if (id && id !== 'all') {
+        const settings = await this.settingsService.findOne(Number(id));
+        certificates = await this.certificatesService.getByType(settings.name);
+      } else if (id === 'all') {
+        certificates = await this.certificatesService.getByType('all');
+      }
+      certificates = certificates.map((cert) => {
+        cert.link_verify = `${this.configService.get('BASE_URL')}/certificates/verify/${cert.id}`;
+        return cert;
+      });
+
+      const csvBuffer =
+        await this.certificatesService.generateCSVBuffer(certificates);
+
+      console.log('err', csvBuffer);
+      res.send(csvBuffer);
+    } catch (err) {
+      console.log('Error', err);
+    }
+  }
+
   @Get('generate/:id')
   @Render('generate_v2') // Renders generate.ejs
   async generate(@Param('id') id: string) {
@@ -49,7 +87,7 @@ export class CertificatesController {
   }
 
   @Post('generate')
-  @Render('certificate-overview') // Renders generate.ejs
+  @Render('certificate') // Renders generate.ejs
   async generateCertificate(
     @Body() body: { name: string; email: string; index: number },
   ) {
