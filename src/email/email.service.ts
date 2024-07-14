@@ -24,6 +24,21 @@ export class EmailService {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  private formatResults(results: {
+    success: number;
+    failure: number;
+    failedEmails: string[];
+  }) {
+    return `
+      Bulk email sending completed.
+
+      Success: ${results.success}
+      Failure: ${results.failure}
+      
+      ${results.failedEmails.length > 0 ? `Failed emails:\n${results.failedEmails.join('\n')}` : ''}
+    `;
+  }
+
   async sendEmail(
     to: string,
     name: string,
@@ -31,10 +46,8 @@ export class EmailService {
     text: string,
     attachments: Buffer[],
   ) {
-    const maxRetries = 3;
-    let attempt = 0;
     const mailOptions: Mail.Options = {
-      from: '"Info" <info@precertificationn.com>',
+      from: '"Certificates" <certificates@precertificationn.com>',
       to,
       subject,
       text,
@@ -45,21 +58,62 @@ export class EmailService {
       })),
     };
 
-    while (attempt < maxRetries) {
-      try {
-        console.log(`Attempt ${attempt + 1} to send email...`);
-        await this.transporter.sendMail(mailOptions);
-        console.log('Email sent successfully:');
-        return;
-      } catch (error) {
-        console.error(`Attempt ${attempt + 1} failed:`, error);
-        attempt++;
-        if (attempt < maxRetries) {
-          await this.delay(3000); // Wait for 3 seconds before retrying
-        }
+    try {
+      await this.transporter.sendMail(mailOptions);
+      console.log(`Email sent successfully to ${to}`);
+      return true;
+    } catch (error) {
+      console.error(`Failed to send email to ${to}:`, error);
+      return false;
+    }
+  }
+
+  async sendBulkEmail(
+    recipients: string[],
+    name: string,
+    subject: string,
+    text: string,
+    resultEmail: string, // Email to send results to
+  ) {
+    const results = {
+      success: 0,
+      failure: 0,
+      failedEmails: [] as string[],
+    };
+
+    console.log('Emails', recipients);
+    if (!recipients) throw new Error('No Email Exits');
+
+    for (const to of recipients) {
+      const success = await this.sendEmail(to, name, subject, text, []);
+      if (success) {
+        results.success++;
+      } else {
+        results.failure++;
+        results.failedEmails.push(to);
       }
+
+      // Delay to avoid hitting rate limits
+      await this.delay(1000); // 1 second delay between each email
     }
 
-    console.log("Can't Send");
+    console.log('Bulk email sending completed.');
+    console.log(`Success: ${results.success}, Failure: ${results.failure}`);
+    if (results.failedEmails.length > 0) {
+      console.log('Failed emails:', results.failedEmails);
+    }
+
+    const resultsSummary = this.formatResults(results);
+
+    // Send results summary email
+    await this.sendEmail(
+      resultEmail,
+      'Bulk Email Results',
+      'Bulk Email Sending Results',
+      resultsSummary,
+      [],
+    );
+
+    return results;
   }
 }

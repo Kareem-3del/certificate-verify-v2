@@ -371,7 +371,7 @@ const Template_4: TemplateData = {
     },
     eCardCode: {
       x: 175,
-      y: 655,
+      y: 660,
     },
     city: {
       x: 348,
@@ -384,6 +384,8 @@ const Template_4: TemplateData = {
     qrCode: {
       x: 233,
       y: 635,
+      w: 55,
+      h: 55,
     },
   },
   cert_card: {
@@ -496,6 +498,8 @@ const Template_5: TemplateData = {
     qrCode: {
       x: 233,
       y: 635,
+      w: 55,
+      h: 55,
     },
   },
   cert_card: {

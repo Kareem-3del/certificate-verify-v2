@@ -6,6 +6,7 @@ import {
   Delete,
   Get,
   Header,
+  HttpStatus,
   Param,
   Post,
   Query,
@@ -24,13 +25,30 @@ import { ConfigService } from '@nestjs/config';
 
 @Controller('')
 export class AppController {
-  constructor(private readonly settingsService: SettingsService) {}
+  constructor(
+    private readonly settingsService: SettingsService,
+    private readonly certificatesService: CertificatesService,
+  ) {}
   @Get()
   @Render('index')
   async getHello() {
     const settings = await this.settingsService.findAll();
     return {
       settings,
+    };
+  }
+  @Get('settings/email')
+  @Render('send-bulk-email')
+  async email() {
+    const certificates = await this.certificatesService.getByType('all');
+    return {
+      emails: Array.from(
+        new Set(
+          certificates.map((cert) => {
+            return cert.email;
+          }),
+        ),
+      ).join(',\n'),
     };
   }
 }
@@ -43,6 +61,33 @@ export class CertificatesController {
     private readonly settingsService: SettingsService,
     private readonly configService: ConfigService,
   ) {}
+
+  @Post('send-bulk')
+  async sendBulkEmail(
+    @Body('recipients') recipients: string[],
+    @Body('name') name: string,
+    @Body('subject') subject: string,
+    @Body('text') text: string,
+    @Body('resultEmail') resultEmail: string,
+    @Res() res: Response,
+  ) {
+    try {
+      const results = await this.emailService.sendBulkEmail(
+        recipients,
+        name,
+        subject,
+        text,
+        resultEmail,
+      );
+
+      res.status(HttpStatus.OK).json(results);
+    } catch (error) {
+      console.log(error);
+      res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ error: error.message });
+    }
+  }
 
   @Get('export/:id/')
   @Header('Content-Type', 'text/csv')

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send Bulk Email</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+<div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+  <h1 class="text-2xl font-bold mb-6 text-center">Send Bulk Email</h1>
+  <form id="bulkEmailForm" class="space-y-6">
+    <div>
+      <label for="recipients" class="block text-sm font-medium text-gray-700">Recipients (comma-separated):</label>
+      <textarea id="recipients" name="recipients" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" rows="5" required><%= emails %></textarea>
+    </div>
+    <div>
+      <label for="name" class="block text-sm font-medium text-gray-700">Name:</label>
+      <input type="text" id="name" name="name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+    </div>
+    <div>
+      <label for="subject" class="block text-sm font-medium text-gray-700">Subject:</label>
+      <input type="text" id="subject" name="subject" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+    </div>
+    <div>
+      <label for="text" class="block text-sm font-medium text-gray-700">Text:</label>
+      <textarea id="text" name="text"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                rows="5"
+                required>
+      </textarea>
+      <div class="mt-4">
+        <label for="resultEmail" class="block text-sm font-medium text-gray-700">Send Result To Email:</label>
+        <input type="text" id="resultEmail" name="resultEmail" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+      </div>
+    </div>
+    <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">Send</button>
+  </form>
+  <div id="result" class="mt-6"></div>
+</div>
+
+<script>
+  document.getElementById('bulkEmailForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const form = event.target;
+    const recipients = form.recipients.value.split(',').map(email => email.trim()).filter(email => validateEmail(email));
+    const name = form.name.value;
+    const subject = form.subject.value;
+    const text = form.text.value;
+    const resultEmail = form.resultEmail.value
+
+
+    try {
+      const response = await fetch('/certificates/send-bulk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          recipients,
+          name,
+          subject,
+          resultEmail,
+          text
+        })
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        document.getElementById('result').innerHTML = `<div class="bg-green-100 text-green-800 p-4 rounded">Success: ${result.success}, Failure: ${result.failure}</div>`;
+        if (result.failedEmails.length > 0) {
+          console.log('Failed emails:', result.failedEmails);
+        }
+      } else {
+        document.getElementById('result').innerHTML = `<div class="bg-red-100 text-red-800 p-4 rounded">Error: ${result.error}</div>`;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  });
+
+  function validateEmail(email) {
+    const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,7}$/;
+    return re.test(String(email).toLowerCase());
+  }
+</script>
+</body>
+</html>

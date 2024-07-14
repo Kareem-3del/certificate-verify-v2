@@ -42,7 +42,11 @@
                 <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">Certificates</a>
                 <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">Users</a>
             </nav>
-            <a href="/auth/logout/" id="logoutBtn" class="px-8 py-2 text-gray-600 hover:text-gray-800 w-full">Logout</a>
+            <div class="flex flex-col">
+                <a href="/settings/email/" id="logoutBtn" class="px-8 py-2 text-gray-600 hover:text-gray-800 w-full">Bulk Mail</a>
+                <a href="/auth/logout/" id="logoutBtn" class="px-8 py-2 text-gray-600 hover:text-gray-800 w-full">Logout</a>
+
+            </div>
 
         </aside>
 
@@ -192,6 +196,9 @@
                 <button id="delete-selected-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg mb-4">Delete
                     Selected
                 </button>
+                <a href="/certificates/export/all"  class="px-4 py-2 bg-blue-500 text-white rounded-lg mb-4">
+                    Export All
+                </a>
                 <input type="text" id="searchInput" placeholder="Search certificates..."
                        class="w-full p-2 border rounded-lg mb-4">
                 <div class="overflow-x-auto">
