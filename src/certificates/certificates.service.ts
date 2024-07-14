@@ -1375,6 +1375,7 @@ export class CertificatesService {
     if (certificate.certificate_path)
       fs.unlinkSync(certificate.certificate_path);
     if (certificate.id_path) fs.unlinkSync(certificate.id_path);
+    if (certificate.id_path) fs.unlinkSync(certificate.id_and_cert_path);
     await this.certificateRepository.delete({ id });
   }
 
