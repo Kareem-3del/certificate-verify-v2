@@ -49,7 +49,7 @@ export class CertificatesController {
   }
 
   @Post('generate')
-  @Render('certificate') // Renders generate.ejs
+  @Render('certificate-overview') // Renders generate.ejs
   async generateCertificate(
     @Body() body: { name: string; email: string; index: number },
   ) {

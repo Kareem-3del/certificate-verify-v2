@@ -8,7 +8,7 @@ const Template_1: TemplateData = {
   id_card: {
     fontSize: 8,
     fullName: {
-      x: 180,
+      x: 170,
       y: 720,
     },
     issued: {
@@ -788,13 +788,71 @@ const Template_7: TemplateData = {
     },
   },
 };
+const Template_8: TemplateData = {
+  image_id: path.resolve('./views/templates/custom.png'),
+  settings: 8,
+  id_card: {
+    fontSize: 8,
+    fullName: {
+      x: 80,
+      y: 706,
+      scale: 1,
+      center: false,
+    },
+    issued: {
+      x: 108,
+      y: 672.5,
+      fontSize: 6.5,
+    },
+    expires: {
+      x: 240,
+      y: 672.5,
+      fontSize: 6.5,
+    },
+    eCardCode: {
+      x: 70,
+      y: 660,
+    },
+    instructorId: {
+      x: 220,
+      y: 660,
+    },
+    instructorName: {
+      x: 68,
+      y: 684.5,
+    },
+    TrainingCenterName: {
+      x: 3502,
+      y: 735,
+    },
+    TrainingCenterId: {
+      x: 3520,
+      y: 710,
+    },
+
+    city: {
+      x: 3520,
+      y: 690,
+    },
+    training_site_name: {
+      x: 3520,
+      y: 665,
+    },
+    qrCode: {
+      w: 60,
+      h: 60,
+      x: 508,
+      y: 618,
+    },
+  },
+};
 
 // certificates.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Certificate } from './certificate.entity';
 import { ILike, Repository } from 'typeorm';
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib';
 import * as fs from 'fs';
 import { toDataURL } from 'qrcode';
 import fontkit from '@pdf-lib/fontkit';
@@ -808,6 +866,7 @@ interface TemplatePosition {
     x: number;
     y: number;
     center?: boolean;
+    scale?: number;
   };
   issued: {
     x: number;
@@ -866,11 +925,11 @@ interface TemplatePosition {
 }
 
 interface TemplateData {
-  image_cert: string;
+  image_cert?: string;
   image_id: string;
   settings: number;
   id_card: TemplatePosition;
-  cert_card: TemplatePosition;
+  cert_card?: TemplatePosition;
 }
 
 @Injectable()
@@ -904,6 +963,7 @@ export class CertificatesService {
         Template_5,
         Template_6,
         Template_7,
+        Template_8,
       ][templateIndex - 1];
       if (!template) {
         console.log('Template not found', templateIndex);
@@ -919,6 +979,7 @@ export class CertificatesService {
       certificate.express = new Date(
         Date.now() + 2 * 365 * 24 * 60 * 60 * 1000,
       );
+
       certificate.instructor_id = settings.instructorId;
       certificate.instructor_name = settings.instructorName;
       certificate.training_center_name = settings.trainingCenterName;
@@ -928,20 +989,6 @@ export class CertificatesService {
       certificate.training_center_id = settings.trainingCenterId;
 
       // save file in /certificates folder
-      const pdf = await this.createCardID({
-        fullName: certificate.name,
-        issued: certificate.issued.toDateString(),
-        expires: certificate.express.toDateString(),
-        instructorId: certificate.instructor_id,
-        instructorName: certificate.instructor_name,
-        TrainingCenterName: certificate.training_center_name,
-        TrainingCenterId: certificate.training_center_id,
-        eCardCode: certificate.id,
-        city: settings.tcCity,
-        training_site_name: settings.trainingSiteName,
-        positions: template.cert_card,
-        image: template.image_cert,
-      });
 
       const card = await this.createCardID({
         fullName: certificate.name,
@@ -958,43 +1005,73 @@ export class CertificatesService {
         image: template.image_id,
       });
 
+      let pdf: Buffer;
+      if (template.image_cert) {
+        pdf = await this.createCardID({
+          fullName: certificate.name,
+          issued: certificate.issued.toDateString(),
+          expires: certificate.express.toDateString(),
+          instructorId: certificate.instructor_id,
+          instructorName: certificate.instructor_name,
+          TrainingCenterName: certificate.training_center_name,
+          TrainingCenterId: certificate.training_center_id,
+          eCardCode: certificate.id,
+          city: settings.tcCity,
+          training_site_name: settings.trainingSiteName,
+          positions: template.cert_card,
+          image: template.image_cert,
+        });
+      }
+
+      let certificatePdf: PDFDocument;
+      if (pdf) {
+        certificatePdf = await PDFDocument.load(pdf);
+      }
+
       const pdfDoc = await PDFDocument.create();
-      const certificatePdf = await PDFDocument.load(pdf);
       const idPdf = await PDFDocument.load(card);
 
-      const copiedCertificatePage = await pdfDoc.copyPages(certificatePdf, [0]);
+      let copiedCertificatePage: PDFPage[];
+      if (certificatePdf) {
+        copiedCertificatePage = await pdfDoc.copyPages(certificatePdf, [0]);
+      }
+
       const copiedIdPage = await pdfDoc.copyPages(idPdf, [0]);
 
-      pdfDoc.addPage(copiedCertificatePage[0]);
+      if (copiedCertificatePage) pdfDoc.addPage(copiedCertificatePage[0]);
+
       pdfDoc.addPage(copiedIdPage[0]);
-
-      const pdfBytes = await pdfDoc.save();
-      const fileData = Buffer.from(pdfBytes);
-
+      const filePath = `./certificates/${certificate.id}.pdf`;
       const filePathCertificate = path.resolve(
         __dirname,
         `../../certificates/${certificate.id}_certificate.pdf`,
       );
+      const pdfBytes = await pdfDoc.save();
+      const fileData = Buffer.from(pdfBytes);
+
+      fs.writeFileSync(filePath, fileData);
+      if (pdf) fs.writeFileSync(filePathCertificate, pdf);
 
       const filePathCardId = path.resolve(
         __dirname,
         `../../certificates/${certificate.id}_id.pdf`,
       );
-      const filePath = `./certificates/${certificate.id}.pdf`;
 
-      fs.writeFileSync(filePath, fileData);
-      fs.writeFileSync(filePathCertificate, pdf);
       fs.writeFileSync(filePathCardId, card);
-      this.emailService
-        .sendEmail(email, settings.emailSubject, settings.emailBody, [fileData])
+      /*     this.emailService
+        .sendEmail(email, name, settings.emailSubject, settings.emailBody, [
+          fileData,
+        ])
         .then(() => {
           console.log('Email sent');
-        });
+        });*/
       return await this.certificateRepository.save({
         ...certificate,
-        certificate_path: filePathCertificate,
+        certificate_path: template.image_cert
+          ? filePathCertificate
+          : filePathCardId,
         id_path: filePathCardId,
-        id_and_cert_path: filePath,
+        id_and_cert_path: template.image_cert ? filePath : filePathCardId,
       });
     } catch (error) {
       console.error('Error creating certificate:', error);
@@ -1002,7 +1079,7 @@ export class CertificatesService {
     }
   }
 
-  formatDate(date: string) {
+  formatDate(date: string, hideDay?: boolean) {
     const issuedDate = new Date(date);
     const year = issuedDate.getFullYear();
     const monthNames = [
@@ -1020,8 +1097,10 @@ export class CertificatesService {
       'Dec',
     ];
     const month = monthNames[issuedDate.getMonth()];
-    const day = issuedDate.getDate().toString().padStart(2, '0');
-    return `${day} ${month} ${year}`;
+    const day = !hideDay
+      ? issuedDate.getDate().toString().padStart(2, '0') + ' '
+      : '';
+    return `${day}${month} ${year}`;
   }
 
   async createCardID(data: {
@@ -1063,20 +1142,33 @@ export class CertificatesService {
     const fontSize = data.positions.fontSize;
     const fontColor = rgb(0, 0, 0);
     const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const helveticaFontBold = await pdfDoc.embedFont(
+      StandardFonts.HelveticaBold,
+    );
 
     const calcTextWidth = (text: string, textSize: number): number => {
       const textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
+      return textWidth / 2;
+    };
+
+    const calcTextWidth2 = (text: string, textSize: number): number => {
+      const textWidth = helveticaFontBold.widthOfTextAtSize(text, textSize);
       return textWidth / 2;
     };
     // Draw the text on the certificate at the specified positions
     page.drawText(data.fullName, {
       x:
         (data.positions.fullName.x || 180) -
-        calcTextWidth(data.fullName, fontSize * 1.2),
+        (data.positions.fullName.center
+          ? calcTextWidth2(
+              data.fullName,
+              fontSize * (data.positions.fullName.scale || 1.2),
+            )
+          : 0),
       y: data.positions.fullName.y || 720,
-      size: fontSize * 1.2,
+      size: fontSize * (data.positions.fullName.scale || 1.2),
       color: fontColor,
-      font: helveticaFont,
+      font: helveticaFontBold,
     });
     page.drawText(data.city, {
       x:
@@ -1151,19 +1243,19 @@ export class CertificatesService {
           ? calcTextWidth(data.issued, fontSize)
           : 0),
       y: data.positions.issued.y || 660,
-      size: fontSize,
+      size: data.positions.issued.fontSize || fontSize,
       color: fontColor,
       font: helveticaFont,
     });
 
-    page.drawText(this.formatDate(data.expires), {
+    page.drawText(this.formatDate(data.expires, true), {
       x:
-        (data.positions.expires.x || 118) -
+        (data.positions.expires.x + 5 || 118) -
         (data.positions.expires.center
           ? calcTextWidth(data.expires, fontSize)
           : 0),
       y: data.positions.expires.y || 660,
-      size: fontSize,
+      size: data.positions.expires.fontSize || fontSize,
       color: fontColor,
       font: helveticaFont,
     });
