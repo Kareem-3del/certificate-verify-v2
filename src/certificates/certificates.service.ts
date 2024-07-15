@@ -820,7 +820,7 @@ const Template_8: TemplateData = {
     },
     eCardCode: {
       x: 70,
-      y: 660,
+      y: 660.5,
     },
     instructorId: {
       x: 220,
@@ -1020,13 +1020,20 @@ export class CertificatesService {
       const settings = await this.settingsService.findOne(template.settings);
       // make id is long integer with 10 digits at least & some letters should be unique
       certificate.id = this.generateUniqueNumericID();
+      certificate.instructor_id = settings.instructorId;
+
+      if (templateIndex === 8) {
+        certificate.instructor_id =
+          certificate.instructor_id + this.generateUniqueNumericID();
+        certificate.id = this.generateRandomId(22);
+      }
+
       certificate.name = name;
       certificate.issued = new Date();
       certificate.email = email;
       certificate.express = new Date(
         Date.now() + 2 * 365 * 24 * 60 * 60 * 1000,
       );
-      certificate.instructor_id = settings.instructorId;
       certificate.instructor_name = settings.instructorName;
       certificate.training_center_name = settings.trainingCenterName;
       certificate.training_center_id = settings.trainingCenterId;
@@ -1368,6 +1375,28 @@ export class CertificatesService {
     });
   }
 
+  generateRandomId(length: number): string {
+    const numbers = '0123456789';
+    const characters = 'abcdefghijklmnopqrstuvwxyz';
+    let result = '';
+
+    // Ensure the length is a multiple of 4 to maintain the pattern
+    const patternLength = Math.floor(length / 4) * 4;
+
+    for (let i = 0; i < patternLength; i++) {
+      if (i % 4 === 0) {
+        // Use numbers for the first position of each 4-position block
+        const randomIndex = Math.floor(Math.random() * numbers.length);
+        result += numbers[randomIndex];
+      } else {
+        // Use characters for the next three positions of each 4-position block
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters[randomIndex];
+      }
+    }
+
+    return result;
+  }
   async deleteCertificate(id: string): Promise<void> {
     const certificate = await this.certificateRepository.findOneBy({ id });
     if (!certificate) {
