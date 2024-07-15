@@ -1402,12 +1402,18 @@ export class CertificatesService {
     if (!certificate) {
       throw new NotFoundException();
     }
+
     // delete
     console.log(certificate);
-    if (certificate.certificate_path)
+    if (
+      certificate.certificate_path &&
+      fs.existsSync(certificate.certificate_path)
+    )
       fs.unlinkSync(certificate.certificate_path);
-    if (certificate.id_path) fs.unlinkSync(certificate.id_path);
-    if (certificate.id_path) fs.unlinkSync(certificate.id_and_cert_path);
+    if (certificate.id_path && fs.existsSync(certificate.id_path))
+      fs.unlinkSync(certificate.id_path);
+    if (certificate.id_path && fs.existsSync(certificate.id_and_cert_path))
+      fs.unlinkSync(certificate.id_and_cert_path);
     await this.certificateRepository.delete({ id });
   }
 
