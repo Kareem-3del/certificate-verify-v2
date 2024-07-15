@@ -11,6 +11,7 @@ const Template_1: TemplateData = {
     fullName: {
       x: 170,
       y: 720,
+      center: true,
     },
     issued: {
       x: 59,
@@ -118,8 +119,9 @@ const Template_2: TemplateData = {
   id_card: {
     fontSize: 8,
     fullName: {
-      x: 180,
+      x: 170,
       y: 720,
+      center: true,
     },
     issued: {
       x: 59,
@@ -231,6 +233,7 @@ const Template_3: TemplateData = {
     fullName: {
       x: 180,
       y: 720,
+      center: true,
     },
     issued: {
       x: 59,
@@ -456,6 +459,7 @@ const Template_5: TemplateData = {
     fullName: {
       x: 170,
       y: 715,
+      center: true,
     },
     TrainingCenterName: {
       x: 348,
@@ -799,9 +803,9 @@ const Template_8: TemplateData = {
   id_card: {
     fontSize: 8,
     fullName: {
-      x: 80,
-      y: 706,
-      scale: 1,
+      x: 27,
+      y: 696,
+      scale: 1.1,
       center: false,
     },
     issued: {
@@ -1022,7 +1026,6 @@ export class CertificatesService {
       certificate.express = new Date(
         Date.now() + 2 * 365 * 24 * 60 * 60 * 1000,
       );
-
       certificate.instructor_id = settings.instructorId;
       certificate.instructor_name = settings.instructorName;
       certificate.training_center_name = settings.trainingCenterName;
