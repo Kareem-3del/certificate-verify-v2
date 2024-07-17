@@ -2,856 +2,597 @@ import * as path from 'path';
 import { Parser } from 'json2csv';
 
 const Template_1: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-1.png'),
-  image_id: path.resolve('./views/templates/template-1-card.png'),
+  image_cert: path.resolve('./views/templates/v2/template-1.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
   settings: 1,
 
   id_card: {
-    fontSize: 8,
+    fontSize: 18,
     fullName: {
-      x: 170,
-      y: 720,
+      x: 590,
+      y: 400,
+      scale: 2.2,
       center: true,
     },
     issued: {
-      x: 59,
-      y: 660,
+      x: 380 + 70,
+      y: 200,
     },
     expires: {
-      x: 118,
-      y: 660,
+      x: 600 + 150,
+      y: 200,
     },
     instructorId: {
-      x: 348,
-      y: 652,
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 300,
+      scale: 2,
+      center: true,
     },
     instructorName: {
-      x: 348,
+      x: 34008,
       y: 665,
     },
     TrainingCenterName: {
-      x: 348,
+      x: 30408,
       y: 745,
     },
     TrainingCenterId: {
-      x: 348,
+      x: 34008,
       y: 725,
     },
     eCardCode: {
-      x: 175,
-      y: 660,
+      x: 110404,
+      y: 1848,
     },
     city: {
-      x: 348,
+      x: 340008,
       y: 705,
     },
     training_site_name: {
-      x: 348,
-      y: 685,
+      x: 50,
+      y: 230,
     },
     qrCode: {
-      x: 233,
-      y: 635,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
   cert_card: {
-    fontSize: 12,
+    fontSize: 18,
     fullName: {
-      x: 595.28 / 2,
-      y: 585,
+      x: 430,
+      y: 950,
+      scale: 2.0,
       center: true,
-    },
-    expires: {
-      x: 445,
-      y: 465,
-      center: true,
-    },
-    instructorName: {
-      x: 435,
-      y: 425,
-      center: true,
-    },
-    instructorId: {
-      x: 435,
-      y: 385,
-      center: true,
-    },
-    eCardCode: {
-      x: 435,
-      y: 345,
-      center: true,
-    },
-    qrCode: {
-      x: 405,
-      y: 260,
     },
     issued: {
-      x: 175,
-      y: 465,
-      center: true,
+      x: 168,
+      y: 876,
+    },
+    expires: {
+      x: 174,
+      y: 856,
+    },
+    eCardCode: {
+      x: 225,
+      y: 836,
+    },
+    instructorName: {
+      x: 220005,
+      y: 816,
     },
     TrainingCenterName: {
-      x: 165,
-      y: 425,
-      center: true,
+      x: 235,
+      y: 816,
     },
+    instructorId: {
+      x: 235,
+      y: 896,
+    },
+
+    qrCode: {
+      x: 700 - 20,
+      y: 800 - 20,
+      w: 150,
+      h: 150,
+    },
+
     TrainingCenterId: {
-      x: 165,
+      x: 16005,
       y: 385,
       center: true,
     },
     city: {
-      x: 165,
+      x: 16005,
       y: 345,
       center: true,
     },
     training_site_name: {
-      x: 165,
+      x: 16005,
       y: 305,
       center: true,
     },
   },
 };
 const Template_2: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-2.png'),
-  image_id: path.resolve('./views/templates/template-2-card.png'),
-  settings: 2,
+  image_cert: path.resolve('./views/templates/v2/template-2.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
+  settings: 1,
+
   id_card: {
-    fontSize: 8,
+    fontSize: 18,
     fullName: {
-      x: 170,
-      y: 720,
+      x: 590,
+      y: 400,
+      scale: 2.2,
       center: true,
     },
     issued: {
-      x: 59,
-      y: 660,
+      x: 380 + 70,
+      y: 200,
     },
     expires: {
-      x: 118,
-      y: 660,
+      x: 600 + 150,
+      y: 200,
     },
     instructorId: {
-      x: 348,
-      y: 655,
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 300,
+      scale: 2,
+      center: true,
     },
     instructorName: {
-      x: 3048,
+      x: 34008,
       y: 665,
     },
     TrainingCenterName: {
-      x: 348,
+      x: 30408,
       y: 745,
     },
     TrainingCenterId: {
-      x: 348,
-      y: 720,
+      x: 34008,
+      y: 725,
     },
     eCardCode: {
-      x: 175,
-      y: 660,
+      x: 110404,
+      y: 1848,
     },
     city: {
-      x: 348,
-      y: 700,
+      x: 340008,
+      y: 705,
     },
     training_site_name: {
-      x: 348,
-      y: 675,
+      x: 50,
+      y: 230,
     },
     qrCode: {
-      w: 60,
-      h: 55,
-      x: 235,
-      y: 632,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
   cert_card: {
-    fontSize: 12,
+    fontSize: 18,
     fullName: {
-      x: 595.28 / 2,
-      y: 575,
+      x: 430,
+      y: 950,
+      scale: 2.0,
       center: true,
-    },
-    expires: {
-      x: 428,
-      y: 475,
-      center: true,
-    },
-    instructorName: {
-      x: 41500000,
-      y: 425,
-      center: true,
-    },
-    instructorId: {
-      x: 415,
-      y: 435,
-      center: true,
-    },
-    eCardCode: {
-      x: 415,
-      y: 395,
-      center: true,
-    },
-    qrCode: {
-      x: 385,
-      y: 310,
     },
     issued: {
-      x: 175,
-      y: 475,
-      center: true,
+      x: 168,
+      y: 876,
+    },
+    expires: {
+      x: 174,
+      y: 856,
+    },
+    eCardCode: {
+      x: 225,
+      y: 836,
+    },
+    instructorName: {
+      x: 220005,
+      y: 816,
     },
     TrainingCenterName: {
-      x: 165,
-      y: 435,
-      center: true,
+      x: 235,
+      y: 816,
     },
+    instructorId: {
+      x: 235,
+      y: 896,
+    },
+
+    qrCode: {
+      x: 700 - 20,
+      y: 800 - 20,
+      w: 150,
+      h: 150,
+    },
+
     TrainingCenterId: {
-      x: 165,
+      x: 16005,
       y: 385,
       center: true,
     },
     city: {
-      x: 165,
+      x: 16005,
       y: 345,
       center: true,
     },
     training_site_name: {
-      x: 165,
-      y: 310,
+      x: 16005,
+      y: 305,
       center: true,
     },
   },
 };
 const Template_3: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-3.png'),
-  image_id: path.resolve('./views/templates/template-3-card.png'),
-  settings: 3,
+  image_cert: path.resolve('./views/templates/v2/template-3.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
+  settings: 1,
+
   id_card: {
-    fontSize: 8,
+    fontSize: 18,
     fullName: {
-      x: 180,
-      y: 720,
+      x: 590,
+      y: 400,
+      scale: 2.2,
       center: true,
     },
     issued: {
-      x: 59,
-      y: 660,
+      x: 380 + 70,
+      y: 200,
     },
     expires: {
-      x: 118,
-      y: 660,
+      x: 600 + 150,
+      y: 200,
     },
     instructorId: {
-      x: 348,
-      y: 655,
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 300,
+      scale: 2,
+      center: true,
     },
     instructorName: {
-      x: 3048,
+      x: 34008,
       y: 665,
     },
     TrainingCenterName: {
-      x: 348,
+      x: 30408,
       y: 745,
     },
     TrainingCenterId: {
-      x: 348,
-      y: 720,
+      x: 34008,
+      y: 725,
     },
     eCardCode: {
-      x: 175,
-      y: 660,
+      x: 110404,
+      y: 1848,
     },
     city: {
-      x: 348,
-      y: 700,
+      x: 340008,
+      y: 705,
     },
     training_site_name: {
-      x: 348,
-      y: 675,
+      x: 50,
+      y: 230,
     },
     qrCode: {
-      w: 60,
-      h: 55,
-      x: 235,
-      y: 632,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
   cert_card: {
-    fontSize: 12,
+    fontSize: 18,
     fullName: {
-      x: 595.28 / 2,
-      y: 575,
+      x: 430,
+      y: 950,
+      scale: 2.0,
       center: true,
-    },
-    expires: {
-      x: 438,
-      y: 475,
-      center: true,
-    },
-    instructorName: {
-      x: 41500000,
-      y: 425,
-      center: true,
-    },
-    instructorId: {
-      x: 425,
-      y: 435,
-      center: true,
-    },
-    eCardCode: {
-      x: 425,
-      y: 395,
-      center: true,
-    },
-    qrCode: {
-      x: 395,
-      y: 310,
     },
     issued: {
-      x: 175,
-      y: 475,
-      center: true,
+      x: 168,
+      y: 876,
+    },
+    expires: {
+      x: 174,
+      y: 856,
+    },
+    eCardCode: {
+      x: 225,
+      y: 836,
+    },
+    instructorName: {
+      x: 220005,
+      y: 816,
     },
     TrainingCenterName: {
-      x: 165,
-      y: 435,
-      center: true,
+      x: 235,
+      y: 816,
     },
+    instructorId: {
+      x: 235,
+      y: 896,
+    },
+
+    qrCode: {
+      x: 700 - 20,
+      y: 800 - 20,
+      w: 150,
+      h: 150,
+    },
+
     TrainingCenterId: {
-      x: 165,
+      x: 16005,
       y: 385,
       center: true,
     },
     city: {
-      x: 165,
+      x: 16005,
       y: 345,
       center: true,
     },
     training_site_name: {
-      x: 165,
-      y: 310,
+      x: 16005,
+      y: 305,
       center: true,
     },
   },
 };
 const Template_4: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-4.png'),
-  image_id: path.resolve('./views/templates/template-4-card.png'),
-  settings: 4,
+  image_cert: path.resolve('./views/templates/v2/template-4.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
+  settings: 1,
 
   id_card: {
-    fontSize: 8,
+    fontSize: 18,
     fullName: {
-      x: 170,
-      y: 720,
+      x: 590,
+      y: 400,
+      scale: 2.2,
       center: true,
     },
     issued: {
-      x: 59,
-      y: 660,
+      x: 380 + 70,
+      y: 200,
     },
     expires: {
-      x: 118,
-      y: 660,
+      x: 600 + 150,
+      y: 200,
     },
     instructorId: {
-      x: 348,
-      y: 648,
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 300,
+      scale: 2,
+      center: true,
     },
     instructorName: {
-      x: 348,
+      x: 34008,
       y: 665,
     },
     TrainingCenterName: {
-      x: 348,
+      x: 30408,
       y: 745,
     },
     TrainingCenterId: {
-      x: 348,
-      y: 720,
+      x: 34008,
+      y: 725,
     },
     eCardCode: {
-      x: 175,
-      y: 660,
+      x: 110404,
+      y: 1848,
     },
     city: {
-      x: 348,
-      y: 700,
+      x: 340008,
+      y: 705,
     },
     training_site_name: {
-      x: 348,
-      y: 685,
+      x: 50,
+      y: 230,
     },
     qrCode: {
-      x: 233,
-      y: 635,
-      w: 55,
-      h: 55,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
   cert_card: {
-    fontSize: 12,
+    fontSize: 18,
     fullName: {
-      x: 595.28 / 2,
-      y: 585,
+      x: 430,
+      y: 950,
+      scale: 2.0,
       center: true,
+    },
+    issued: {
+      x: 168,
+      y: 876,
     },
     expires: {
-      x: 435,
-      y: 465,
-      center: true,
+      x: 174,
+      y: 856,
+    },
+    eCardCode: {
+      x: 225,
+      y: 836,
     },
     instructorName: {
-      x: 420,
-      y: 425,
-      center: true,
+      x: 220005,
+      y: 816,
+    },
+    TrainingCenterName: {
+      x: 235,
+      y: 816,
     },
     instructorId: {
-      x: 420,
+      x: 235,
+      y: 896,
+    },
+
+    qrCode: {
+      x: 700 - 20,
+      y: 800 - 20,
+      w: 150,
+      h: 150,
+    },
+
+    TrainingCenterId: {
+      x: 16005,
       y: 385,
       center: true,
     },
-    eCardCode: {
-      x: 420,
+    city: {
+      x: 16005,
       y: 345,
       center: true,
     },
-    qrCode: {
-      x: 390,
-      y: 260,
-    },
-    issued: {
-      x: 162,
-      y: 465,
-      center: true,
-    },
-    TrainingCenterName: {
-      x: 155,
-      y: 430,
-      center: true,
-    },
-    TrainingCenterId: {
-      x: 155,
-      y: 375,
-      center: true,
-    },
-    city: {
-      x: 155,
-      y: 335,
-      center: true,
-    },
     training_site_name: {
-      x: 155,
-      y: 285,
+      x: 16005,
+      y: 305,
       center: true,
     },
   },
 };
 const Template_5: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-5.png'),
-  image_id: path.resolve('./views/templates/template-5-card.png'),
-  settings: 5,
+  image_cert: path.resolve('./views/templates/v2/template-5.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
+  settings: 1,
 
   id_card: {
-    fontSize: 8,
+    fontSize: 18,
     fullName: {
-      x: 170,
-      y: 715,
+      x: 590,
+      y: 400,
+      scale: 2.2,
       center: true,
-    },
-    TrainingCenterName: {
-      x: 348,
-      y: 740,
-    },
-    TrainingCenterId: {
-      x: 348,
-      y: 720,
-    },
-    city: {
-      x: 348,
-      y: 700,
-    },
-    training_site_name: {
-      x: 348,
-      y: 680,
-    },
-    instructorName: {
-      x: 348,
-      y: 660,
-    },
-    instructorId: {
-      x: 348,
-      y: 648,
     },
     issued: {
-      x: 59,
-      y: 660,
+      x: 380 + 70,
+      y: 200,
     },
     expires: {
-      x: 118,
-      y: 660,
-    },
-    eCardCode: {
-      x: 202,
-      y: 660,
-      center: true,
-    },
-
-    qrCode: {
-      x: 233,
-      y: 635,
-      w: 55,
-      h: 55,
-    },
-  },
-  cert_card: {
-    fontSize: 12,
-    fullName: {
-      x: 595.28 / 2,
-      y: 545,
-      center: true,
-    },
-    expires: {
-      x: 450,
-      y: 430,
-      center: true,
-    },
-    instructorName: {
-      x: 438,
-      y: 425 - 35,
-      center: true,
+      x: 600 + 150,
+      y: 200,
     },
     instructorId: {
-      x: 438,
-      y: 385 - 35,
-      center: true,
+      x: 34008,
+      y: 4489,
     },
-    eCardCode: {
-      x: 438,
-      y: 345 - 35,
-      center: true,
-    },
-    qrCode: {
-      x: 410,
-      y: 260 - 35,
-    },
-    issued: {
-      x: 180,
-      y: 430,
-      center: true,
-    },
-    TrainingCenterName: {
-      x: 172,
-      y: 425 - 35,
-      center: true,
-    },
-    TrainingCenterId: {
-      x: 172,
-      y: 335,
-      center: true,
-    },
-    city: {
-      x: 172,
+    name: {
+      x: 585,
       y: 300,
+      scale: 2,
       center: true,
-    },
-    training_site_name: {
-      x: 172,
-      y: 245,
-      center: true,
-    },
-  },
-};
-const Template_6: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-6.png'),
-  image_id: path.resolve('./views/templates/template-7-card.png'),
-  settings: 6,
-
-  id_card: {
-    fontSize: 8,
-    fullName: {
-      x: 170,
-      y: 710,
-      center: true,
-    },
-    issued: {
-      x: 78,
-      y: 653,
-      center: true,
-    },
-    expires: {
-      x: 138,
-      y: 653,
-      center: true,
-    },
-    eCardCode: {
-      x: 194,
-      y: 653,
-      center: true,
-    },
-    instructorId: {
-      x: 352,
-      y: 640,
     },
     instructorName: {
-      x: 352,
-      y: 655,
+      x: 34008,
+      y: 665,
     },
     TrainingCenterName: {
-      x: 352,
-      y: 738,
+      x: 30408,
+      y: 745,
     },
     TrainingCenterId: {
-      x: 352,
-      y: 718,
+      x: 34008,
+      y: 725,
     },
-
+    eCardCode: {
+      x: 110404,
+      y: 1848,
+    },
     city: {
-      x: 352,
-      y: 695,
+      x: 340008,
+      y: 705,
     },
     training_site_name: {
-      x: 352,
-      y: 675,
+      x: 50,
+      y: 230,
     },
     qrCode: {
-      w: 60,
-      h: 55,
-      x: 235,
-      y: 622,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
   cert_card: {
-    fontSize: 12,
+    fontSize: 24,
     fullName: {
-      x: 595.28 / 2,
-      y: 585,
-      center: true,
-    },
-    expires: {
-      x: 448,
-      y: 465 - 5,
-      center: true,
-    },
-    instructorName: {
-      x: 435,
-      y: 415,
-      center: true,
-    },
-    instructorId: {
-      x: 435,
-      y: 375,
-      center: true,
-    },
-    eCardCode: {
-      x: 435,
-      y: 335,
-      center: true,
-    },
-    qrCode: {
-      x: 405,
-      y: 250,
-    },
-    issued: {
-      x: 170,
-      y: 460,
-      center: true,
-    },
-    TrainingCenterName: {
-      x: 155,
-      y: 420,
-      center: true,
-    },
-    TrainingCenterId: {
-      x: 155,
-      y: 365,
-      center: true,
-    },
-    city: {
-      x: 155,
-      y: 325,
-      center: true,
-    },
-    training_site_name: {
-      x: 155,
-      y: 285,
-      center: true,
-    },
-  },
-};
-const Template_7: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-7.png'),
-  image_id: path.resolve('./views/templates/template-6-card.png'),
-  settings: 7,
-  cert_card: {
-    fontSize: 12,
-    fullName: {
-      x: 595.28 / 2,
-      y: 575,
-      center: true,
-    },
-    expires: {
-      x: 440,
-      y: 467,
-      center: true,
-    },
-    instructorName: {
-      x: 41500000,
-      y: 425,
-      center: true,
-    },
-    instructorId: {
-      x: 428,
-      y: 428,
-      center: true,
-    },
-    eCardCode: {
-      x: 428,
-      y: 388,
-      center: true,
-    },
-    qrCode: {
-      x: 400,
-      y: 300,
-    },
-    issued: {
-      x: 175,
-      y: 468,
-      center: true,
-    },
-    TrainingCenterName: {
-      x: 162,
-      y: 430,
-      center: true,
-    },
-    TrainingCenterId: {
-      x: 162,
-      y: 378,
-      center: true,
-    },
-    city: {
-      x: 162,
-      y: 338,
-      center: true,
-    },
-    training_site_name: {
-      x: 162,
-      y: 304,
-      center: true,
-    },
-  },
-  id_card: {
-    fontSize: 8,
-    fullName: {
-      x: 170,
-      y: 710,
+      x: 430,
+      y: 940,
+      scale: 2.0,
       center: true,
     },
     issued: {
-      x: 82,
-      y: 650,
-      center: true,
+      x: 174 + 15,
+      y: 852,
     },
     expires: {
-      x: 142,
-      y: 650,
-      center: true,
+      x: 174 + 30,
+      y: 822,
     },
     eCardCode: {
-      x: 194,
-      y: 650,
-      center: true,
-    },
-    instructorId: {
-      x: 352,
-      y: 647,
+      x: 275,
+      y: 794,
     },
     instructorName: {
-      x: 3048,
-      y: 665,
+      x: 220005,
+      y: 816,
     },
     TrainingCenterName: {
-      x: 352,
-      y: 735,
+      x: 295,
+      y: 764,
     },
-    TrainingCenterId: {
-      x: 352,
-      y: 710,
+    instructorId: {
+      x: 292,
+      y: 880,
     },
 
-    city: {
-      x: 352,
-      y: 690,
-    },
-    training_site_name: {
-      x: 352,
-      y: 665,
-    },
     qrCode: {
-      w: 60,
-      h: 55,
-      x: 235,
-      y: 622,
-    },
-  },
-};
-const Template_8: TemplateData = {
-  image_id: path.resolve('./views/templates/custom.png'),
-  settings: 8,
-  id_card: {
-    fontSize: 8,
-    fullName: {
-      x: 27,
-      y: 696,
-      scale: 1.1,
-      center: false,
-    },
-    issued: {
-      x: 108,
-      y: 672.5,
-      fontSize: 6.5,
-    },
-    expires: {
-      x: 240,
-      y: 672.5,
-      fontSize: 6.5,
-    },
-    eCardCode: {
-      x: 70,
-      y: 660.5,
-    },
-    instructorId: {
-      x: 220,
-      y: 660,
-    },
-    instructorName: {
-      x: 68,
-      y: 684.5,
-    },
-    TrainingCenterName: {
-      x: 3502,
-      y: 735,
-    },
-    TrainingCenterId: {
-      x: 3520,
-      y: 710,
+      x: 700 - 25,
+      y: 800 - 25,
+      w: 150,
+      h: 150,
     },
 
+    TrainingCenterId: {
+      x: 16005,
+      y: 385,
+      center: true,
+    },
     city: {
-      x: 3520,
-      y: 690,
+      x: 16005,
+      y: 345,
+      center: true,
     },
     training_site_name: {
-      x: 3520,
-      y: 665,
-    },
-    qrCode: {
-      w: 60,
-      h: 60,
-      x: 508,
-      y: 618,
+      x: 16005,
+      y: 305,
+      center: true,
     },
   },
 };
@@ -861,17 +602,24 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Certificate } from './certificate.entity';
 import { ILike, Repository } from 'typeorm';
-import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import * as fs from 'fs';
 import { toDataURL } from 'qrcode';
 import fontkit from '@pdf-lib/fontkit';
 import * as process from 'node:process';
 import { SettingsService } from './settings/settings.service';
 import { EmailService } from '../email/email.service';
+import { unlink } from 'fs-extra';
 
 interface TemplatePosition {
   fontSize: number;
   fullName: {
+    x: number;
+    y: number;
+    center?: boolean;
+    scale?: number;
+  };
+  name?: {
     x: number;
     y: number;
     center?: boolean;
@@ -988,6 +736,7 @@ export class CertificatesService {
 
     return Buffer.from(csv);
   }
+
   generateUniqueNumericID() {
     const min = Math.pow(10, 9); // Minimum value for a 10-digit number
     const max = Math.pow(10, 10) - 1; // Maximum value for a 10-digit number
@@ -1008,9 +757,6 @@ export class CertificatesService {
         Template_3,
         Template_4,
         Template_5,
-        Template_6,
-        Template_7,
-        Template_8,
       ][templateIndex - 1];
       if (!template) {
         console.log('Template not found', templateIndex);
@@ -1022,10 +768,10 @@ export class CertificatesService {
       certificate.id = this.generateUniqueNumericID();
       certificate.instructor_id = settings.instructorId;
 
-      if (templateIndex === 8) {
+      if (templateIndex !== 8) {
         certificate.instructor_id =
           certificate.instructor_id + this.generateUniqueNumericID();
-        certificate.id = this.generateRandomId(22);
+        // certificate.id = this.generateRandomId(22);
       }
 
       certificate.name = name;
@@ -1057,6 +803,8 @@ export class CertificatesService {
         training_site_name: settings.trainingSiteName,
         positions: template.id_card,
         image: template.image_id,
+        scale: 0.08,
+        name: certificate.type,
       });
 
       let pdf: Buffer;
@@ -1077,44 +825,87 @@ export class CertificatesService {
         });
       }
 
-      let certificatePdf: PDFDocument;
-      if (pdf) {
-        certificatePdf = await PDFDocument.load(pdf);
-      }
+      // let certificatePdf: PDFDocument;
+      // if (pdf) {
+      //   certificatePdf = await PDFDocument.load(pdf);
+      // }
 
-      const pdfDoc = await PDFDocument.create();
-      const idPdf = await PDFDocument.load(card);
+      //  const pdfDoc = await PDFDocument.create();
+      // const idPdf = await PDFDocument.load(card);
 
-      let copiedCertificatePage: PDFPage[];
-      if (certificatePdf) {
-        copiedCertificatePage = await pdfDoc.copyPages(certificatePdf, [0]);
-      }
+      //  let copiedCertificatePage: PDFPage[];
+      // if (certificatePdf) {
+      //     copiedCertificatePage = await pdfDoc.copyPages(certificatePdf, [0]);
+      // }
 
-      const copiedIdPage = await pdfDoc.copyPages(idPdf, [0]);
+      // const copiedIdPage = await pdfDoc.copyPages(idPdf, [0]);
 
-      if (copiedCertificatePage) pdfDoc.addPage(copiedCertificatePage[0]);
+      // if (copiedCertificatePage) pdfDoc.addPage(copiedCertificatePage[0]);
 
-      pdfDoc.addPage(copiedIdPage[0]);
+      // pdfDoc.addPage(copiedIdPage[0]);
       const filePath = `./certificates/${certificate.id}.pdf`;
+      // const filePath = `./certificates/test.pdf`;
       const filePathCertificate = path.resolve(
         __dirname,
-        `../../certificates/${certificate.id}_certificate.pdf`,
+        `../../certificates/test_certificate.pdf`,
       );
-      const pdfBytes = await pdfDoc.save();
-      const fileData = Buffer.from(pdfBytes);
+      // const pdfBytes = await pdfDoc.save();
+      // const fileData = Buffer.from(pdfBytes);
 
-      fs.writeFileSync(filePath, fileData);
-      if (pdf) fs.writeFileSync(filePathCertificate, pdf);
+      // fs.writeFileSync(filePath, fileData);
+      unlink(filePathCertificate);
+      if (pdf)
+        fs.writeFileSync(filePathCertificate, pdf, {
+          flag: 'wx',
+        });
 
       const filePathCardId = path.resolve(
         __dirname,
-        `../../certificates/${certificate.id}_id.pdf`,
+        `../../certificates/test_id.pdf`,
       );
 
-      fs.writeFileSync(filePathCardId, card);
+      fs.unlinkSync(filePathCardId);
+      fs.writeFileSync(filePathCardId, card, {
+        flag: 'wx',
+        // replace: true,
+      });
+      settings.emailBody.replaceAll('[NAME]', name);
+      settings.emailBody.replaceAll('[CERTIFICATE_ID]', certificate.id);
+      settings.emailBody.replaceAll('[TYPE]', settings.name);
+      settings.emailBody.replaceAll(
+        '[ISSUED]',
+        certificate.issued.toDateString(),
+      );
+      settings.emailBody.replaceAll(
+        '[EXPIRES]',
+        certificate.express.toDateString(),
+      );
+      settings.emailBody.replaceAll(
+        '[INSTRUCTOR_ID]',
+        certificate.instructor_id,
+      );
+      settings.emailBody.replaceAll(
+        '[INSTRUCTOR_NAME]',
+        certificate.instructor_name,
+      );
+      settings.emailBody.replaceAll(
+        '[TRAINING_CENTER_NAME]',
+        certificate.training_center_name,
+      );
+      settings.emailBody.replaceAll(
+        '[TRAINING_CENTER_ID]',
+        certificate.training_center_id,
+      );
+      settings.emailBody.replaceAll('[CITY]', settings.tcCity);
+      settings.emailBody.replaceAll(
+        '[TRAINING_SITE_NAME]',
+        settings.trainingSiteName,
+      );
+
       this.emailService
         .sendEmail(email, name, settings.emailSubject, settings.emailBody, [
-          fileData,
+          pdf,
+          card,
         ])
         .then(() => {
           console.log('Email sent');
@@ -1170,6 +961,8 @@ export class CertificatesService {
     eCardCode: string;
     positions: TemplatePosition;
     image: string;
+    scale?: number;
+    name?: string;
   }): Promise<Buffer> {
     // Create a new PDFDocument
     const pdfDoc = await PDFDocument.create();
@@ -1177,20 +970,22 @@ export class CertificatesService {
 
     // Load the image
     const imageBytes = fs.readFileSync(data.image);
-
-    const pngImage = await pdfDoc.embedPng(imageBytes);
+    console.log(imageBytes.length);
+    const jpgImage = await pdfDoc.embedJpg(imageBytes);
+    console.log('Image embedded successfully.');
 
     // Get the dimensions of the image
-    const { width, height } = pngImage.scale(0.5);
-
+    const { width, height } = jpgImage.scale(data.scale || 0.2);
+    console.log('Image dimensions:', width, height);
     // Add a page and draw the image on the center of the page
-    const page = pdfDoc.addPage();
-    page.drawImage(pngImage, {
-      x: page.getWidth() / 2 - width / 2,
-      y: page.getHeight() - height - 50,
+    const page = pdfDoc.addPage([width, height]);
+    page.drawImage(jpgImage, {
+      x: 0,
+      y: 0,
       width,
       height,
     });
+    console.log('Image drawn successfully.');
 
     // Define font size and color
     const fontSize = data.positions.fontSize;
@@ -1199,6 +994,7 @@ export class CertificatesService {
     const helveticaFontBold = await pdfDoc.embedFont(
       StandardFonts.HelveticaBold,
     );
+    console.log('Fonts embedded successfully.');
 
     const calcTextWidth = (text: string, textSize: number): number => {
       const textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
@@ -1224,6 +1020,24 @@ export class CertificatesService {
       color: fontColor,
       font: helveticaFontBold,
     });
+    console.log('Full name drawn successfully.');
+
+    if (data.name) {
+      page.drawText(data.name, {
+        x:
+          (data.positions.name.x || 180) -
+          (data.positions.name.center
+            ? calcTextWidth2(
+                data.name,
+                fontSize * (data.positions.name.scale || 1.2),
+              )
+            : 0),
+        y: data.positions.name.y || 720,
+        size: fontSize * (data.positions.name.scale || 1.2),
+        color: fontColor,
+        font: helveticaFontBold,
+      });
+    }
     page.drawText(data.city, {
       x:
         (data.positions.city.x || 348) -
@@ -1233,7 +1047,7 @@ export class CertificatesService {
       font: helveticaFont,
       color: fontColor,
     });
-
+    console.log('City drawn successfully.');
     page.drawText(data.TrainingCenterId, {
       x:
         (data.positions.TrainingCenterId.x || 348) -
@@ -1245,6 +1059,8 @@ export class CertificatesService {
       color: fontColor,
       font: helveticaFont,
     });
+
+    console.log('Training center ID drawn successfully.');
     page.drawText(data.TrainingCenterName, {
       x:
         (data.positions.TrainingCenterName.x || 348) -
@@ -1256,7 +1072,7 @@ export class CertificatesService {
       color: fontColor,
       font: helveticaFont,
     });
-
+    console.log('Training center name drawn successfully.');
     page.drawText(data.training_site_name, {
       x:
         (data.positions.training_site_name.x || 348) -
@@ -1268,6 +1084,7 @@ export class CertificatesService {
       font: helveticaFont,
       color: fontColor,
     });
+    console.log('Training site name drawn successfully.');
     page.drawText(data.instructorName, {
       x:
         (data.positions.instructorName.x || 348) -
@@ -1279,6 +1096,8 @@ export class CertificatesService {
       color: fontColor,
       font: helveticaFont,
     });
+    console.log('Instructor name drawn successfully.');
+
     page.drawText(data.instructorId, {
       x:
         (data.positions.instructorId.x || 348) -
@@ -1290,6 +1109,7 @@ export class CertificatesService {
       color: fontColor,
       font: helveticaFont,
     });
+    console.log('Instructor ID drawn successfully.');
     page.drawText(this.formatDate(data.issued), {
       x:
         (data.positions.issued.x || 59) -
@@ -1301,7 +1121,7 @@ export class CertificatesService {
       color: fontColor,
       font: helveticaFont,
     });
-
+    console.log('Issued date drawn successfully.');
     page.drawText(this.formatDate(data.expires, true), {
       x:
         (data.positions.expires.x + 5 || 118) -
@@ -1313,6 +1133,7 @@ export class CertificatesService {
       color: fontColor,
       font: helveticaFont,
     });
+    console.log('Expires date drawn successfully.');
     page.drawText(data.eCardCode, {
       x:
         (data.positions.eCardCode.x || 175) -
@@ -1324,17 +1145,17 @@ export class CertificatesService {
       color: fontColor,
       font: helveticaFont,
     });
-
+    console.log('eCard code drawn successfully.');
     // Generate QR code
     // console.log(toDataURL);
     const qrCodeUrl = await toDataURL(
       process.env.BASE_URL + '/certificates/verify/' + data.eCardCode,
     );
-
     // Extract the base64 part of the QR code URL
     const qrImageBytes = qrCodeUrl.split(',')[1];
     const qrImageBuffer = Buffer.from(qrImageBytes, 'base64');
     const qrImage = await pdfDoc.embedPng(qrImageBuffer);
+    console.log('QR code embedded successfully.');
 
     // Get the dimensions of the QR code image
     const qrWidth = data.positions.qrCode.w || 60;
@@ -1347,10 +1168,11 @@ export class CertificatesService {
       width: qrWidth,
       height: qrHeight,
     });
+    console.log('QR code drawn successfully.');
 
     // Serialize the PDFDocument to bytes (a Uint8Array)
     const pdfBytes = await pdfDoc.save();
-
+    console.log('PDF saved successfully.');
     // Return the PDF as a Buffer
     return Buffer.from(pdfBytes);
   }
@@ -1397,6 +1219,7 @@ export class CertificatesService {
 
     return result;
   }
+
   async deleteCertificate(id: string): Promise<void> {
     const certificate = await this.certificateRepository.findOneBy({ id });
     if (!certificate) {
