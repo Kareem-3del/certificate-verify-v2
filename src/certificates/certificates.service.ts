@@ -847,7 +847,7 @@ export class CertificatesService {
       // const filePath = `./certificates/test.pdf`;
       const filePathCertificate = path.resolve(
         __dirname,
-        `../../certificates/test_certificate.pdf`,
+        `../../certificates/${certificate.id}_certificate.pdf`,
       );
       // const pdfBytes = await pdfDoc.save();
       // const fileData = Buffer.from(pdfBytes);
@@ -861,7 +861,7 @@ export class CertificatesService {
 
       const filePathCardId = path.resolve(
         __dirname,
-        `../../certificates/test_id.pdf`,
+        `../../certificates/${certificate.id}_id.pdf`,
       );
 
       fs.unlinkSync(filePathCardId);
