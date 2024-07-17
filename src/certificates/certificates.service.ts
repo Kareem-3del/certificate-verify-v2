@@ -853,7 +853,6 @@ export class CertificatesService {
       // const fileData = Buffer.from(pdfBytes);
 
       // fs.writeFileSync(filePath, fileData);
-      unlink(filePathCertificate);
       if (pdf)
         fs.writeFileSync(filePathCertificate, pdf, {
           flag: 'wx',
@@ -864,7 +863,6 @@ export class CertificatesService {
         `../../certificates/${certificate.id}_id.pdf`,
       );
 
-      fs.unlinkSync(filePathCardId);
       fs.writeFileSync(filePathCardId, card, {
         flag: 'wx',
         // replace: true,
