@@ -51,6 +51,36 @@ export class AppController {
       ).join(',\n'),
     };
   }
+
+  @Post('/certificate-verify/:id')
+  @Render('certificate-overview') // Renders verify.ejs
+  async verifyCertificate(@Param('id') id: string) {
+    try {
+      const certificate = await this.certificatesService.verifyCertificate(id);
+      if (!certificate) {
+        return {
+          error: 'Certificate Not Found',
+          notFound: true,
+        };
+      }
+      const qrCodeUrl = await toDataURL(
+        process?.env?.BASE_URL + '/certificates/verify/' + certificate.id,
+      );
+      console.log('Certificate:', certificate);
+      return {
+        ...certificate,
+        id: certificate.id,
+        qr: qrCodeUrl,
+        notFound: false,
+      };
+    } catch (error) {
+      console.error('Error verifying certificate.ejs:', error);
+      return {
+        error: 'Error verifying certificate.ejs.',
+        notFound: true,
+      };
+    }
+  }
 }
 
 @Controller('certificates')
