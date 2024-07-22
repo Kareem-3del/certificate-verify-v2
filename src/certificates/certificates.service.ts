@@ -10,8 +10,8 @@ const Template_1: TemplateData = {
     fontSize: 18,
     fullName: {
       x: 590,
-      y: 400,
-      scale: 2.2,
+      y: 390,
+      scale: 2.0,
       center: true,
     },
     issued: {
@@ -30,8 +30,8 @@ const Template_1: TemplateData = {
     },
     name: {
       x: 585,
-      y: 300,
-      scale: 2,
+      y: 275,
+      scale: 1.8,
       center: true,
     },
     instructorName: {
@@ -56,7 +56,8 @@ const Template_1: TemplateData = {
     },
     training_site_name: {
       x: 50,
-      y: 230,
+      fontSize: 12,
+      y: 240,
     },
     qrCode: {
       x: 905,
@@ -66,23 +67,23 @@ const Template_1: TemplateData = {
     },
   },
   cert_card: {
-    fontSize: 18,
+    fontSize: 15,
     fullName: {
-      x: 430,
-      y: 950,
-      scale: 2.0,
-      center: true,
+      x: 150,
+      y: 930,
+      scale: 1.9,
+      center: false,
     },
     issued: {
-      x: 290,
+      x: 275,
       y: 876,
     },
     expires: {
-      x: 290,
+      x: 275,
       y: 856,
     },
     eCardCode: {
-      x: 290,
+      x: 275,
       y: 836,
     },
     instructorName: {
@@ -90,11 +91,11 @@ const Template_1: TemplateData = {
       y: 816,
     },
     TrainingCenterName: {
-      x: 290,
+      x: 275,
       y: 816,
     },
     instructorId: {
-      x: 290,
+      x: 275,
       y: 896,
     },
 
@@ -118,6 +119,8 @@ const Template_1: TemplateData = {
     training_site_name: {
       x: 16005,
       y: 305,
+      fontSize: 12,
+
       center: true,
     },
   },
@@ -131,8 +134,8 @@ const Template_2: TemplateData = {
     fontSize: 18,
     fullName: {
       x: 590,
-      y: 400,
-      scale: 2.2,
+      y: 390,
+      scale: 2.0,
       center: true,
     },
     issued: {
@@ -151,8 +154,8 @@ const Template_2: TemplateData = {
     },
     name: {
       x: 585,
-      y: 300,
-      scale: 2,
+      y: 275,
+      scale: 1.8,
       center: true,
     },
     instructorName: {
@@ -177,7 +180,8 @@ const Template_2: TemplateData = {
     },
     training_site_name: {
       x: 50,
-      y: 230,
+      fontSize: 12,
+      y: 240,
     },
     qrCode: {
       x: 905,
@@ -187,23 +191,23 @@ const Template_2: TemplateData = {
     },
   },
   cert_card: {
-    fontSize: 18,
+    fontSize: 15,
     fullName: {
-      x: 430,
-      y: 950,
-      scale: 2.0,
-      center: true,
+      x: 150,
+      y: 930,
+      scale: 1.9,
+      center: false,
     },
     issued: {
-      x: 290,
+      x: 275,
       y: 876,
     },
     expires: {
-      x: 290,
+      x: 275,
       y: 856,
     },
     eCardCode: {
-      x: 290,
+      x: 275,
       y: 836,
     },
     instructorName: {
@@ -211,11 +215,11 @@ const Template_2: TemplateData = {
       y: 816,
     },
     TrainingCenterName: {
-      x: 290,
+      x: 275,
       y: 816,
     },
     instructorId: {
-      x: 290,
+      x: 275,
       y: 896,
     },
 
@@ -239,6 +243,7 @@ const Template_2: TemplateData = {
     training_site_name: {
       x: 16005,
       y: 305,
+      fontSize: 12,
       center: true,
     },
   },
@@ -252,8 +257,8 @@ const Template_3: TemplateData = {
     fontSize: 18,
     fullName: {
       x: 590,
-      y: 400,
-      scale: 2.2,
+      y: 390,
+      scale: 2.0,
       center: true,
     },
     issued: {
@@ -272,8 +277,8 @@ const Template_3: TemplateData = {
     },
     name: {
       x: 585,
-      y: 300,
-      scale: 2,
+      y: 275,
+      scale: 1.8,
       center: true,
     },
     instructorName: {
@@ -298,7 +303,8 @@ const Template_3: TemplateData = {
     },
     training_site_name: {
       x: 50,
-      y: 230,
+      fontSize: 12,
+      y: 240,
     },
     qrCode: {
       x: 905,
@@ -308,23 +314,23 @@ const Template_3: TemplateData = {
     },
   },
   cert_card: {
-    fontSize: 18,
+    fontSize: 15,
     fullName: {
-      x: 430,
-      y: 950,
-      scale: 2.0,
-      center: true,
+      x: 150,
+      y: 930,
+      scale: 1.9,
+      center: false,
     },
     issued: {
-      x: 290,
+      x: 275,
       y: 876,
     },
     expires: {
-      x: 290,
+      x: 275,
       y: 856,
     },
     eCardCode: {
-      x: 290,
+      x: 275,
       y: 836,
     },
     instructorName: {
@@ -332,11 +338,11 @@ const Template_3: TemplateData = {
       y: 816,
     },
     TrainingCenterName: {
-      x: 290,
+      x: 275,
       y: 816,
     },
     instructorId: {
-      x: 290,
+      x: 275,
       y: 896,
     },
 
@@ -359,6 +365,7 @@ const Template_3: TemplateData = {
     },
     training_site_name: {
       x: 16005,
+      fontSize: 12,
       y: 305,
       center: true,
     },
@@ -373,8 +380,8 @@ const Template_4: TemplateData = {
     fontSize: 18,
     fullName: {
       x: 590,
-      y: 400,
-      scale: 2.2,
+      y: 390,
+      scale: 2.0,
       center: true,
     },
     issued: {
@@ -393,8 +400,8 @@ const Template_4: TemplateData = {
     },
     name: {
       x: 585,
-      y: 300,
-      scale: 2,
+      y: 275,
+      scale: 1.8,
       center: true,
     },
     instructorName: {
@@ -419,7 +426,8 @@ const Template_4: TemplateData = {
     },
     training_site_name: {
       x: 50,
-      y: 230,
+      fontSize: 12,
+      y: 240,
     },
     qrCode: {
       x: 905,
@@ -429,23 +437,23 @@ const Template_4: TemplateData = {
     },
   },
   cert_card: {
-    fontSize: 18,
+    fontSize: 15,
     fullName: {
-      x: 430,
-      y: 950,
-      scale: 2.0,
-      center: true,
+      x: 150,
+      y: 930,
+      scale: 1.9,
+      center: false,
     },
     issued: {
-      x: 290,
+      x: 275,
       y: 876,
     },
     expires: {
-      x: 290,
+      x: 275,
       y: 856,
     },
     eCardCode: {
-      x: 290,
+      x: 275,
       y: 836,
     },
     instructorName: {
@@ -453,11 +461,11 @@ const Template_4: TemplateData = {
       y: 816,
     },
     TrainingCenterName: {
-      x: 290,
+      x: 275,
       y: 816,
     },
     instructorId: {
-      x: 290,
+      x: 275,
       y: 896,
     },
 
@@ -480,6 +488,7 @@ const Template_4: TemplateData = {
     },
     training_site_name: {
       x: 16005,
+      fontSize: 12,
       y: 305,
       center: true,
     },
@@ -494,8 +503,8 @@ const Template_5: TemplateData = {
     fontSize: 18,
     fullName: {
       x: 590,
-      y: 400,
-      scale: 2.2,
+      y: 390,
+      scale: 2.0,
       center: true,
     },
     issued: {
@@ -514,8 +523,8 @@ const Template_5: TemplateData = {
     },
     name: {
       x: 585,
-      y: 300,
-      scale: 2,
+      y: 275,
+      scale: 1.8,
       center: true,
     },
     instructorName: {
@@ -540,7 +549,8 @@ const Template_5: TemplateData = {
     },
     training_site_name: {
       x: 50,
-      y: 230,
+      fontSize: 12,
+      y: 240,
     },
     qrCode: {
       x: 905,
@@ -552,10 +562,10 @@ const Template_5: TemplateData = {
   cert_card: {
     fontSize: 24,
     fullName: {
-      x: 430,
+      x: 150,
       y: 940,
       scale: 2.0,
-      center: true,
+      center: false,
     },
     issued: {
       x: 350,
@@ -601,6 +611,7 @@ const Template_5: TemplateData = {
     },
     training_site_name: {
       x: 16005,
+      fontSize: 12,
       y: 305,
       center: true,
     },
@@ -680,6 +691,7 @@ interface TemplatePosition {
     center?: boolean;
   };
   training_site_name: {
+    fontSize: number;
     x: number;
     y: number;
     center?: boolean;
@@ -748,9 +760,13 @@ export class CertificatesService {
     return Buffer.from(csv);
   }
 
-  generateUniqueNumericID() {
-    const min = Math.pow(10, 9); // Minimum value for a 10-digit number
-    const max = Math.pow(10, 10) - 1; // Maximum value for a 10-digit number
+  generateUniqueNumericID(digits: number) {
+    if (digits <= 0) {
+      throw new Error('Number of digits must be a positive integer.');
+    }
+
+    const min = Math.pow(10, digits - 1);
+    const max = Math.pow(10, digits) - 1;
 
     const id = Math.floor(Math.random() * (max - min + 1)) + min;
     return id.toString();
@@ -776,12 +792,12 @@ export class CertificatesService {
       const certificate = new Certificate();
       const settings = await this.settingsService.findOne(template.settings);
       // make id is long integer with 10 digits at least & some letters should be unique
-      certificate.id = this.generateUniqueNumericID();
+      certificate.id = this.generateUniqueNumericID(11);
       certificate.instructor_id = settings.instructorId;
 
       if (templateIndex !== 8) {
         certificate.instructor_id =
-          certificate.instructor_id + this.generateUniqueNumericID();
+          certificate.instructor_id + this.generateUniqueNumericID(5);
         // certificate.id = this.generateRandomId(22);
       }
 
@@ -821,7 +837,7 @@ export class CertificatesService {
       let pdf: Buffer;
       if (template.image_cert) {
         pdf = await this.createCardID({
-          fullName: certificate.name,
+          fullName: certificate.name.toUpperCase(),
           issued: certificate.issued.toDateString(),
           expires: certificate.express.toDateString(),
           instructorId: certificate.instructor_id,
@@ -954,7 +970,7 @@ export class CertificatesService {
     const day = !hideDay
       ? issuedDate.getDate().toString().padStart(2, '0') + ' '
       : '';
-    return `${day}${month} ${year}`;
+    return `${month} ${day}${year}`;
   }
 
   async createCardID(data: {
@@ -999,12 +1015,12 @@ export class CertificatesService {
     // Define font size and color
     const fontSize = data.positions.fontSize;
     const fontColor = rgb(0, 0, 0);
-    const helveticaFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
     const TimesRomanItalic = await pdfDoc.embedFont(
-      StandardFonts.TimesRomanItalic,
+      StandardFonts.TimesRomanBold,
     );
     const helveticaFontBold = await pdfDoc.embedFont(
-      StandardFonts.HelveticaBold,
+      StandardFonts.TimesRomanBold,
     );
     console.log('Fonts embedded successfully.');
 
@@ -1095,7 +1111,7 @@ export class CertificatesService {
           ? calcTextWidth2(data.training_site_name, fontSize)
           : 0),
       y: data.positions.training_site_name.y || 685,
-      size: fontSize,
+      size: data.positions.training_site_name.fontSize || fontSize,
       font: helveticaFontBold,
       color: fontColor,
     });
@@ -1196,6 +1212,9 @@ export class CertificatesService {
     const pdfBytes = await pdfDoc.save();
     console.log('PDF saved successfully.');
     // Return the PDF as a Buffer
+    console.log(
+      process.env.BASE_URL + '/certificates/verify/' + data.eCardCode,
+    );
     return Buffer.from(pdfBytes);
   }
 
@@ -1238,7 +1257,6 @@ export class CertificatesService {
         result += characters[randomIndex];
       }
     }
-
     return result;
   }
 
