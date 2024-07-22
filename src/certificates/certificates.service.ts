@@ -17,10 +17,12 @@ const Template_1: TemplateData = {
     issued: {
       x: 380 + 70,
       y: 200,
+      i: true,
     },
     expires: {
       x: 600 + 150,
       y: 200,
+      i: true,
     },
     instructorId: {
       x: 34008,
@@ -136,10 +138,12 @@ const Template_2: TemplateData = {
     issued: {
       x: 380 + 70,
       y: 200,
+      i: true,
     },
     expires: {
       x: 600 + 150,
       y: 200,
+      i: true,
     },
     instructorId: {
       x: 34008,
@@ -255,10 +259,12 @@ const Template_3: TemplateData = {
     issued: {
       x: 380 + 70,
       y: 200,
+      i: true,
     },
     expires: {
       x: 600 + 150,
       y: 200,
+      i: true,
     },
     instructorId: {
       x: 34008,
@@ -374,10 +380,12 @@ const Template_4: TemplateData = {
     issued: {
       x: 380 + 70,
       y: 200,
+      i: true,
     },
     expires: {
       x: 600 + 150,
       y: 200,
+      i: true,
     },
     instructorId: {
       x: 34008,
@@ -493,10 +501,12 @@ const Template_5: TemplateData = {
     issued: {
       x: 380 + 70,
       y: 200,
+      i: true,
     },
     expires: {
       x: 600 + 150,
       y: 200,
+      i: true,
     },
     instructorId: {
       x: 34008,
@@ -629,12 +639,14 @@ interface TemplatePosition {
     y: number;
     center?: boolean;
     fontSize?: number;
+    i?: boolean;
   };
   expires: {
     x: number;
     y: number;
     center?: boolean;
     fontSize?: number;
+    i?: boolean;
   };
   instructorId: {
     x: number;
@@ -988,12 +1000,23 @@ export class CertificatesService {
     const fontSize = data.positions.fontSize;
     const fontColor = rgb(0, 0, 0);
     const helveticaFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const TimesRomanItalic = await pdfDoc.embedFont(
+      StandardFonts.TimesRomanItalic,
+    );
     const helveticaFontBold = await pdfDoc.embedFont(
       StandardFonts.HelveticaBold,
     );
     console.log('Fonts embedded successfully.');
 
-    const calcTextWidth2 = (text: string, textSize: number): number => {
+    const calcTextWidth2 = (
+      text: string,
+      textSize: number,
+      i?: boolean,
+    ): number => {
+      if (i) {
+        const textWidth = TimesRomanItalic.widthOfTextAtSize(text, textSize);
+        return textWidth / 2;
+      }
       const textWidth = helveticaFontBold.widthOfTextAtSize(text, textSize);
       return textWidth / 2;
     };
@@ -1106,24 +1129,28 @@ export class CertificatesService {
       x:
         (data.positions.issued.x || 59) -
         (data.positions.issued.center
-          ? calcTextWidth2(data.issued, fontSize)
+          ? calcTextWidth2(data.issued, fontSize, data.positions.issued.i)
           : 0),
       y: data.positions.issued.y || 660,
       size: data.positions.issued.fontSize || fontSize,
       color: fontColor,
-      font: helveticaFontBold,
+      font: data.positions.issued.i ? TimesRomanItalic : helveticaFontBold,
     });
     console.log('Issued date drawn successfully.');
     page.drawText(this.formatDate(data.expires), {
       x:
-        (data.positions.expires.x + 5 || 118) -
+        (data.positions.expires.x || 118) -
         (data.positions.expires.center
-          ? calcTextWidth2(this.formatDate(data.expires), fontSize)
+          ? calcTextWidth2(
+              this.formatDate(data.expires),
+              fontSize,
+              data.positions.expires.i,
+            )
           : 0),
       y: data.positions.expires.y || 660,
       size: data.positions.expires.fontSize || fontSize,
       color: fontColor,
-      font: helveticaFontBold,
+      font: data.positions.expires.i ? TimesRomanItalic : helveticaFontBold,
     });
     console.log('Expires date drawn successfully.');
     page.drawText(data.eCardCode, {

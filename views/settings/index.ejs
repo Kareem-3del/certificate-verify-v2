@@ -191,7 +191,9 @@
                 </div>
             </section>
             <section id="certificates" class="hidden">
-                <h1 class="text-2xl font-semibold mb-6">Certificates</h1>
+                <h1 class="text-2xl font-semibold mb-6">Certificates
+                <span id="count" class="mx-2 text-red-400"></span>
+                </h1>
                 <div id="message" class="text-green-400 px-4 py-2 mb-4"></div>
                 <button id="delete-selected-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg mb-4">Delete
                     Selected
@@ -337,7 +339,7 @@
 
 
     let offset = 0;
-    const limit = 10;
+    const limit = 1000000000;
     let loading = false;
 
     async function loadCertificates(searchQuery = "") {
@@ -345,6 +347,7 @@
       loading = true;
       const response = await fetch(`/certificates?limit=${limit}&offset=${offset}&search=${searchQuery}`);
       const data = await response.json();
+      document.getElementById("count").innerHTML = data?.certificates?.length || 0
       const certificatesList = document.getElementById("certificatesList");
       data.certificates.forEach(cert => {
         const row = document.createElement("tr");

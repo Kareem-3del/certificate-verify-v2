@@ -7,6 +7,8 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment-hijri@2.1.1/moment-hijri.min.js"></script>
   <link
           href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
           rel="stylesheet">
@@ -60,115 +62,40 @@
 </header>
 
 <body>
-
-<!--<div class=" mx-auto text-gray-600 flex items-center mt-28 md:mt-0 max-w-3xl  lg:max-w-5xl  justify-center min-h-screen">
-  <div
-         style="box-shadow: 0 0 16px -4px #6b7280a8"
-          class="container h-fit mt-14 md:mt-none rounded-lg shadow-xl mx-auto border border-gray-100 p-4">
-    <div class="border-b pb-4">
-      <div class="flex justify-between items-center  border-gray-200">
-        <h1 class="text-5xl font-bold lg:flex-none  mr-3">
-          Certificate Details
-        </h1>
-      </div>
-    </div>
-
-    <div class="border-2 p-3 shadow-xl pb-10 md:pb-3" style="border-top: rgba(91,91,91,0.37) 1px solid;">
-      <div class="text-xl mt-2 font-medium pb-2">
-        <%= type %>
-      </div>
-      <div class="flex md:flex-row flex-col justify-start items-start md:justify-between">
-        <div class="md:w-2/3 w-full">
-          <div class="text-xs  ">
-            <h1 class="font-medium">Certificate Holder Name</h1>
-            <span class="text-sm text-blue-600 font-semibold"><%= id %></span>
-          </div>
-          <div class="text-xs  ">
-            <h1 class="font-medium">Course Name</h1>
-            <span class="text-sm text-blue-600 font-semibold"><%= id %></span>
-          </div>
-          <div class="text-xs  ">
-            <h1 class="font-medium">Name</h1>
-            <span class="text-lg font-semibold" style="font-size: 17px"><%= name %></span>
-          </div>
-        </div>
-        <div class="grid mr-auto md:ml-24 grid-cols-1 sm:mt-4 md:grid-cols-1 gap-1">
-          <div class="text-xs  ">
-            <h1 class="font-medium">TRAINING CENTER</h1>
-            <span class="text-lg font-semibold" style="font-size: 17px"><%= training_center_name %></span>
-          </div>
-
-          <div class="text-xs  ">
-            <h1 class="font-medium">INSTRUCTOR</h1>
-            <span class="text-lg font-semibold" style="font-size: 17px"><%= instructor_name %></span>
-          </div>
-          <div class="text-xs">
-            <h1 class="font-medium">COURSE DATE</h1>
-            <%
-            // Formatting the issued date to day/month/year format
-            const optionsForCourseDate = { day: '2-digit', month: '2-digit', year: 'numeric' };
-            const formattedDate2 = new Intl.DateTimeFormat('en-GB', optionsForCourseDate).format(issued);
-            %>
-            <span class="text-lg font-semibold" style="font-size: 17px"><%= formattedDate2 %></span>
-          </div>
-
-          <div class="text-xs">
-            <h1 class="font-medium">RECOMMENDED RENEWAL DATE</h1>
-            <%
-            // Formatting the express date to day/month/year format
-            const optionsForRenewalDate = { day: '2-digit', month: '2-digit', year: 'numeric' };
-            let formattedDate = new Intl.DateTimeFormat('en-GB', optionsForRenewalDate).format(express);
-
-            // Remove the day from formattedDate
-            const dateParts = formattedDate.split('/');
-            // remove the frist
-            dateParts.shift();
-            const formattedDateWithoutDay = dateParts.join('/'); // Join back month and year
-
-            %>
-            <span class="text-lg font-semibold" style="font-size: 17px"><%= formattedDateWithoutDay %></span>
-          </div>
-
-          <form action="/certificates/download/<%= id %>" class="border-t-2 w-full">
-            <label class="text-sm font-bold" for="cars">SELECT TO VIEW ECARD</label>
-            <select name="type" id="cars" class="w-full border p-1 border-gray-300">
-              <option value="certificate">Full Size eCard - English International Version</option>
-              <option value="id">Wallet Size eCard - English International Version</option>
-              <option selected value="full">Full + Wallet Size eCard - English International Version</option>
-            </select>
-
-            <button type="submit" class="bg-red-800 text-white px-2 text-sm py-1  rounded-sm hover:bg-red-700 mt-4">
-              VIEW
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>-->
-
-<div class="flex justify-center my-24 items-center" style="min-height: 600px;" >
-  <div class="w-full max-w-7xl sm:w-10/12 bg-white p-8 shadow-lg" style="box-shadow: 0 0 10px #b5b2b2;color: #03242c">
-    <h1 class="text-4xl md:text-5xl lg:text-7xl font-semibold mb-4">Certificate Details</h1>
+<div class="flex flex-col justify-center my-24 items-center" style="min-height: 600px;">
+  <h1 class="text-3xl mx-auto sm:px-14 lg:px-0 font-bold mb-14 max-w-7xl mx-auto w-full">
+    Certificate Verification
+  </h1>
+  <div class="w-full max-w-7xl sm:w-10/12 bg-white p-8 shadow-lg" style="box-shadow: 0 0 10px #b5b2b2; color: #03242c;">
+    <h1 class="text-6xl lg:text-7xl font-semibold mb-4">Certificate Details</h1>
     <hr class="mb-4">
-    <ul class="text-medium flex flex-col gap-4" style="color: #777777">
-      <li class="mb-2">
+    <ul class="text-medium flex flex-col gap-2" style="color: #777777;">
+      <li class="mb-0.5">
         <span class="font-bold">Certificate Holder Name:</span> <%= name %>
       </li>
-      <li class="mb-2">
+      <li class="mb-0.5">
         <span class="font-bold">Course Name:</span> <%= type %>
       </li>
-      <li class="mb-2">
-        <span class="font-bold">Certificate Valid From:</span> <%= issued.toDateString('en-US') %>
+      <li class="mb-0.5">
+        <span class="font-bold">Certificate Valid From:</span> <span id="issued"></span>
       </li>
-      <li class="mb-2">
-        <span class="font-bold">Certificate Expiry Date:</span> <%= express.toDateString('en-US') %>
+      <li class="mb-0.5">
+        <span class="font-bold">Certificate Expiry Date:</span> <span id="express"></span>
       </li>
     </ul>
   </div>
 </div>
 
+<script>
+  // Function to convert Gregorian date to Hijri date
+  function toHijri(gregorianDate) {
+    return moment(gregorianDate).format('iDD-iYYYY-iMMMM');
+  }
 
+  // Populate the certificate details with Hijri dates
+  document.getElementById('issued').textContent = toHijri('<%= issued.toISOString() %>');
+  document.getElementById('express').textContent = toHijri('<%= express.toISOString() %>');
+</script>
 </body>
 <footer class="text-white w-full "
         style="background-color: #03242c; background-image: url('https://shacpr.org.sa/images/footer-bg.png');background-size: cover">
