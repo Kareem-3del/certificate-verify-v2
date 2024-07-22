@@ -72,15 +72,15 @@ const Template_1: TemplateData = {
       center: true,
     },
     issued: {
-      x: 168,
+      x: 290,
       y: 876,
     },
     expires: {
-      x: 174,
+      x: 290,
       y: 856,
     },
     eCardCode: {
-      x: 225,
+      x: 290,
       y: 836,
     },
     instructorName: {
@@ -88,11 +88,11 @@ const Template_1: TemplateData = {
       y: 816,
     },
     TrainingCenterName: {
-      x: 235,
+      x: 290,
       y: 816,
     },
     instructorId: {
-      x: 235,
+      x: 290,
       y: 896,
     },
 
@@ -191,15 +191,15 @@ const Template_2: TemplateData = {
       center: true,
     },
     issued: {
-      x: 168,
+      x: 290,
       y: 876,
     },
     expires: {
-      x: 174,
+      x: 290,
       y: 856,
     },
     eCardCode: {
-      x: 225,
+      x: 290,
       y: 836,
     },
     instructorName: {
@@ -207,11 +207,11 @@ const Template_2: TemplateData = {
       y: 816,
     },
     TrainingCenterName: {
-      x: 235,
+      x: 290,
       y: 816,
     },
     instructorId: {
-      x: 235,
+      x: 290,
       y: 896,
     },
 
@@ -310,15 +310,15 @@ const Template_3: TemplateData = {
       center: true,
     },
     issued: {
-      x: 168,
+      x: 290,
       y: 876,
     },
     expires: {
-      x: 174,
+      x: 290,
       y: 856,
     },
     eCardCode: {
-      x: 225,
+      x: 290,
       y: 836,
     },
     instructorName: {
@@ -326,11 +326,11 @@ const Template_3: TemplateData = {
       y: 816,
     },
     TrainingCenterName: {
-      x: 235,
+      x: 290,
       y: 816,
     },
     instructorId: {
-      x: 235,
+      x: 290,
       y: 896,
     },
 
@@ -429,15 +429,15 @@ const Template_4: TemplateData = {
       center: true,
     },
     issued: {
-      x: 168,
+      x: 290,
       y: 876,
     },
     expires: {
-      x: 174,
+      x: 290,
       y: 856,
     },
     eCardCode: {
-      x: 225,
+      x: 290,
       y: 836,
     },
     instructorName: {
@@ -445,11 +445,11 @@ const Template_4: TemplateData = {
       y: 816,
     },
     TrainingCenterName: {
-      x: 235,
+      x: 290,
       y: 816,
     },
     instructorId: {
-      x: 235,
+      x: 290,
       y: 896,
     },
 
@@ -548,15 +548,15 @@ const Template_5: TemplateData = {
       center: true,
     },
     issued: {
-      x: 174 + 15,
+      x: 350,
       y: 852,
     },
     expires: {
-      x: 174 + 30,
+      x: 346,
       y: 822,
     },
     eCardCode: {
-      x: 275,
+      x: 350,
       y: 794,
     },
     instructorName: {
@@ -564,11 +564,11 @@ const Template_5: TemplateData = {
       y: 816,
     },
     TrainingCenterName: {
-      x: 295,
+      x: 350,
       y: 764,
     },
     instructorId: {
-      x: 292,
+      x: 350,
       y: 880,
     },
 
@@ -609,7 +609,6 @@ import fontkit from '@pdf-lib/fontkit';
 import * as process from 'node:process';
 import { SettingsService } from './settings/settings.service';
 import { EmailService } from '../email/email.service';
-import { unlink } from 'fs-extra';
 
 interface TemplatePosition {
   fontSize: number;
@@ -988,16 +987,11 @@ export class CertificatesService {
     // Define font size and color
     const fontSize = data.positions.fontSize;
     const fontColor = rgb(0, 0, 0);
-    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
     const helveticaFontBold = await pdfDoc.embedFont(
       StandardFonts.HelveticaBold,
     );
     console.log('Fonts embedded successfully.');
-
-    const calcTextWidth = (text: string, textSize: number): number => {
-      const textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
-      return textWidth / 2;
-    };
 
     const calcTextWidth2 = (text: string, textSize: number): number => {
       const textWidth = helveticaFontBold.widthOfTextAtSize(text, textSize);
@@ -1039,10 +1033,10 @@ export class CertificatesService {
     page.drawText(data.city, {
       x:
         (data.positions.city.x || 348) -
-        (data.positions.city.center ? calcTextWidth(data.city, fontSize) : 0),
+        (data.positions.city.center ? calcTextWidth2(data.city, fontSize) : 0),
       y: data.positions.city.y || 705,
       size: fontSize,
-      font: helveticaFont,
+      font: helveticaFontBold,
       color: fontColor,
     });
     console.log('City drawn successfully.');
@@ -1050,12 +1044,12 @@ export class CertificatesService {
       x:
         (data.positions.TrainingCenterId.x || 348) -
         (data.positions.TrainingCenterId.center
-          ? calcTextWidth(data.TrainingCenterId, fontSize)
+          ? calcTextWidth2(data.TrainingCenterId, fontSize)
           : 0),
       y: data.positions.TrainingCenterId.y || 725,
       size: fontSize,
       color: fontColor,
-      font: helveticaFont,
+      font: helveticaFontBold,
     });
 
     console.log('Training center ID drawn successfully.');
@@ -1063,7 +1057,7 @@ export class CertificatesService {
       x:
         (data.positions.TrainingCenterName.x || 348) -
         (data.positions.TrainingCenterName.center
-          ? calcTextWidth(data.TrainingCenterName, fontSize)
+          ? calcTextWidth2(data.TrainingCenterName, fontSize)
           : 0),
       y: data.positions.TrainingCenterName.y || 745,
       size: fontSize,
@@ -1075,11 +1069,11 @@ export class CertificatesService {
       x:
         (data.positions.training_site_name.x || 348) -
         (data.positions.training_site_name.center
-          ? calcTextWidth(data.training_site_name, fontSize)
+          ? calcTextWidth2(data.training_site_name, fontSize)
           : 0),
       y: data.positions.training_site_name.y || 685,
       size: fontSize,
-      font: helveticaFont,
+      font: helveticaFontBold,
       color: fontColor,
     });
     console.log('Training site name drawn successfully.');
@@ -1087,12 +1081,12 @@ export class CertificatesService {
       x:
         (data.positions.instructorName.x || 348) -
         (data.positions.instructorName.center
-          ? calcTextWidth(data.instructorName, fontSize)
+          ? calcTextWidth2(data.instructorName, fontSize)
           : 0),
       y: data.positions.instructorName.y || 665,
       size: fontSize,
       color: fontColor,
-      font: helveticaFont,
+      font: helveticaFontBold,
     });
     console.log('Instructor name drawn successfully.');
 
@@ -1100,48 +1094,51 @@ export class CertificatesService {
       x:
         (data.positions.instructorId.x || 348) -
         (data.positions.instructorId.center
-          ? calcTextWidth(data.instructorId, fontSize)
+          ? calcTextWidth2(data.instructorId, fontSize)
           : 0),
       y: data.positions.instructorId.y || 652,
       size: fontSize,
       color: fontColor,
-      font: helveticaFont,
+      font: helveticaFontBold,
     });
     console.log('Instructor ID drawn successfully.');
     page.drawText(this.formatDate(data.issued), {
       x:
         (data.positions.issued.x || 59) -
         (data.positions.issued.center
-          ? calcTextWidth(data.issued, fontSize)
+          ? calcTextWidth2(data.issued, fontSize)
           : 0),
       y: data.positions.issued.y || 660,
       size: data.positions.issued.fontSize || fontSize,
       color: fontColor,
-      font: helveticaFont,
+      font: helveticaFontBold,
     });
     console.log('Issued date drawn successfully.');
-    page.drawText(this.formatDate(data.expires, true), {
+    page.drawText(this.formatDate(data.expires), {
       x:
         (data.positions.expires.x + 5 || 118) -
         (data.positions.expires.center
-          ? calcTextWidth(data.expires, fontSize)
+          ? calcTextWidth2(this.formatDate(data.expires), fontSize)
           : 0),
       y: data.positions.expires.y || 660,
       size: data.positions.expires.fontSize || fontSize,
       color: fontColor,
-      font: helveticaFont,
+      font: helveticaFontBold,
     });
     console.log('Expires date drawn successfully.');
     page.drawText(data.eCardCode, {
       x:
         (data.positions.eCardCode.x || 175) -
         (data.positions.eCardCode.center
-          ? calcTextWidth(data.eCardCode, fontSize)
+          ? calcTextWidth2(
+              data.eCardCode,
+              data.positions.eCardCode.fontSize || fontSize,
+            )
           : 0),
       y: data.positions.eCardCode.y || 660,
       size: data.positions.eCardCode.fontSize || fontSize,
       color: fontColor,
-      font: helveticaFont,
+      font: helveticaFontBold,
     });
     console.log('eCard code drawn successfully.');
     // Generate QR code
