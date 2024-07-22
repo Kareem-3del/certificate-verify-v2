@@ -128,7 +128,7 @@ const Template_1: TemplateData = {
 const Template_2: TemplateData = {
   image_cert: path.resolve('./views/templates/v2/template-2.jpg'),
   image_id: path.resolve('./views/templates/v2/card.jpg'),
-  settings: 1,
+  settings: 2,
 
   id_card: {
     fontSize: 18,
@@ -251,7 +251,7 @@ const Template_2: TemplateData = {
 const Template_3: TemplateData = {
   image_cert: path.resolve('./views/templates/v2/template-3.jpg'),
   image_id: path.resolve('./views/templates/v2/card.jpg'),
-  settings: 1,
+  settings: 3,
 
   id_card: {
     fontSize: 18,
@@ -374,7 +374,7 @@ const Template_3: TemplateData = {
 const Template_4: TemplateData = {
   image_cert: path.resolve('./views/templates/v2/template-4.jpg'),
   image_id: path.resolve('./views/templates/v2/card.jpg'),
-  settings: 1,
+  settings: 4,
 
   id_card: {
     fontSize: 18,
@@ -497,7 +497,7 @@ const Template_4: TemplateData = {
 const Template_5: TemplateData = {
   image_cert: path.resolve('./views/templates/v2/template-5.jpg'),
   image_id: path.resolve('./views/templates/v2/card.jpg'),
-  settings: 1,
+  settings: 5,
 
   id_card: {
     fontSize: 18,
