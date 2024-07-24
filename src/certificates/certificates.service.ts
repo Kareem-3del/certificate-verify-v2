@@ -617,6 +617,253 @@ const Template_5: TemplateData = {
     },
   },
 };
+const Template_6: TemplateData = {
+  image_cert: path.resolve('./views/templates/v2/template-6.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
+  settings: 6,
+
+  id_card: {
+    fontSize: 18,
+    fullName: {
+      x: 590,
+      y: 390,
+      scale: 2.0,
+      center: true,
+    },
+    issued: {
+      x: 380 + 70,
+      y: 200,
+      i: true,
+    },
+    expires: {
+      x: 600 + 150,
+      y: 200,
+      i: true,
+    },
+    instructorId: {
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 275,
+      scale: 1.8,
+      center: true,
+    },
+    instructorName: {
+      x: 34008,
+      y: 665,
+    },
+    TrainingCenterName: {
+      x: 30408,
+      y: 745,
+    },
+    TrainingCenterId: {
+      x: 34008,
+      y: 725,
+    },
+    eCardCode: {
+      x: 110404,
+      y: 1848,
+    },
+    city: {
+      x: 340008,
+      y: 705,
+    },
+    training_site_name: {
+      x: 50,
+      fontSize: 12,
+      y: 240,
+    },
+    qrCode: {
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
+    },
+  },
+  cert_card: {
+    fontSize: 24,
+    fullName: {
+      x: 150,
+      y: 920,
+      scale: 1.9,
+      center: false,
+    },
+    issued: {
+      x: 350,
+      y: 852,
+    },
+    expires: {
+      x: 346,
+      y: 822,
+    },
+    eCardCode: {
+      x: 350,
+      y: 794,
+    },
+    instructorName: {
+      x: 220005,
+      y: 816,
+    },
+    TrainingCenterName: {
+      x: 350,
+      y: 764,
+    },
+    instructorId: {
+      x: 350,
+      y: 880,
+    },
+
+    qrCode: {
+      x: 700 - 25,
+      y: 800 - 25,
+      w: 150,
+      h: 150,
+    },
+
+    TrainingCenterId: {
+      x: 16005,
+      y: 385,
+      center: true,
+    },
+    city: {
+      x: 16005,
+      y: 345,
+      center: true,
+    },
+    training_site_name: {
+      x: 16005,
+      fontSize: 12,
+      y: 305,
+      center: true,
+    },
+  },
+};
+const Template_7: TemplateData = {
+  image_cert: path.resolve('./views/templates/v2/template-7.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
+  settings: 7,
+
+  id_card: {
+    fontSize: 18,
+    fullName: {
+      x: 590,
+      y: 390,
+      scale: 2.0,
+      center: true,
+    },
+    issued: {
+      x: 380 + 70,
+      y: 200,
+      i: true,
+    },
+    expires: {
+      x: 600 + 150,
+      y: 200,
+      i: true,
+    },
+    instructorId: {
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 275,
+      scale: 1.8,
+      center: true,
+    },
+    instructorName: {
+      x: 34008,
+      y: 665,
+    },
+    TrainingCenterName: {
+      x: 30408,
+      y: 745,
+    },
+    TrainingCenterId: {
+      x: 34008,
+      y: 725,
+    },
+    eCardCode: {
+      x: 110404,
+      y: 1848,
+    },
+    city: {
+      x: 340008,
+      y: 705,
+    },
+    training_site_name: {
+      x: 50,
+      fontSize: 12,
+      y: 240,
+    },
+    qrCode: {
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
+    },
+  },
+  cert_card: {
+    fontSize: 15,
+    fullName: {
+      x: 150,
+      y: 930,
+      scale: 1.9,
+      center: false,
+    },
+    issued: {
+      x: 275,
+      y: 876,
+    },
+    expires: {
+      x: 275,
+      y: 856,
+    },
+    eCardCode: {
+      x: 275,
+      y: 836,
+    },
+    instructorName: {
+      x: 220005,
+      y: 816,
+    },
+    TrainingCenterName: {
+      x: 275,
+      y: 816,
+    },
+    instructorId: {
+      x: 275,
+      y: 896,
+    },
+
+    qrCode: {
+      x: 700 - 20,
+      y: 800 - 20,
+      w: 150,
+      h: 150,
+    },
+
+    TrainingCenterId: {
+      x: 16005,
+      y: 385,
+      center: true,
+    },
+    city: {
+      x: 16005,
+      y: 345,
+      center: true,
+    },
+    training_site_name: {
+      x: 16005,
+      y: 305,
+      fontSize: 12,
+
+      center: true,
+    },
+  },
+};
 
 // certificates.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -784,6 +1031,8 @@ export class CertificatesService {
         Template_3,
         Template_4,
         Template_5,
+        Template_6,
+        Template_7,
       ][templateIndex - 1];
       if (!template) {
         console.log('Template not found', templateIndex);
