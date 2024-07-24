@@ -1143,35 +1143,44 @@ export class CertificatesService {
         flag: 'wx',
         // replace: true,
       });
-      settings.emailBody.replaceAll('[NAME]', name);
-      settings.emailBody.replaceAll('[CERTIFICATE_ID]', certificate.id);
-      settings.emailBody.replaceAll('[TYPE]', settings.name);
-      settings.emailBody.replaceAll(
+      settings.emailBody = settings.emailBody.replaceAll('[NAME]', name);
+      settings.emailBody = settings.emailBody.replaceAll(
+        '[CERTIFICATE_ID]',
+        certificate.id,
+      );
+      settings.emailBody = settings.emailBody.replaceAll(
+        '[TYPE]',
+        settings.name,
+      );
+      settings.emailBody = settings.emailBody.replaceAll(
         '[ISSUED]',
         certificate.issued.toDateString(),
       );
-      settings.emailBody.replaceAll(
+      settings.emailBody = settings.emailBody.replaceAll(
         '[EXPIRES]',
         certificate.express.toDateString(),
       );
-      settings.emailBody.replaceAll(
+      settings.emailBody = settings.emailBody.replaceAll(
         '[INSTRUCTOR_ID]',
         certificate.instructor_id,
       );
-      settings.emailBody.replaceAll(
+      settings.emailBody = settings.emailBody.replaceAll(
         '[INSTRUCTOR_NAME]',
         certificate.instructor_name,
       );
-      settings.emailBody.replaceAll(
+      settings.emailBody = settings.emailBody.replaceAll(
         '[TRAINING_CENTER_NAME]',
         certificate.training_center_name,
       );
-      settings.emailBody.replaceAll(
+      settings.emailBody = settings.emailBody.replaceAll(
         '[TRAINING_CENTER_ID]',
         certificate.training_center_id,
       );
-      settings.emailBody.replaceAll('[CITY]', settings.tcCity);
-      settings.emailBody.replaceAll(
+      settings.emailBody = settings.emailBody.replaceAll(
+        '[CITY]',
+        settings.tcCity,
+      );
+      settings.emailBody = settings.emailBody.replaceAll(
         '[TRAINING_SITE_NAME]',
         settings.trainingSiteName,
       );
