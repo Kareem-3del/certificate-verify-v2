@@ -22,7 +22,7 @@ export class StripeModule {
         {
           provide: 'STRIPE_SECRET_KEY',
           useFactory: async (configService: ConfigService) =>
-            configService.getOrThrow('STRIPE_SECRET_KEY'),
+            configService.get('STRIPE_SECRET_KEY'),
           inject: [ConfigService],
         },
         StripeService,
