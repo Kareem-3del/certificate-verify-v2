@@ -12,6 +12,7 @@ import {
   Query,
   Render,
   Res,
+  Session,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -121,14 +122,20 @@ export class CertificatesController {
   }
 
   @Get('generate/:id')
-  @Render('generate_v2') // Renders generate.ejs
-  async generate(@Param('id') id: string) {
+  // @Render('generate_v2') // Renders generate.ejs
+  async generate(
+    @Param('id') id: string,
+    @Session() session: Record<string, any>,
+    @Res() res: Response,
+  ) {
+    if (!session.user) {
+      res.render('login', { error: 'Please login to generate certificates' });
+    }
+
     if (!id) throw new Error('No ID provided');
     const settings = await this.settingsService.findOne(Number(id));
     console.log(settings);
-    return {
-      settings,
-    };
+    res.render('generate_v2', { settings });
   }
 
   @Post('generate')
