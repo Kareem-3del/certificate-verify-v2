@@ -2,12 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
+import { SubscriptionsService } from '../subscriptions/subscriptions.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly subscriptionsService: SubscriptionsService,
   ) {
     this.userRepository.find().then((users) => {
       if (users.length === 0) {
@@ -41,6 +43,20 @@ export class UsersService {
 
   async findById(id: number): Promise<User | undefined> {
     return this.userRepository.findOneBy({ id });
+  }
+
+  async subscribe(Userid: string, subId: string): Promise<User> {
+    const user = await this.userRepository.findOneBy({ id: Number(Userid) });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${Userid} not found`);
+    }
+    const subscription = await this.subscriptionsService.findOne(Number(subId));
+    user.points += subscription.points;
+    user.subscriptions.push(subscription);
+    await this.subscriptionsService.update(subscription.id, {
+      purchased: ++subscription.purchased,
+    });
+    return this.userRepository.save(user);
   }
 
   async findAll(): Promise<User[]> {

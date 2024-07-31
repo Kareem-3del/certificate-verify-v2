@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Subscriptions</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+      .hidden {
+          display: none;
+      }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">Manage Subscriptions</h1>
+
+  <!-- Create Subscription Form -->
+  <form id="create-form" class="mb-4 p-4 bg-white rounded shadow-md">
+    <h2 class="text-xl font-semibold mb-2">Create Subscription</h2>
+    <div class="mb-2">
+      <label for="create-name" class="block text-sm font-medium">Name</label>
+      <input id="create-name" type="text" class="w-full p-2 border border-gray-300 rounded">
+    </div>
+    <div class="mb-2">
+      <label for="create-price" class="block text-sm font-medium">Price</label>
+      <input id="create-price" type="number" class="w-full p-2 border border-gray-300 rounded">
+    </div>
+    <div class="mb-2">
+      <label for="create-points" class="block text-sm font-medium">Points</label>
+      <input id="create-points" type="number" class="w-full p-2 border border-gray-300 rounded">
+    </div>
+    <div class="mb-2">
+      <label for="create-configId" class="block text-sm font-medium">Config ID</label>
+      <select id="create-configId" class="w-full p-2 border border-gray-300 rounded">
+        <% settings.forEach(setting => { %>
+          <option value="<%= setting.id %>">
+            <%= setting.name %>
+          </option>
+          <div class="divider border-t border-gray-300 my-6"></div>
+        <% }) %>
+      </select>
+    </div>
+    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Create</button>
+  </form>
+
+  <!-- Update Subscription Form -->
+  <form id="update-form" class="mb-4 p-4 bg-white rounded shadow-md hidden">
+    <h2 class="text-xl font-semibold mb-2">Update Subscription</h2>
+    <input id="update-id" type="hidden">
+    <div class="mb-2">
+      <label for="update-name" class="block text-sm font-medium">Name</label>
+      <input id="update-name" type="text" class="w-full p-2 border border-gray-300 rounded">
+    </div>
+    <div class="mb-2">
+      <label for="update-price" class="block text-sm font-medium">Price</label>
+      <input id="update-price" type="number" class="w-full p-2 border border-gray-300 rounded">
+    </div>
+    <div class="mb-2">
+      <label for="update-points" class="block text-sm font-medium">Points</label>
+      <input id="update-points" type="number" class="w-full p-2 border border-gray-300 rounded">
+    </div>
+    <div class="mb-2">
+      <label for="update-configId" class="block text-sm font-medium">Config ID</label>
+      <input id="update-configId" type="number" class="w-full p-2 border border-gray-300 rounded">
+    </div>
+    <div class="mb-2">
+      <label for="update-purchased" class="block text-sm font-medium">Purchased</label>
+      <input id="update-purchased" type="number" class="w-full p-2 border border-gray-300 rounded">
+    </div>
+    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">Update</button>
+    <button type="button" id="cancel-update" class="px-4 py-2 bg-red-500 text-white rounded">Cancel</button>
+  </form>
+
+  <!-- Subscriptions List -->
+  <div class="bg-white rounded shadow-md">
+    <h2 class="text-xl font-semibold mb-2 p-4 border-b">Subscriptions</h2>
+    <ul id="subscriptions-list" class="p-4"></ul>
+  </div>
+</div>
+
+<script>
+  const apiUrl = 'http://127.0.0.1:7000/subscriptions';
+
+  // Create subscription
+  document.getElementById('create-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('create-name').value;
+    const price = document.getElementById('create-price').value;
+    const points = document.getElementById('create-points').value;
+    const configId = document.getElementById('create-configId');
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, price, points, configId : configId.value }),
+    });
+
+    if (response.ok) {
+      loadSubscriptions();
+      e.target.reset();
+    } else {
+      alert('Failed to create subscription');
+    }
+  });
+
+  // Load subscriptions
+  async function loadSubscriptions() {
+    const response = await fetch(apiUrl);
+    const subscriptions = await response.json();
+    const list = document.getElementById('subscriptions-list');
+    list.innerHTML = '';
+
+    subscriptions.forEach(sub => {
+      const item = document.createElement('li');
+      item.className = 'mb-2 p-2 border border-gray-300 rounded flex justify-between items-center';
+      item.innerHTML = `
+          <span>${sub.name} - $${sub.price} - ${sub.points} points - Config ID: ${sub.configId} - Purchased: ${sub.purchased}</span>
+          <div>
+            <button onclick="editSubscription(${sub.id})" class="px-4 py-2 bg-yellow-500 text-white rounded mr-2">Edit</button>
+            <button onclick="deleteSubscription(${sub.id})" class="px-4 py-2 bg-red-500 text-white rounded">Delete</button>
+          </div>
+        `;
+      list.appendChild(item);
+    });
+  }
+
+  // Edit subscription
+  function editSubscription(id) {
+    fetch(`${apiUrl}/${id}`)
+      .then(response => response.json())
+      .then(sub => {
+        document.getElementById('update-id').value = sub.id;
+        document.getElementById('update-name').value = sub.name;
+        document.getElementById('update-price').value = sub.price;
+        document.getElementById('update-points').value = sub.points;
+        document.getElementById('update-configId').value = sub.configId;
+        document.getElementById('update-purchased').value = sub.purchased;
+        document.getElementById('update-form').classList.remove('hidden');
+        document.getElementById('create-form').classList.add('hidden');
+      });
+  }
+
+  // Update subscription
+  document.getElementById('update-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('update-id').value;
+    const name = document.getElementById('update-name').value;
+    const price = document.getElementById('update-price').value;
+    const points = document.getElementById('update-points').value;
+    const configId = document.getElementById('update-configId').value;
+    const purchased = document.getElementById('update-purchased').value;
+
+    const response = await fetch(`${apiUrl}/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, price, points, configId, purchased }),
+    });
+
+    if (response.ok) {
+      loadSubscriptions();
+      e.target.reset();
+      document.getElementById('update-form').classList.add('hidden');
+      document.getElementById('create-form').classList.remove('hidden');
+    } else {
+      alert('Failed to update subscription');
+    }
+  });
+
+  // Cancel update
+  document.getElementById('cancel-update').addEventListener('click', () => {
+    document.getElementById('update-form').classList.add('hidden');
+    document.getElementById('create-form').classList.remove('hidden');
+  });
+
+  // Delete subscription
+  async function deleteSubscription(id) {
+    if (confirm('Are you sure you want to delete this subscription?')) {
+      const response = await fetch(`${apiUrl}/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        loadSubscriptions();
+      } else {
+        alert('Failed to delete subscription');
+      }
+    }
+  }
+
+  // Initial load
+  loadSubscriptions();
+</script>
+</body>
+</html>

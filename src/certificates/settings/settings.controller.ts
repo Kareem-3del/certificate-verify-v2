@@ -36,6 +36,23 @@ export class SettingsController {
     return res.render('settings/index', { settings });
   }
 
+  @Get('/sub')
+  async showSettingsSub(
+    @Session() session: Record<string, any>,
+    @Res() res: Response,
+  ) {
+    const currentUser: User = session.user;
+    if (!currentUser) {
+      throw new Error('No user found');
+    }
+    const settings = await this.settingsService.findAll();
+    if (currentUser.role === 'admin') {
+      console.log(currentUser.role);
+      res.render('settings/sub', { settings });
+    }
+    throw new Error('No user found');
+  }
+
   @Redirect('/settings')
   @Post(':id')
   async updateSettings(
