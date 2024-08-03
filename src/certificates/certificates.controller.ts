@@ -42,7 +42,7 @@ export class AppController {
         user: await this.usersService.findById(session.user.id),
       });
     }
-    res.render('login', { redirect: '/' });
+    res.redirect('/login');
   }
 
   @Get('settings/email')
