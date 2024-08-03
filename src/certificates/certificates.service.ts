@@ -1380,7 +1380,7 @@ export class CertificatesService {
       color: fontColor,
     });
     console.log('Training site name drawn successfully.');
-    page.drawText(data.instructorName, {
+    page.drawText(data.instructorName || '', {
       x:
         (data.positions.instructorName.x || 348) -
         (data.positions.instructorName.center
@@ -1391,9 +1391,10 @@ export class CertificatesService {
       color: fontColor,
       font: helveticaFontBold,
     });
+
     console.log('Instructor name drawn successfully.');
 
-    page.drawText(data.instructorId, {
+    page.drawText(data.instructorId || '', {
       x:
         (data.positions.instructorId.x || 348) -
         (data.positions.instructorId.center

@@ -137,7 +137,7 @@
 </div>
 
 <script>
-  const apiUrl = "https://shac.precertificationn.com/subscriptions";
+  const apiUrl = "/subscriptions";
 
   // Create subscription
   document.getElementById("create-form").addEventListener("submit", async (e) => {
@@ -235,7 +235,7 @@
 // Copy Link
     function copyLink(id) {
       const el = document.createElement('textarea');
-      el.value = apiUrl + "/" + id;
+      el.value = location.host + apiUrl + "/" + id;
       document.body.appendChild(el);
       el.select();
       document.execCommand('copy');

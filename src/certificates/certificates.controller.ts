@@ -203,10 +203,10 @@ export class CertificatesController {
       body.email,
       Number(body.index),
       {
-        instructorId: user.instructor_id,
-        instructorName: user.instructor_name,
-        trainingCenterName: user.center_name,
-        trainingSiteName: user.center_name,
+        instructorId: user.instructor_id || undefined,
+        instructorName: user.instructor_name || undefined,
+        trainingCenterName: user.center_name || undefined,
+        trainingSiteName: user.center_name || undefined,
       },
     );
     await this.usersService.userRepository.update(user.id, {
