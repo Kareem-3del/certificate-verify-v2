@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+</head>
+<body>
+<div class="py-16">
+  <form action="/subscriptions/<%= sub.id %>/checkout" method="post" class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+    <div class="hidden lg:block lg:w-1/2 bg-cover"
+         style="background-image:url('https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80')">
+    </div>
+    <div class="w-full p-8 lg:w-1/2">
+      <h2 class="text-2xl font-semibold text-gray-700 text-center">Certificates</h2>
+      <p class="text-xl text-gray-600 text-center">Subscribe now!</p>
+      <a href="#" class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
+        <div class="px-4 py-3">
+          <img width="100" height="100" src="https://img.icons8.com/clouds/100/search-in-list.png" alt="search-in-list"/>
+
+
+        </div>
+        <h1 class="px-4 py-3 w-5/6 text-center text-gray-600 font-bold">Get Details</h1>
+      </a>
+      <div class="mt-4 flex items-center justify-between">
+        <span class="border-b w-1/5 lg:w-1/4"></span>
+        <a href="#" class="text-xs text-center text-gray-500 uppercase">
+          with register you agree to our terms and conditions
+        </a>
+        <span class="border-b w-1/5 lg:w-1/4"></span>
+      </div>
+      <div class="mt-4">
+        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
+        <input name="email" id="email" class="bg-gray-200 text-gray-700 text-center focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" />
+      </div>
+      <div class="mt-4">
+        <div class="flex justify-between">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Price</label>
+          <a href="#" class="text-xs text-gray-500">Contact Us?</a>
+        </div>
+        <input value="<%= sub.price %>$" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text" disabled />
+      </div>
+      <div class="mt-4">
+        <div class="flex justify-between">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Certificate</label>
+        </div>
+        <input value="<%= sub.name %>" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text" disabled />
+      </div>
+      <div class="mt-4">
+        <div class="flex justify-between">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Certificate Count</label>
+        </div>
+        <input value="<%= sub.points %>" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text" disabled />
+      </div>
+      <% if (sub.instructor_id) { %>
+        <div class="mt-4">
+          <div class="flex justify-between">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Instructor ID</label>
+          </div>
+          <input name="instructor_id" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text" placeholder="Instructor ID"  />
+        </div>
+      <% } %>
+
+      <% if (sub.instructor_name) { %>
+        <div class="mt-4">
+          <div class="flex justify-between">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Instructor Name</label>
+          </div>
+          <input name="instructor_name"  class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text"  placeholder="Instructor Name" />
+        </div>
+      <% } %>
+
+      <% if (sub.center_name) { %>
+        <div class="mt-4">
+          <div class="flex justify-between">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Center Name</label>
+          </div>
+          <input name="center_name" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text"   placeholder="Center Name" />
+        </div>
+      <% } %>
+
+
+
+
+      <div class="mt-8">
+        <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Checkout & Register</button>
+      </div>
+      <div class="mt-4 flex items-center justify-between">
+        <span class="border-b w-1/5 md:w-1/4"></span>
+        <a href="#" class="text-xs text-gray-500 uppercase">Contact US</a>
+        <span class="border-b w-1/5 md:w-1/4"></span>
+      </div>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

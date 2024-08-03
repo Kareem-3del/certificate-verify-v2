@@ -14,6 +14,7 @@ import { SettingsService } from './settings.service';
 import { Settings } from './settings.entity';
 import { User } from '../../users/user.entity';
 import { Response } from 'express';
+
 @Controller('settings')
 export class SettingsController {
   constructor(private readonly settingsService: SettingsService) {}
@@ -28,12 +29,15 @@ export class SettingsController {
       res.redirect('/login');
     }
     const settings = await this.settingsService.findAll();
-    if (currentUser.role !== 'admin') {
-      console.log(currentUser.role);
+    if (currentUser.role === 'moderator') {
       res.render('settings/mod', { settings });
     }
-    console.log('admin');
-    return res.render('settings/index', { settings });
+    if (currentUser.role === 'admin') {
+      return res.render('settings/index', { settings });
+    }
+    if (currentUser.role === 'customer') {
+      return res.render('index', { settings });
+    }
   }
 
   @Get('/sub')

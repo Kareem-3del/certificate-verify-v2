@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class StripeService {
-  private stripe: Stripe;
+  public stripe: Stripe;
 
   constructor(private configService: ConfigService) {
     this.stripe = new Stripe(
@@ -14,35 +14,45 @@ export class StripeService {
       },
     );
   }
+  async retrieveSession(sessionId: string): Promise<Stripe.Checkout.Session> {
+    return await this.stripe.checkout.sessions.retrieve(sessionId);
+  }
 
   async createPaymentLink(
-    userId: string,
-    amount: number,
+    email: string,
+    price: number,
     subId: string,
+    name: string,
+    instructor_name: string,
+    instructor_id: string,
+    center_name: string,
   ): Promise<string> {
     const session = await this.stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      payment_method_types: ['card', /*'paypal',*/ 'link'],
       line_items: [
         {
           price_data: {
             currency: 'usd',
             product_data: {
-              name: 'Add Points',
+              name: name || 'Add Points',
             },
-            unit_amount: amount,
+            unit_amount: price * 100,
           },
           quantity: 1,
         },
       ],
       mode: 'payment',
-      success_url: `${this.configService.get<string>('BASE_URL')}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${this.configService.get<string>('BASE_URL')}/payment-cancel`,
+      success_url: `${this.configService.get<string>('BASE_URL')}/stripe/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${this.configService.get<string>('BASE_URL')}/stripe/payment-cancel`,
       metadata: {
-        userId,
+        email,
         subId,
+        instructor_id,
+        center_name,
+        instructor_name,
       },
     });
-
+    console.log(session.metadata);
     return session.url;
   }
 }

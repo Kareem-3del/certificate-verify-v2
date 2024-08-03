@@ -22,6 +22,21 @@ export class Subscription {
   @Column({ default: 0 })
   purchased: number;
 
+  @Column({ nullable: true })
+  details_link: string;
+
+  @Column({ default: false })
+  instructor_id: boolean;
+
+  @Column({ default: false })
+  instructor_id_random: boolean;
+
+  @Column({ default: false })
+  instructor_name: boolean;
+
+  @Column({ default: false })
+  center_name: boolean;
+
   @ManyToMany(() => User, (user) => user.subscriptions)
   @JoinTable()
   users: User[];

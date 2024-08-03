@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Query,
   Redirect,
   Res,
   Session,
@@ -21,6 +22,7 @@ export class AuthController {
       username: string;
       password: string;
     },
+    @Query('redirect') redirect: string,
     @Session() session: Record<string, any>,
     @Res({ passthrough: true }) response: ExpressResponse,
   ) {
@@ -35,7 +37,8 @@ export class AuthController {
       'Set-Cookie',
       this.authService.getCookieWithJwtToken(token),
     );
-    response.redirect('/settings');
+    console.log(redirect);
+    response.redirect(redirect || '/settings');
   }
 
   @Get('/logout')

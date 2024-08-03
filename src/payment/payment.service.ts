@@ -1,11 +1,13 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './entities';
 import { Repository } from 'typeorm';
+import { StripeService } from './stripe/stripe.service';
 
 export class PaymentService {
   constructor(
     @InjectRepository(Transaction)
     private readonly transactionRepository: Repository<Transaction>,
+    public readonly stripeService: StripeService,
   ) {}
 
   async get_transactions(user_id: number) {

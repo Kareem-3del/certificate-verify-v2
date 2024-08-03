@@ -11,6 +11,6 @@ import { PaymentService } from './payment.service';
     StripeModule.forRootAsync(),
   ],
   providers: [PaymentService],
-  exports: [StripeModule, PaymentService],
+  exports: [PaymentService, StripeModule],
 })
 export class PaymentModule {}

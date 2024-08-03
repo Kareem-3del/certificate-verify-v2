@@ -23,7 +23,6 @@ export class User {
 
   @Column({ default: 'customer', enum: ['admin', 'moderator', 'customer'] })
   role: 'admin' | 'moderator' | 'customer';
-  // Add other properties as needed
 
   @Column({ default: 0 })
   points: number;
@@ -33,6 +32,15 @@ export class User {
   })
   @JoinTable()
   subscriptions: Subscription[];
+
+  @Column({ nullable: true })
+  center_name: string;
+
+  @Column({ nullable: true })
+  instructor_name: string;
+
+  @Column({ nullable: true })
+  instructor_id: string;
 
   @OneToMany(() => Transaction, (transaction) => transaction.user)
   transactions: Transaction[];

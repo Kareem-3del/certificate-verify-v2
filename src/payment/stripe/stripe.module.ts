@@ -1,11 +1,17 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, forwardRef, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { StripeService } from './stripe.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Transaction } from '../entities';
-import { PaymentModule } from '../payment.module';
+import { Transaction } from '../entities/transaction.entity';
+import { StripeController } from './stripe.controller';
+import { SubscriptionsModule } from '../../subscriptions/subscriptions.module';
 
 @Module({
+  imports: [
+    ConfigModule.forRoot(),
+    TypeOrmModule.forFeature([Transaction]),
+    forwardRef(() => SubscriptionsModule),
+  ],
   providers: [StripeService],
   exports: [StripeService],
 })
@@ -16,7 +22,7 @@ export class StripeModule {
       imports: [
         ConfigModule.forRoot(),
         TypeOrmModule.forFeature([Transaction]),
-        PaymentModule,
+        forwardRef(() => SubscriptionsModule),
       ],
       providers: [
         {
@@ -27,6 +33,7 @@ export class StripeModule {
         },
         StripeService,
       ],
+      controllers: [StripeController],
       exports: [StripeService],
     };
   }

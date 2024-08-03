@@ -14,7 +14,6 @@ import {
   Res,
   Session,
 } from '@nestjs/common';
-import { Response } from 'express';
 
 import { CertificatesService } from './certificates.service';
 import { toDataURL } from 'qrcode';
@@ -23,21 +22,30 @@ import { EmailService } from '../email/email.service';
 import { SettingsService } from './settings/settings.service';
 import { Certificate } from './certificate.entity';
 import { ConfigService } from '@nestjs/config';
+import { Response } from 'express';
+import { UsersService } from '../users/users.service';
+import { PartialType } from '@nestjs/mapped-types';
 
 @Controller('')
 export class AppController {
   constructor(
     private readonly settingsService: SettingsService,
     private readonly certificatesService: CertificatesService,
+    private usersService: UsersService,
   ) {}
+
   @Get()
-  @Render('index')
-  async getHello() {
+  async getHello(@Session() session: any, @Res() res: Response) {
     const settings = await this.settingsService.findAll();
-    return {
-      settings,
-    };
+    if (session.user) {
+      res.render('index', {
+        settings,
+        user: await this.usersService.findById(session.user.id),
+      });
+    }
+    res.render('login', { redirect: '/' });
   }
+
   @Get('settings/email')
   @Render('send-bulk-email')
   async email() {
@@ -91,6 +99,7 @@ export class CertificatesController {
     private readonly emailService: EmailService,
     private readonly settingsService: SettingsService,
     private readonly configService: ConfigService,
+    private usersService: UsersService,
   ) {}
 
   @Post('send-bulk')
@@ -160,23 +169,49 @@ export class CertificatesController {
     if (!session.user) {
       res.redirect('/login');
     }
+    const user = await this.usersService.findById(session.user.id);
     if (!id) throw new Error('No ID provided');
     const settings = await this.settingsService.findOne(Number(id));
-    console.log(settings);
-
-    res.render('generate_v2', { settings });
+    const settingsIds = user.subscriptions.map((sub) => sub.configId);
+    if (settingsIds.indexOf(settings.id) === -1 && user.role === 'customer') {
+      res.redirect('/');
+    }
+    res.render('generate_v2', {
+      settings,
+      user,
+    });
   }
 
   @Post('generate')
   @Render('certificate') // Renders generate.ejs
   async generateCertificate(
     @Body() body: { name: string; email: string; index: number },
+    @Session() session: Record<string, any>,
   ) {
+    if (!session.user) {
+      throw new BadRequestException('No user found');
+    }
+    const user = await this.usersService.findById(session.user.id);
+    if (!user) {
+      throw new BadRequestException('No user found');
+    }
+    if (user.points < 1 && user.role === 'customer') {
+      throw new BadRequestException('Not enough points');
+    }
     const certificate = await this.certificatesService.createCertificate(
       body.name,
       body.email,
       Number(body.index),
+      {
+        instructorId: user.instructor_id,
+        instructorName: user.instructor_name,
+        trainingCenterName: user.center_name,
+        trainingSiteName: user.center_name,
+      },
     );
+    await this.usersService.userRepository.update(user.id, {
+      points: user.points - 1,
+    });
     console.log('Certificate:', certificate);
     return {
       ...certificate,

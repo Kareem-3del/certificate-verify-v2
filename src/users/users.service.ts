@@ -8,7 +8,7 @@ import { SubscriptionsService } from '../subscriptions/subscriptions.service';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    public readonly userRepository: Repository<User>,
     private readonly subscriptionsService: SubscriptionsService,
   ) {
     this.userRepository.find().then((users) => {
@@ -18,12 +18,13 @@ export class UsersService {
         );
       }
     });
+    console.log('UsersService created');
   }
 
   async create(
     username: string,
     password: string,
-    role: 'admin' | 'moderator' = 'moderator',
+    role: 'admin' | 'moderator' | 'customer' = 'customer',
   ): Promise<User> {
     const newUser = this.userRepository.create({ username, password, role });
     return await this.userRepository.save(newUser);
@@ -42,21 +43,35 @@ export class UsersService {
   }
 
   async findById(id: number): Promise<User | undefined> {
-    return this.userRepository.findOneBy({ id });
+    return this.userRepository.findOne({
+      where: { id },
+      relations: ['subscriptions'],
+    });
   }
 
-  async subscribe(Userid: string, subId: string): Promise<User> {
+  async subscribe(
+    Userid: string,
+    subId: string,
+    instructor_name?: string,
+    center_name?: string,
+    instructor_id?: string,
+  ): Promise<User> {
     const user = await this.userRepository.findOneBy({ id: Number(Userid) });
     if (!user) {
       throw new NotFoundException(`User with ID ${Userid} not found`);
     }
-    const subscription = await this.subscriptionsService.findOne(Number(subId));
+    const subscription = await this.subscriptionsService.findOne(+subId);
     user.points += subscription.points;
     user.subscriptions.push(subscription);
     await this.subscriptionsService.update(subscription.id, {
       purchased: ++subscription.purchased,
     });
-    return this.userRepository.save(user);
+    return this.userRepository.save({
+      ...user,
+      instructor_name,
+      center_name,
+      instructor_id,
+    });
   }
 
   async findAll(): Promise<User[]> {

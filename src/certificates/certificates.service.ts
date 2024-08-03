@@ -877,6 +877,7 @@ import fontkit from '@pdf-lib/fontkit';
 import * as process from 'node:process';
 import { SettingsService } from './settings/settings.service';
 import { EmailService } from '../email/email.service';
+import { Settings } from './settings/settings.entity';
 
 interface TemplatePosition {
   fontSize: number;
@@ -1023,6 +1024,7 @@ export class CertificatesService {
     name: string,
     email: string,
     templateIndex: number,
+    settings_?: Partial<Settings>,
   ): Promise<Certificate> {
     try {
       const template = [
@@ -1038,15 +1040,19 @@ export class CertificatesService {
         console.log('Template not found', templateIndex);
         throw new NotFoundException('Template not found');
       }
+
       const certificate = new Certificate();
-      const settings = await this.settingsService.findOne(template.settings);
+      const settings = {
+        ...(await this.settingsService.findOne(template.settings)),
+        ...settings_,
+      };
       // make id is long integer with 10 digits at least & some letters should be unique
       certificate.id = this.generateUniqueNumericID(11);
       certificate.instructor_id = settings.instructorId;
 
       if (templateIndex !== 8) {
         certificate.instructor_id =
-          certificate.instructor_id + this.generateUniqueNumericID(5);
+          /*certificate.instructor_id +*/ this.generateUniqueNumericID(5);
         // certificate.id = this.generateRandomId(22);
       }
 
