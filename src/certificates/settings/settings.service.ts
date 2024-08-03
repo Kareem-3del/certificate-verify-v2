@@ -90,6 +90,7 @@ export class SettingsService {
         }).then((value) => {
           console.log('SETTINGS ARE CREATED', value);
         });
+
         this.create({
           name: 'TEMPLATE 7',
           id: 7,

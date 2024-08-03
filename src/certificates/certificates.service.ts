@@ -686,7 +686,7 @@ const Template_6: TemplateData = {
     fontSize: 24,
     fullName: {
       x: 150,
-      y: 920,
+      y: 930,
       scale: 1.9,
       center: false,
     },
@@ -1044,8 +1044,14 @@ export class CertificatesService {
       const certificate = new Certificate();
       const settings = {
         ...(await this.settingsService.findOne(template.settings)),
-        ...settings_,
       };
+      // for every value in settings_ if it is not null, set it in settings check if it is not null
+      for (const key in settings_) {
+        if (settings_[key]) {
+          settings[key] = settings_[key];
+        }
+      }
+
       // make id is long integer with 10 digits at least & some letters should be unique
       certificate.id = this.generateUniqueNumericID(11);
       certificate.instructor_id = settings.instructorId;
@@ -1300,22 +1306,6 @@ export class CertificatesService {
       const textWidth = helveticaFontBold.widthOfTextAtSize(text, textSize);
       return textWidth / 2;
     };
-    // Draw the text on the certificate at the specified positions
-    page.drawText(data.fullName, {
-      x:
-        (data.positions.fullName.x || 180) -
-        (data.positions.fullName.center
-          ? calcTextWidth2(
-              data.fullName,
-              fontSize * (data.positions.fullName.scale || 1.2),
-            )
-          : 0),
-      y: data.positions.fullName.y || 720,
-      size: fontSize * (data.positions.fullName.scale || 1.2),
-      color: fontColor,
-      font: helveticaFontBold,
-    });
-    console.log('Full name drawn successfully.');
 
     if (data.name) {
       page.drawText(data.name, {
@@ -1394,7 +1384,7 @@ export class CertificatesService {
 
     console.log('Instructor name drawn successfully.');
 
-    page.drawText(data.instructorId || '', {
+    page.drawText(data.instructorId, {
       x:
         (data.positions.instructorId.x || 348) -
         (data.positions.instructorId.center
@@ -1473,6 +1463,22 @@ export class CertificatesService {
     });
     console.log('QR code drawn successfully.');
 
+    // Draw the text on the certificate at the specified positions
+    page.drawText(data.fullName, {
+      x:
+        (data.positions.fullName.x || 180) -
+        (data.positions.fullName.center
+          ? calcTextWidth2(
+              data.fullName,
+              fontSize * (data.positions.fullName.scale || 1.2),
+            )
+          : 0),
+      y: data.positions.fullName.y || 720,
+      size: fontSize * (data.positions.fullName.scale || 1.2),
+      color: fontColor,
+      font: helveticaFontBold,
+    });
+    console.log('Full name drawn successfully.');
     // Serialize the PDFDocument to bytes (a Uint8Array)
     const pdfBytes = await pdfDoc.save();
     console.log('PDF saved successfully.');

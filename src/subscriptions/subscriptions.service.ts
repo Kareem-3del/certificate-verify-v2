@@ -28,7 +28,10 @@ export class SubscriptionsService {
   }
 
   findOne(id: number) {
-    return this.subscriptionRepository.findOneBy({ id });
+    return this.subscriptionRepository.findOne({
+      where: { id },
+      relations: ['users'],
+    });
   }
 
   update(id: number, updateSubscriptionDto: UpdateSubscriptionDto) {

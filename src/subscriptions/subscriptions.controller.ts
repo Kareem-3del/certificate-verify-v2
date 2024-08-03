@@ -106,7 +106,24 @@ export class SubscriptionsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    console.log('Removing subscription with id', id);
+    const sub = await this.subscriptionsService.findOne(+id);
+    if (!sub) {
+      throw new HttpException('Subscription not found', 404);
+    }
+    if (sub.users.length > 0) {
+      // delete subscription from users
+      for (const user of sub.users) {
+        const index = user.subscriptions.findIndex((s) => s.id === sub.id);
+        if (index > -1) {
+          user.subscriptions.splice(index, 1);
+          await this.subscriptionsService.usersService.userRepository.save(
+            user,
+          );
+        }
+      }
+    }
     return this.subscriptionsService.remove(+id);
   }
 }

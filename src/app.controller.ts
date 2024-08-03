@@ -5,6 +5,6 @@ export class AppController {
   @Get('login')
   @Render('login')
   getCertificate() {
-    return {};
+    return { redirect: '/' };
   }
 }

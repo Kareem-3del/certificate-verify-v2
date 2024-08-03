@@ -24,7 +24,6 @@ import { Certificate } from './certificate.entity';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
 import { UsersService } from '../users/users.service';
-import { PartialType } from '@nestjs/mapped-types';
 
 @Controller('')
 export class AppController {

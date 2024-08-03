@@ -37,7 +37,9 @@ export class Subscription {
   @Column({ default: false })
   center_name: boolean;
 
-  @ManyToMany(() => User, (user) => user.subscriptions)
+  @ManyToMany(() => User, (user) => user.subscriptions, {
+    cascade: ['remove'],
+  })
   @JoinTable()
   users: User[];
 }
