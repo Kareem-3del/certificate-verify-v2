@@ -262,7 +262,7 @@
     document.querySelectorAll(".edit-btn").forEach((button) => {
       button.addEventListener("click", async (e) => {
         const id = e.target.getAttribute("data-id");
-        const res = await fetch(`${apiUrl}/${id}`);
+        const res = await fetch(`${apiUrl}/json/${id}`);
         const subscription = await res.json();
         document.getElementById("update-id").value = subscription.id;
         document.getElementById("update-name").value = subscription.name;
