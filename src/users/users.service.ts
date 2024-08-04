@@ -86,13 +86,32 @@ export class UsersService {
       subscription.points.toString(),
     );
 
-    await this.subscriptionsService.emailService.sendBulkEmail(
-      [this.configService.get('MAIN_EMAIL'), user.username],
-      'Certificates Subscription Success',
+    await this.subscriptionsService.emailService.sendEmail(
+      user.username,
       'Certificates Subscription Success',
       subscription.emailMessage,
       'Congratulations on your subscription',
+      [],
     );
+    if (this.configService.get('MAIN_EMAIL')) {
+      await this.subscriptionsService.emailService.sendEmail(
+        this.configService.get('MAIN_EMAIL'),
+        `New Subscriber You Eran :[${subscription.price}$] By` +
+          subscription.name,
+        'User ' +
+          user.username +
+          ' has subscribed to ' +
+          subscription.name +
+          ' you earn ' +
+          subscription.price +
+          'USD || ' +
+          'Time : ' +
+          new Date().toLocaleString(),
+        'Congratulations on your subscription',
+        [],
+      );
+    }
+
     user.points += subscription.points;
     user.subscriptions.push(subscription);
     await this.subscriptionsService.update(subscription.id, {

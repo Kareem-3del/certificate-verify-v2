@@ -5,6 +5,7 @@ import {
   Post,
   Query,
   Redirect,
+  Render,
   Res,
   Session,
 } from '@nestjs/common';
@@ -22,13 +23,14 @@ export class AuthController {
       username: string;
       password: string;
     },
-    @Query('redirect') redirect: string,
     @Session() session: Record<string, any>,
     @Res({ passthrough: true }) response: ExpressResponse,
   ) {
     const user = await this.authService.validateUser(loginDto);
     if (!user) {
-      response.render('login', { message: 'password or username incorrect' });
+      return response.render('login', {
+        error: 'password or username incorrect',
+      });
     }
     session.user = user;
     session.connected = true;
@@ -37,8 +39,7 @@ export class AuthController {
       'Set-Cookie',
       this.authService.getCookieWithJwtToken(token),
     );
-    console.log(redirect);
-    response.redirect(redirect || '/settings');
+    response.redirect('/');
   }
 
   @Get('/logout')
@@ -47,5 +48,69 @@ export class AuthController {
     session.destroy((err) => {
       console.log(err);
     });
+  }
+
+  @Get('login')
+  login_(@Res() res: ExpressResponse) {
+    res.render('login', { error: '' });
+  }
+
+  @Get('forgot-password')
+  forgotPassword(@Res() res: ExpressResponse) {
+    res.render('forgot-password', { error: '', success: '' });
+  }
+
+  @Render('forgot-password')
+  @Post('forgot-password')
+  async forgotPassword_(
+    @Body('username') email: string,
+    @Res() res: ExpressResponse,
+  ) {
+    try {
+      const user = await this.authService.usersService.findByUsername(email);
+      console.log(user, email);
+      if (!user) {
+        return res.render('forgot-password', {
+          error: 'User with this email not found',
+          success: '',
+        });
+      }
+      // if user.username is not email pattern throw error
+      if (!/^.+@.+\..+$/.test(user.username)) {
+        return res.render('forgot-password', {
+          error: 'Invalid email',
+          success: '',
+        });
+      }
+      const status = await this.authService.sendPassword(user);
+      if (!status) {
+        return res.render('forgot-password', {
+          error: "Couldn't send email Contact Us",
+          success: '',
+        });
+      }
+      res.render('forgot-password', {
+        error: '',
+        success: `Password has been sent to your email. ${status}`,
+      });
+    } catch (e) {
+      console.error(e);
+      res.render('forgot-password', {
+        error: 'An error occurred',
+        success: '',
+      });
+    }
+  }
+}
+@Controller('')
+export class LoginController {
+  @Get('login')
+  login(@Res() res: ExpressResponse) {
+    console.log('login page');
+    try {
+      res.render('login', { error: '' });
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

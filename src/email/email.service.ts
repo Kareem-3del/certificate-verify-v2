@@ -41,7 +41,7 @@ export class EmailService {
 
   async sendEmail(
     to: string,
-    name: string,
+    file_name: string,
     subject: string,
     text: string,
     attachments: Buffer[],
@@ -52,7 +52,7 @@ export class EmailService {
       subject,
       text,
       attachments: attachments.map((attachment) => ({
-        filename: `${name}.pdf`,
+        filename: `${file_name}.pdf`,
         content: attachment,
         contentType: 'application/pdf',
       })),
