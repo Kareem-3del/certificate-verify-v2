@@ -14,9 +14,13 @@ import { SubscriptionsService } from './subscriptions.service';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
 import { Response } from 'express';
+import { PaypalService } from '../payment/paypal/paypal.service';
 @Controller('subscriptions')
 export class SubscriptionsController {
-  constructor(private readonly subscriptionsService: SubscriptionsService) {}
+  constructor(
+    private readonly subscriptionsService: SubscriptionsService,
+    private readonly paypalService: PaypalService,
+  ) {}
 
   @Post()
   create(@Body() createSubscriptionDto: CreateSubscriptionDto) {
@@ -79,16 +83,15 @@ export class SubscriptionsController {
       if (!sub) {
         throw new HttpException('Subscription not found', 404);
       }
-      const url =
-        await this.subscriptionsService.paymentService.stripeService.createPaymentLink(
-          email,
-          sub.price,
-          sub.id.toString(),
-          sub.name + ' Subscription ' + sub.points + ' Points',
-          instructor_name,
-          instructor_id,
-          center_name,
-        );
+      const url = await this.paypalService.createPaymentLink(
+        email,
+        sub.price,
+        sub.id.toString(),
+        sub.name + ' Subscription ' + sub.points + ' Points',
+        instructor_name,
+        instructor_id,
+        center_name,
+      );
       res.redirect(url);
       return { sub, error: false, email, url };
     } catch (e) {

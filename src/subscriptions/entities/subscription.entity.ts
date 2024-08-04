@@ -37,6 +37,12 @@ export class Subscription {
   @Column({ default: false })
   center_name: boolean;
 
+  @Column({
+    default:
+      'Welcome to our website your password is [PASSWORD] , email: [EMAIL]',
+  })
+  emailMessage: string;
+
   @ManyToMany(() => User, (user) => user.subscriptions, {
     cascade: ['remove'],
   })

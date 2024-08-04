@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { SubscriptionsService } from '../subscriptions/subscriptions.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
@@ -10,6 +11,7 @@ export class UsersService {
     @InjectRepository(User)
     public readonly userRepository: Repository<User>,
     private readonly subscriptionsService: SubscriptionsService,
+    private readonly configService: ConfigService,
   ) {
     this.userRepository.find().then((users) => {
       if (users.length === 0) {
@@ -60,7 +62,25 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(`User with ID ${Userid} not found`);
     }
+
     const subscription = await this.subscriptionsService.findOne(+subId);
+
+    subscription.emailMessage.replaceAll('[EMAIL]', user.username);
+    subscription.emailMessage.replaceAll('[INSTRUCTOR_NAME]', instructor_name);
+    subscription.emailMessage.replaceAll('[CENTER_NAME]', center_name);
+    subscription.emailMessage.replaceAll('[INSTRUCTOR_ID]', instructor_id);
+    subscription.emailMessage.replaceAll(
+      '[POINTS]',
+      subscription.points.toString(),
+    );
+
+    await this.subscriptionsService.emailService.sendBulkEmail(
+      [this.configService.get('MAIN_EMAIL'), user.username],
+      'Certificates Subscription Success',
+      'Certificates Subscription Success',
+      subscription.emailMessage,
+      'Congratulations on your subscription',
+    );
     user.points += subscription.points;
     user.subscriptions.push(subscription);
     await this.subscriptionsService.update(subscription.id, {
