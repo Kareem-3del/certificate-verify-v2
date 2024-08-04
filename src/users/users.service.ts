@@ -74,6 +74,10 @@ export class UsersService {
       instructor_name,
     );
     subscription.emailMessage = subscription.emailMessage.replaceAll(
+      '[PASSWORD]',
+      user.password,
+    );
+    subscription.emailMessage = subscription.emailMessage.replaceAll(
       '[CENTER_NAME]',
       center_name,
     );
@@ -89,8 +93,8 @@ export class UsersService {
     await this.subscriptionsService.emailService.sendEmail(
       user.username,
       'Certificates Subscription Success',
-      subscription.emailMessage,
       'Congratulations on your subscription',
+      subscription.emailMessage,
       [],
     );
     if (this.configService.get('MAIN_EMAIL')) {
