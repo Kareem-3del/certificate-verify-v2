@@ -252,6 +252,7 @@
         <td class="border px-4 py-2">
           <button class="px-2 py-1 bg-yellow-500 text-white rounded edit-btn" data-id="${subscription.id}">Edit</button>
           <button class="px-2 py-1 bg-red-500 text-white rounded delete-btn" data-id="${subscription.id}">Delete</button>
+               <button class="px-2 py-1 bg-blue-500 text-white rounded" onclick="copyLink(${subscription.id})" ">Link</button>
         </td>
       `;
       subscriptionsList.appendChild(row);
@@ -291,6 +292,15 @@
         loadSubscriptions();
       });
     });
+  }
+  function copyLink(id) {
+    const el = document.createElement('textarea');
+    el.value = location.host + apiUrl + "/" + id;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    alert("Link copied to clipboard.");
   }
 
   loadSubscriptions();

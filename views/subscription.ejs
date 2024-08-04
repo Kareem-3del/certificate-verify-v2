@@ -17,7 +17,7 @@
     <div class="w-full p-8 lg:w-1/2">
       <h2 class="text-2xl font-semibold text-gray-700 text-center">Certificates</h2>
       <p class="text-xl text-gray-600 text-center">Subscribe now!</p>
-      <a href="#" class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
+      <a href="<%= sub.details_link %>" class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
         <div class="px-4 py-3">
           <img width="100" height="100" src="https://img.icons8.com/clouds/100/search-in-list.png" alt="search-in-list"/>
 
@@ -34,7 +34,7 @@
       </div>
       <div class="mt-4">
         <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
-        <input name="email" id="email" class="bg-gray-200 text-gray-700 text-center focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" />
+        <input required name="email" id="email" class="bg-gray-200 text-gray-700 text-center focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" />
       </div>
       <div class="mt-4">
         <div class="flex justify-between">
@@ -60,7 +60,7 @@
           <div class="flex justify-between">
             <label class="block text-gray-700 text-sm font-bold mb-2">Instructor ID</label>
           </div>
-          <input name="instructor_id" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text" placeholder="Instructor ID"  />
+          <input required name="instructor_id" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text" placeholder="Instructor ID"  />
         </div>
       <% } %>
 
@@ -69,7 +69,7 @@
           <div class="flex justify-between">
             <label class="block text-gray-700 text-sm font-bold mb-2">Instructor Name</label>
           </div>
-          <input name="instructor_name"  class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text"  placeholder="Instructor Name" />
+          <input required name="instructor_name"  class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text"  placeholder="Instructor Name" />
         </div>
       <% } %>
 
@@ -78,7 +78,7 @@
           <div class="flex justify-between">
             <label class="block text-gray-700 text-sm font-bold mb-2">Center Name</label>
           </div>
-          <input name="center_name" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text"   placeholder="Center Name" />
+          <input required name="center_name" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none text-center" type="text"   placeholder="Center Name" />
         </div>
       <% } %>
 

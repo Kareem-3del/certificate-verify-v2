@@ -65,11 +65,23 @@ export class UsersService {
 
     const subscription = await this.subscriptionsService.findOne(+subId);
 
-    subscription.emailMessage.replaceAll('[EMAIL]', user.username);
-    subscription.emailMessage.replaceAll('[INSTRUCTOR_NAME]', instructor_name);
-    subscription.emailMessage.replaceAll('[CENTER_NAME]', center_name);
-    subscription.emailMessage.replaceAll('[INSTRUCTOR_ID]', instructor_id);
-    subscription.emailMessage.replaceAll(
+    subscription.emailMessage = subscription.emailMessage.replaceAll(
+      '[EMAIL]',
+      user.username,
+    );
+    subscription.emailMessage = subscription.emailMessage.replaceAll(
+      '[INSTRUCTOR_NAME]',
+      instructor_name,
+    );
+    subscription.emailMessage = subscription.emailMessage.replaceAll(
+      '[CENTER_NAME]',
+      center_name,
+    );
+    subscription.emailMessage = subscription.emailMessage.replaceAll(
+      '[INSTRUCTOR_ID]',
+      instructor_id,
+    );
+    subscription.emailMessage = subscription.emailMessage.replaceAll(
       '[POINTS]',
       subscription.points.toString(),
     );
