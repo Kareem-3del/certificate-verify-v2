@@ -7,6 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "igonre-edits": "git reset --hard &&",
+    "update": "git pull",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -25,11 +27,14 @@
     "@nestjs/config": "^3.2.3",
     "@nestjs/core": "^10.3.10",
     "@nestjs/jwt": "^10.2.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.3.10",
     "@nestjs/serve-static": "^4.0.2",
     "@nestjs/typeorm": "^10.0.2",
+    "@paypal/checkout-server-sdk": "^1.0.3",
     "@pdf-lib/fontkit": "^1.1.1",
+    "@types/paypal__checkout-server-sdk": "^1.0.8",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "csv-stringify": "^6.5.0",
@@ -56,6 +61,7 @@
     "qrcode": "^1.5.3",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "stripe": "^16.5.0",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {

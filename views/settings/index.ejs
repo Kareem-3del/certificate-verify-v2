@@ -12,6 +12,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             background-color: #fff;
         }
+
         .divider {
             border-top: 1px solid #e2e8f0;
             margin: 1.5rem 0;
@@ -24,7 +25,7 @@
     <!-- Navigation -->
     <nav class="bg-white shadow-md py-4">
         <div class="container mx-auto px-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-semibold text-gray-700">Dashboard</a>
+            <a href="/" class="text-xl font-semibold text-gray-700">Dashboard</a>
             <div>
                 <a href="#" class="px-4 py-2 text-gray-600 hover:text-gray-800">Settings</a>
                 <a href="#" class="px-4 py-2 text-gray-600 hover:text-gray-800">Certificates</a>
@@ -43,8 +44,11 @@
                 <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-200">Users</a>
             </nav>
             <div class="flex flex-col">
-                <a href="/settings/email/" id="logoutBtn" class="px-8 py-2 text-gray-600 hover:text-gray-800 w-full">Bulk Mail</a>
-                <a href="/auth/logout/" id="logoutBtn" class="px-8 py-2 text-gray-600 hover:text-gray-800 w-full">Logout</a>
+                <a href="/settings/email/" id="logoutBtn" class="px-8 py-2 text-gray-600 hover:text-gray-800 w-full">Bulk
+                    Mail</a>
+                <a href="/settings/sub/" id="logoutBtn" class="px-8 py-2 text-gray-600 hover:text-gray-800 w-full">Subscriptions</a>
+                <a href="/auth/logout/" id="logoutBtn"
+                   class="px-8 py-2 text-gray-600 hover:text-gray-800 w-full">Logout</a>
 
             </div>
 
@@ -63,78 +67,101 @@
 
                                 <!-- Input Field -->
                                 <div class="mb-6">
-                                    <label for="name-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Name</label>
-                                    <input type="text" id="name-<%= setting.id %>" name="name" value="<%= setting.name %>"
+                                    <label for="name-<%= setting.id %>"
+                                           class="block text-gray-700 text-sm font-medium mb-2">Name</label>
+                                    <input type="text" id="name-<%= setting.id %>" name="name"
+                                           value="<%= setting.name %>"
                                            class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
-                                           >
+                                    >
                                 </div>
 
                                 <!-- Email Subject Field -->
                                 <div class="mb-6">
-                                    <label for="emailSubject-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Email Subject</label>
-                                    <input type="text" id="emailSubject-<%= setting.id %>" name="emailSubject" value="<%= setting.emailSubject %>"
+                                    <label for="emailSubject-<%= setting.id %>"
+                                           class="block text-gray-700 text-sm font-medium mb-2">Email Subject</label>
+                                    <input type="text" id="emailSubject-<%= setting.id %>" name="emailSubject"
+                                           value="<%= setting.emailSubject %>"
                                            class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out">
                                 </div>
 
                                 <!-- Email Body Field -->
                                 <div class="mb-6">
-                                    <label for="emailBody-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Email Body</label>
+                                    <label for="emailBody-<%= setting.id %>"
+                                           class="block text-gray-700 text-sm font-medium mb-2">Email Body</label>
                                     <textarea id="emailBody-<%= setting.id %>" name="emailBody" rows="4"
                                               class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"><%= setting.emailBody %></textarea>
                                 </div>
 
                                 <!-- Instructor Name Field -->
                                 <div class="mb-6">
-                                    <label for="instructorName-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Instructor Name</label>
-                                    <input type="text" id="instructorName-<%= setting.id %>" name="instructorName" value="<%= setting.instructorName %>"
+                                    <label for="instructorName-<%= setting.id %>"
+                                           class="block text-gray-700 text-sm font-medium mb-2">Instructor Name</label>
+                                    <input type="text" id="instructorName-<%= setting.id %>" name="instructorName"
+                                           value="<%= setting.instructorName %>"
                                            class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
-                                           >
+                                    >
                                 </div>
 
                                 <!-- Instructor ID Field -->
                                 <div class="mb-6">
-                                    <label for="instructorId-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Instructor ID</label>
-                                    <input type="text" id="instructorId-<%= setting.id %>" name="instructorId" value="<%= setting.instructorId %>"
+                                    <label for="instructorId-<%= setting.id %>"
+                                           class="block text-gray-700 text-sm font-medium mb-2">Instructor ID</label>
+                                    <input type="text" id="instructorId-<%= setting.id %>" name="instructorId"
+                                           value="<%= setting.instructorId %>"
                                            class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
-                                           >
+                                    >
                                 </div>
 
                                 <!-- Training Center Name Field -->
                                 <div class="mb-6">
-                                    <label for="trainingCenterName-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Training Center Name</label>
-                                    <input type="text" id="trainingCenterName-<%= setting.id %>" name="trainingCenterName" value="<%= setting.trainingCenterName %>"
+                                    <label for="trainingCenterName-<%= setting.id %>"
+                                           class="block text-gray-700 text-sm font-medium mb-2">Training Center
+                                        Name</label>
+                                    <input type="text" id="trainingCenterName-<%= setting.id %>"
+                                           name="trainingCenterName" value="<%= setting.trainingCenterName %>"
                                            class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
-                                           >
+                                    >
                                 </div>
 
                                 <!-- Training Center ID Field -->
                                 <div class="mb-6">
-                                    <label for="trainingCenterId-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Training Center ID</label>
-                                    <input type="text" id="trainingCenterId-<%= setting.id %>" name="trainingCenterId" value="<%= setting.trainingCenterId %>"
+                                    <label for="trainingCenterId-<%= setting.id %>"
+                                           class="block text-gray-700 text-sm font-medium mb-2">Training Center
+                                        ID</label>
+                                    <input type="text" id="trainingCenterId-<%= setting.id %>" name="trainingCenterId"
+                                           value="<%= setting.trainingCenterId %>"
                                            class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
-                                           >
+                                    >
                                 </div>
 
                                 <!-- TC City Field -->
                                 <div class="mb-6">
-                                    <label for="tcCity-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">TC City</label>
-                                    <input type="text" id="tcCity-<%= setting.id %>" name="tcCity" value="<%= setting.tcCity %>"
+                                    <label for="tcCity-<%= setting.id %>"
+                                           class="block text-gray-700 text-sm font-medium mb-2">TC City</label>
+                                    <input type="text" id="tcCity-<%= setting.id %>" name="tcCity"
+                                           value="<%= setting.tcCity %>"
                                            class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
-                                           >
+                                    >
                                 </div>
 
                                 <!-- Training Site Name Field -->
                                 <div class="mb-6">
-                                    <label for="trainingSiteName-<%= setting.id %>" class="block text-gray-700 text-sm font-medium mb-2">Training Site Name</label>
-                                    <input type="text" id="trainingSiteName-<%= setting.id %>" name="trainingSiteName" value="<%= setting.trainingSiteName %>"
+                                    <label for="trainingSiteName-<%= setting.id %>"
+                                           class="block text-gray-700 text-sm font-medium mb-2">Training Site
+                                        Name</label>
+                                    <input type="text" id="trainingSiteName-<%= setting.id %>" name="trainingSiteName"
+                                           value="<%= setting.trainingSiteName %>"
                                            class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:border-indigo-600 focus:ring-indigo-600 focus:outline-none transition duration-150 ease-in-out"
-                                           >
+                                    >
                                 </div>
 
                             </div>
 
                             <div class="mt-6 flex justify-end">
-                                <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-indigo-700 transition duration-150 ease-in-out">Save</button>
+                                <button type="submit"
+                                        class="bg-indigo-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-indigo-700 transition duration-150 ease-in-out">
+                                    Save
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -150,21 +177,18 @@
                 <!-- Create User Form -->
                 <div class="mb-8">
                     <h2 class="text-xl font-semibold mb-4">Create New User</h2>
-                    <form id="createUserForm"  class="space-y-4">
+                    <form id="createUserForm" class="space-y-4">
                         <div>
                             <label for="username" class="block text-gray-700">Username:</label>
-                            <input type="text" id="username" name="username" class="w-full p-2 border rounded-lg"
-                                   >
+                            <input type="text" id="username" name="username" class="w-full p-2 border rounded-lg">
                         </div>
                         <div>
                             <label for="password" class="block text-gray-700">Password:</label>
-                            <input type="password" id="password" name="password" class="w-full p-2 border rounded-lg"
-                                   >
+                            <input type="password" id="password" name="password" class="w-full p-2 border rounded-lg">
                         </div>
                         <div>
                             <label for="role" class="block text-gray-700">Role:</label>
-                            <select id="role" name="role" class="w-full p-2 border rounded-lg"
-                                   >
+                            <select id="role" name="role" class="w-full p-2 border rounded-lg">
                                 <option value="admin">Admin</option>
                                 <option value="moderator">Moderator</option>
                             </select>
@@ -176,27 +200,62 @@
                 <!-- Users List -->
                 <div>
                     <h2 class="text-xl font-semibold mb-4">Users List</h2>
-                    <table id="usersList" class="min-w-full bg-white">
+                    <table id="usersList" class="min-w-full bg-white border-collapse">
                         <thead>
                         <tr>
                             <th class="py-2 px-4 border-b">ID</th>
                             <th class="py-2 px-4 border-b">Username</th>
+                            <th class="py-2 px-4 border-b">Points</th>
+                            <th class="py-2 px-4 border-b">Subscriptions</th>
                             <th class="py-2 px-4 border-b">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <!-- Users will be loaded here -->
+                        <!-- Example User Row -->
+                        <tr>
+                            <td class="py-2 px-4 border-b">1</td>
+                            <td class="py-2 px-4 border-b">exampleUser</td>
+                            <td class="py-2 px-4 border-b">100</td>
+                            <td class="py-2 px-4 border-b">Basic, Premium</td>
+                            <td class="py-2 px-4 border-b">
+                                <button class="px-2 py-1 bg-green-500 text-white rounded-lg"
+                                        onclick="showChangePasswordForm(1)">Change Password
+                                </button>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Change Password Form -->
+                <div id="changePasswordSection" class="hidden mt-8">
+                    <h2 class="text-xl font-semibold mb-4">Change Password</h2>
+                    <form id="changePasswordForm" class="space-y-4">
+                        <div>
+                            <label for="userId" class="block text-gray-700">User ID:</label>
+                            <input type="text" id="userId" name="userId" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label for="newPassword" class="block text-gray-700">New Password:</label>
+                            <input type="password" id="newPassword" name="newPassword"
+                                   class="w-full p-2 border rounded-lg">
+                        </div>
+                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Change Password
+                        </button>
+                    </form>
+                </div>
             </section>
+
             <section id="certificates" class="hidden">
-                <h1 class="text-2xl font-semibold mb-6">Certificates</h1>
+                <h1 class="text-2xl font-semibold mb-6">Certificates
+                    <span id="count" class="mx-2 text-red-400"></span>
+                </h1>
                 <div id="message" class="text-green-400 px-4 py-2 mb-4"></div>
                 <button id="delete-selected-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg mb-4">Delete
                     Selected
                 </button>
-                <a href="/certificates/export/all"  class="px-4 py-2 bg-blue-500 text-white rounded-lg mb-4">
+                <a href="/certificates/export/all" class="px-4 py-2 bg-blue-500 text-white rounded-lg mb-4">
                     Export All
                 </a>
                 <input type="text" id="searchInput" placeholder="Search certificates..."
@@ -243,16 +302,26 @@
         const users = await response.json();
         const usersList = document.getElementById("usersList");
         usersList.innerHTML = "";
+
         users.forEach(user => {
+          // Format subscriptions as a comma-separated list
+          const subscriptions = user.subscriptions.map(sub => sub.name).join(", ");
+
           const row = document.createElement("tr");
           row.innerHTML = `
-                    <td class="py-2 px-4">${user.id}</td>
-                    <td class="py-2 px-4">${user.username}</td>
-                    <td class="py-2 px-4">${user.role}</td>
-                    <td class="py-2 px-4">
-                        <button class="text-red-500 hover:underline delete-btn" data-id="${user.id}">Delete</button>
-                    </td>
-                `;
+        <td class="py-2 px-4">${user.id}</td>
+        <td class="py-2 px-4">${user.username}</td>
+        <td class="py-2 px-4">${user.role}</td>
+        <td class="py-2 px-4">${subscriptions}</td>
+        <td class="py-2 px-4">
+          ${
+            user.role === "admin"
+              ? "No Actions"
+              : `          <button class="text-red-500 hover:underline delete-btn" data-id="${user.id}">Delete</button>
+          <button class="text-blue-500 hover:underline change-password-btn" data-id="${user.id}">Change Password</button>`
+          }
+        </td>
+      `;
           usersList.appendChild(row);
         });
       } catch (error) {
@@ -262,7 +331,8 @@
     }
 
     loadUsers();
-    // Create User Form Submission
+
+// Create User Form Submission
     const createUserForm = document.getElementById("createUserForm");
     createUserForm.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -275,7 +345,7 @@
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ username, password , role })
+          body: JSON.stringify({ username, password, role })
         });
         if (response.ok) {
           document.getElementById("username").value = "";
@@ -291,7 +361,7 @@
       }
     });
 
-    // Delete User Event Listener
+// Delete User Event Listener
     document.getElementById("usersList").addEventListener("click", async (event) => {
       if (event.target.classList.contains("delete-btn")) {
         const userId = event.target.getAttribute("data-id");
@@ -312,6 +382,38 @@
             alert("An error occurred while deleting the user.");
           }
         }
+      } else if (event.target.classList.contains("change-password-btn")) {
+        const userId = event.target.getAttribute("data-id");
+        document.getElementById("changePasswordSection").classList.remove("hidden");
+        document.getElementById("userId").value = userId;
+      }
+    });
+
+// Change Password Form Submission
+    const changePasswordForm = document.getElementById("changePasswordForm");
+    changePasswordForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const userId = document.getElementById("userId").value;
+      const newPassword = document.getElementById("newPassword").value;
+      try {
+        const response = await fetch(`/users/${userId}/password`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ newPassword })
+        });
+        if (response.ok) {
+          document.getElementById("newPassword").value = "";
+          alert("Password changed successfully.");
+          document.getElementById("changePasswordSection").classList.add("hidden");
+          loadUsers(); // Reload users list after password change
+        } else {
+          alert("Failed to change password.");
+        }
+      } catch (error) {
+        console.error("Error changing password:", error);
+        alert("An error occurred while changing the password.");
       }
     });
 
@@ -337,7 +439,7 @@
 
 
     let offset = 0;
-    const limit = 10;
+    const limit = 1000000000;
     let loading = false;
 
     async function loadCertificates(searchQuery = "") {
@@ -345,6 +447,7 @@
       loading = true;
       const response = await fetch(`/certificates?limit=${limit}&offset=${offset}&search=${searchQuery}`);
       const data = await response.json();
+      document.getElementById("count").innerHTML = data?.certificates?.length || 0;
       const certificatesList = document.getElementById("certificatesList");
       data.certificates.forEach(cert => {
         const row = document.createElement("tr");

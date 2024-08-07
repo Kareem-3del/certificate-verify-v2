@@ -2,7 +2,7 @@
 /dist
 /node_modules
 /build
-
+./database.sqlite
 # Logs
 logs
 *.log
@@ -11,7 +11,7 @@ pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
+/certificates/*
 # OS
 .DS_Store
 

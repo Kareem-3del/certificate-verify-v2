@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Subscriptions</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+<div class="container mx-auto p-4">
+    <a href="/" class="text-2xl font-bold mb-4">Manage Subscriptions</a>
+
+    <!-- Create Subscription Form -->
+    <form id="create-form" class="mb-4 p-4 bg-white rounded shadow-md">
+        <h2 class="text-xl font-semibold mb-2">Create Subscription</h2>
+        <div class="mb-2">
+            <label for="create-name" class="block text-sm font-medium">Name</label>
+            <input id="create-name" type="text" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-2">
+            <label for="create-price" class="block text-sm font-medium">Price</label>
+            <input id="create-price" type="number" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-2">
+            <label for="create-points" class="block text-sm font-medium">Points</label>
+            <input id="create-points" type="number" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-2">
+            <label for="create-details_link" class="block text-sm font-medium">Details Link</label>
+            <input id="create-details_link" type="text" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-2">
+            <label for="create-email_message" class="block text-sm font-medium">Email Message</label>
+            <input id="create-email_message" type="text" class="w-full p-2 border border-gray-300 rounded" value="Welcome to our website your password is [PASSWORD] , email: [EMAIL]">
+        </div>
+        <div class="mb-2">
+            <label class="block text-sm font-medium">Instructor ID</label>
+            <input id="create-instructor_id" type="checkbox" class="w-4 h-4">
+        </div>
+        <div class="mb-2">
+            <label class="block text-sm font-medium">Instructor ID Random</label>
+            <input id="create-instructor_id_random" type="checkbox" class="w-4 h-4">
+        </div>
+        <div class="mb-2">
+            <label class="block text-sm font-medium">Instructor Name</label>
+            <input id="create-instructor_name" type="checkbox" class="w-4 h-4">
+        </div>
+        <div class="mb-2">
+            <label class="block text-sm font-medium">Center Name</label>
+            <input id="create-center_name" type="checkbox" class="w-4 h-4">
+        </div>
+        <div class="mb-2">
+            <label for="create-configId" class="block text-sm font-medium">Config ID</label>
+            <select id="create-configId" class="w-full p-2 border border-gray-300 rounded">
+                <% settings.forEach(setting => { %>
+                    <option value="<%= setting.id %>">
+                        <%= setting.name %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Create</button>
+    </form>
+
+    <!-- Update Subscription Form -->
+    <form id="update-form" class="mb-4 p-4 bg-white rounded shadow-md hidden">
+        <h2 class="text-xl font-semibold mb-2">Update Subscription</h2>
+        <input id="update-id" type="hidden">
+        <div class="mb-2">
+            <label for="update-name" class="block text-sm font-medium">Name</label>
+            <input id="update-name" type="text" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-2">
+            <label for="update-price" class="block text-sm font-medium">Price</label>
+            <input id="update-price" type="number" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-2">
+            <label for="update-points" class="block text-sm font-medium">Points</label>
+            <input id="update-points" type="number" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-2">
+            <label for="update-details_link" class="block text-sm font-medium">Details Link</label>
+            <input id="update-details_link" type="text" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-2">
+            <label for="update-email_message" class="block text-sm font-medium">Email Message</label>
+            <input id="update-email_message" type="text" class="w-full p-2 border border-gray-300 rounded" value="Welcome to our website your password is [PASSWORD] , email: [EMAIL]">
+        </div>
+        <div class="mb-2">
+            <label class="block text-sm font-medium">Instructor ID</label>
+            <input id="update-instructor_id" type="checkbox" class="w-4 h-4">
+        </div>
+        <div class="mb-2">
+            <label class="block text-sm font-medium">Instructor ID Random</label>
+            <input id="update-instructor_id_random" type="checkbox" class="w-4 h-4">
+        </div>
+        <div class="mb-2">
+            <label class="block text-sm font-medium">Instructor Name</label>
+            <input id="update-instructor_name" type="checkbox" class="w-4 h-4">
+        </div>
+        <div class="mb-2">
+            <label class="block text-sm font-medium">Center Name</label>
+            <input id="update-center_name" type="checkbox" class="w-4 h-4">
+        </div>
+        <div class="mb-2">
+            <label for="update-configId" class="block text-sm font-medium">Config ID</label>
+            <input id="update-configId" type="number" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-2">
+            <label for="update-purchased" class="block text-sm font-medium">Purchased</label>
+            <input id="update-purchased" type="number" class="w-full p-2 border border-gray-300 rounded">
+        </div>
+        <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">Update</button>
+        <button type="button" id="cancel-update" class="px-4 py-2 bg-red-500 text-white rounded">Cancel</button>
+    </form>
+
+    <!-- Subscriptions List -->
+    <div class="bg-white rounded shadow-md">
+        <h2 class="text-xl font-semibold mb-2 p-4 border-b">Subscriptions</h2>
+        <table class="min-w-full table-auto">
+            <thead>
+            <tr class="bg-gray-200">
+                <th class="px-4 py-2">Name</th>
+                <th class="px-4 py-2">Price</th>
+                <th class="px-4 py-2">Points</th>
+                <th class="px-4 py-2">Details Link</th>
+                <th class="px-4 py-2">Email Message</th>
+                <th class="px-4 py-2">Instructor ID</th>
+                <th class="px-4 py-2">Instructor ID Random</th>
+                <th class="px-4 py-2">Instructor Name</th>
+                <th class="px-4 py-2">Center Name</th>
+                <th class="px-4 py-2">Config ID</th>
+                <th class="px-4 py-2">Purchased</th>
+                <th class="px-4 py-2">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="subscriptions-list" class="bg-white">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+  const apiUrl = "/subscriptions";
+
+  // Create subscription
+  document.getElementById("create-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("create-name").value;
+    const price = document.getElementById("create-price").value;
+    const points = document.getElementById("create-points").value;
+    const detailsLink = document.getElementById("create-details_link").value;
+    const emailMessage = document.getElementById("create-email_message").value;
+    const instructorId = document.getElementById("create-instructor_id").checked;
+    const instructorIdRandom = document.getElementById("create-instructor_id_random").checked;
+    const instructorName = document.getElementById("create-instructor_name").checked;
+    const centerName = document.getElementById("create-center_name").checked;
+    const configId = document.getElementById("create-configId").value;
+
+    await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        price,
+        points,
+        details_link: detailsLink,
+        emailMessage,
+        instructor_id: instructorId,
+        instructor_id_random: instructorIdRandom,
+        instructor_name: instructorName,
+        center_name: centerName,
+        configId,
+      }),
+    });
+    loadSubscriptions();
+    document.getElementById("create-form").reset();
+  });
+
+  // Update subscription
+  document.getElementById("update-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("update-id").value;
+    const name = document.getElementById("update-name").value;
+    const price = document.getElementById("update-price").value;
+    const points = document.getElementById("update-points").value;
+    const detailsLink = document.getElementById("update-details_link").value;
+    const emailMessage = document.getElementById("update-email_message").value;
+    const instructorId = document.getElementById("update-instructor_id").checked;
+    const instructorIdRandom = document.getElementById("update-instructor_id_random").checked;
+    const instructorName = document.getElementById("update-instructor_name").checked;
+    const centerName = document.getElementById("update-center_name").checked;
+    const configId = document.getElementById("update-configId").value;
+    const purchased = document.getElementById("update-purchased").value;
+
+    await fetch(`${apiUrl}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        price,
+        points,
+        details_link: detailsLink,
+        emailMessage,
+        instructor_id: instructorId,
+        instructor_id_random: instructorIdRandom,
+        instructor_name: instructorName,
+        center_name: centerName,
+        configId,
+        purchased,
+      }),
+    });
+    loadSubscriptions();
+    document.getElementById("update-form").classList.add("hidden");
+    document.getElementById("create-form").classList.remove("hidden");
+  });
+
+  document.getElementById("cancel-update").addEventListener("click", () => {
+    document.getElementById("update-form").classList.add("hidden");
+    document.getElementById("create-form").classList.remove("hidden");
+  });
+
+  // Load subscriptions
+  async function loadSubscriptions() {
+    const res = await fetch(apiUrl);
+    const subscriptions = await res.json();
+    const subscriptionsList = document.getElementById("subscriptions-list");
+    subscriptionsList.innerHTML = "";
+    subscriptions.forEach((subscription) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td class="border px-4 py-2">${subscription.name}</td>
+        <td class="border px-4 py-2">${subscription.price}</td>
+        <td class="border px-4 py-2">${subscription.points}</td>
+        <td class="border px-4 py-2">${subscription.details_link}</td>
+        <td class="border px-4 py-2">${subscription.emailMessage}</td>
+        <td class="border px-4 py-2">${subscription.instructor_id ? "Yes" : "No"}</td>
+        <td class="border px-4 py-2">${subscription.instructor_id_random ? "Yes" : "No"}</td>
+        <td class="border px-4 py-2">${subscription.instructor_name ? "Yes" : "No"}</td>
+        <td class="border px-4 py-2">${subscription.center_name ? "Yes" : "No"}</td>
+        <td class="border px-4 py-2">${subscription.configId}</td>
+        <td class="border px-4 py-2">${subscription.purchased}</td>
+        <td class="border px-4 py-2">
+          <button class="px-2 py-1 bg-yellow-500 text-white rounded edit-btn" data-id="${subscription.id}">Edit</button>
+          <button class="px-2 py-1 bg-red-500 text-white rounded delete-btn" data-id="${subscription.id}">Delete</button>
+               <button class="px-2 py-1 bg-blue-500 text-white rounded" onclick="copyLink(${subscription.id})" ">Link</button>
+        </td>
+      `;
+      subscriptionsList.appendChild(row);
+    });
+
+    // Add event listeners for edit buttons
+    document.querySelectorAll(".edit-btn").forEach((button) => {
+      button.addEventListener("click", async (e) => {
+        const id = e.target.getAttribute("data-id");
+        const res = await fetch(`${apiUrl}/json/${id}`);
+        const subscription = await res.json();
+        document.getElementById("update-id").value = subscription.id;
+        document.getElementById("update-name").value = subscription.name;
+        document.getElementById("update-price").value = subscription.price;
+        document.getElementById("update-points").value = subscription.points;
+        document.getElementById("update-details_link").value = subscription.details_link;
+        document.getElementById("update-email_message").value = subscription.emailMessage;
+        document.getElementById("update-instructor_id").checked = subscription.instructor_id;
+        document.getElementById("update-instructor_id_random").checked = subscription.instructor_id_random;
+        document.getElementById("update-instructor_name").checked = subscription.instructor_name;
+        document.getElementById("update-center_name").checked = subscription.center_name;
+        document.getElementById("update-configId").value = subscription.configId;
+        document.getElementById("update-purchased").value = subscription.purchased;
+
+        document.getElementById("create-form").classList.add("hidden");
+        document.getElementById("update-form").classList.remove("hidden");
+      });
+    });
+
+    // Add event listeners for delete buttons
+    document.querySelectorAll(".delete-btn").forEach((button) => {
+      button.addEventListener("click", async (e) => {
+        const id = e.target.getAttribute("data-id");
+        await fetch(`${apiUrl}/${id}`, {
+          method: "DELETE",
+        });
+        loadSubscriptions();
+      });
+    });
+  }
+  function copyLink(id) {
+    const el = document.createElement('textarea');
+    el.value = location.host + apiUrl + "/" + id;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    alert("Link copied to clipboard.");
+  }
+
+  loadSubscriptions();
+</script>
+</body>
+</html>

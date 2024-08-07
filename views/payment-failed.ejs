@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Payment Success</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+<!-- component -->
+<div class="bg-gray-100 h-screen flex justify-center items-center">
+    <div class="bg-white p-6  md:mx-auto">
+        <div class="w-full flex justify-center items-center mb-8">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">
+                <path fill="#f44336" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path><path fill="#fff" d="M29.656,15.516l2.828,2.828l-14.14,14.14l-2.828-2.828L29.656,15.516z"></path><path fill="#fff" d="M32.484,29.656l-2.828,2.828l-14.14-14.14l2.828-2.828L32.484,29.656z"></path>
+            </svg>
+        </div>
+        <div class="text-center">
+            <h3 class="md:text-2xl text-base text-gray-900 font-semibold text-center">Payment Done!</h3>
+            <p class="text-gray-600 my-2">
+                We are sorry, but your payment has failed.
+            </p>
+            <p>
+                if you have any questions, please <a class="text-blue-500" href="mailto:">contact us</a>
+            </p>
+            <div class="py-10 text-center">
+                <a href="/" class="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3">
+                    GO BACK
+                </a>
+            </div>
+            <p>
+                <%= error %>
+            </p>
+            <div>
+        </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
