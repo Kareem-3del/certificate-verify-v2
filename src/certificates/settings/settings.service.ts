@@ -103,6 +103,19 @@ export class SettingsService {
         }).then((value) => {
           console.log('SETTINGS ARE CREATED', value);
         });
+
+        this.create({
+          name: 'TEMPLATE 8',
+          id: 8,
+          instructorName: '',
+          instructorId: '',
+          trainingCenterName: '',
+          trainingCenterId: '',
+          tcCity: '',
+          trainingSiteName: '',
+        }).then((value) => {
+          console.log('SETTINGS ARE CREATED', value);
+        });
       }
     });
   }

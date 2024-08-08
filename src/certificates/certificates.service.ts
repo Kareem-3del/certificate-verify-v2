@@ -2,8 +2,8 @@ import * as path from 'path';
 import { Parser } from 'json2csv';
 
 const Template_1: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-1.png'),
-  image_id: path.resolve('./views/templates/template-1-card.png'),
+  image_cert: path.resolve('./views/templates/v1/template-1.png'),
+  image_id: path.resolve('./views/templates/v1/template-1-card.png'),
   settings: 1,
 
   id_card: {
@@ -113,8 +113,8 @@ const Template_1: TemplateData = {
   },
 };
 const Template_2: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-2.png'),
-  image_id: path.resolve('./views/templates/template-2-card.png'),
+  image_cert: path.resolve('./views/templates/v1/template-2.png'),
+  image_id: path.resolve('./views/templates/v1/template-2-card.png'),
   settings: 2,
   id_card: {
     fontSize: 8,
@@ -225,8 +225,8 @@ const Template_2: TemplateData = {
   },
 };
 const Template_3: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-3.png'),
-  image_id: path.resolve('./views/templates/template-3-card.png'),
+  image_cert: path.resolve('./views/templates/v1/template-3.png'),
+  image_id: path.resolve('./views/templates/v1/template-3-card.png'),
   settings: 3,
   id_card: {
     fontSize: 8,
@@ -337,8 +337,8 @@ const Template_3: TemplateData = {
   },
 };
 const Template_4: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-4.png'),
-  image_id: path.resolve('./views/templates/template-4-card.png'),
+  image_cert: path.resolve('./views/templates/v1/template-4.png'),
+  image_id: path.resolve('./views/templates/v1/template-4-card.png'),
   settings: 4,
 
   id_card: {
@@ -450,8 +450,8 @@ const Template_4: TemplateData = {
   },
 };
 const Template_5: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-5.png'),
-  image_id: path.resolve('./views/templates/template-5-card.png'),
+  image_cert: path.resolve('./views/templates/v1/template-5.png'),
+  image_id: path.resolve('./views/templates/v1/template-5-card.png'),
   settings: 5,
 
   id_card: {
@@ -565,8 +565,8 @@ const Template_5: TemplateData = {
   },
 };
 const Template_6: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-6.png'),
-  image_id: path.resolve('./views/templates/template-7-card.png'),
+  image_cert: path.resolve('./views/templates/v1/template-6.png'),
+  image_id: path.resolve('./views/templates/v1/template-7-card.png'),
   settings: 6,
 
   id_card: {
@@ -682,8 +682,8 @@ const Template_6: TemplateData = {
   },
 };
 const Template_7: TemplateData = {
-  image_cert: path.resolve('./views/templates/template-7.png'),
-  image_id: path.resolve('./views/templates/template-6-card.png'),
+  image_cert: path.resolve('./views/templates/v1/template-7.png'),
+  image_id: path.resolve('./views/templates/v1/template-6-card.png'),
   settings: 7,
   cert_card: {
     fontSize: 12,
@@ -798,7 +798,7 @@ const Template_7: TemplateData = {
   },
 };
 const Template_8: TemplateData = {
-  image_id: path.resolve('./views/templates/custom.png'),
+  image_id: path.resolve('./views/templates/v1/custom.png'),
   settings: 8,
   id_card: {
     fontSize: 8,
@@ -868,6 +868,7 @@ import fontkit from '@pdf-lib/fontkit';
 import * as process from 'node:process';
 import { SettingsService } from './settings/settings.service';
 import { EmailService } from '../email/email.service';
+import { Settings } from './settings/settings.entity';
 
 interface TemplatePosition {
   fontSize: number;
@@ -988,6 +989,7 @@ export class CertificatesService {
 
     return Buffer.from(csv);
   }
+
   generateUniqueNumericID() {
     const min = Math.pow(10, 9); // Minimum value for a 10-digit number
     const max = Math.pow(10, 10) - 1; // Maximum value for a 10-digit number
@@ -1000,6 +1002,7 @@ export class CertificatesService {
     name: string,
     email: string,
     templateIndex: number,
+    settings_?: Partial<Settings>,
   ): Promise<Certificate> {
     try {
       const template = [
@@ -1018,6 +1021,12 @@ export class CertificatesService {
       }
       const certificate = new Certificate();
       const settings = await this.settingsService.findOne(template.settings);
+      // for every value in settings_ if it is not null, set it in settings check if it is not null
+      for (const key in settings_) {
+        if (settings_[key]) {
+          settings[key] = settings_[key];
+        }
+      }
       // make id is long integer with 10 digits at least & some letters should be unique
       certificate.id = this.generateUniqueNumericID();
       certificate.instructor_id = settings.instructorId;
@@ -1113,8 +1122,14 @@ export class CertificatesService {
 
       fs.writeFileSync(filePathCardId, card);
       settings.emailBody = settings.emailBody.replaceAll('[NAME]', name);
-      settings.emailBody = settings.emailBody.replaceAll('[CERTIFICATE_ID]', certificate.id);
-      settings.emailBody = settings.emailBody.replaceAll('[TYPE]', settings.name);
+      settings.emailBody = settings.emailBody.replaceAll(
+        '[CERTIFICATE_ID]',
+        certificate.id,
+      );
+      settings.emailBody = settings.emailBody.replaceAll(
+        '[TYPE]',
+        settings.name,
+      );
       settings.emailBody = settings.emailBody.replaceAll(
         '[ISSUED]',
         certificate.issued.toDateString(),
@@ -1131,7 +1146,7 @@ export class CertificatesService {
         '[INSTRUCTOR_NAME]',
         certificate.instructor_name,
       );
-      settings.emailBody= settings.emailBody.replaceAll(
+      settings.emailBody = settings.emailBody.replaceAll(
         '[TRAINING_CENTER_NAME]',
         certificate.training_center_name,
       );
@@ -1139,7 +1154,10 @@ export class CertificatesService {
         '[TRAINING_CENTER_ID]',
         certificate.training_center_id,
       );
-      settings.emailBody = settings.emailBody.replaceAll('[CITY]', settings.tcCity);
+      settings.emailBody = settings.emailBody.replaceAll(
+        '[CITY]',
+        settings.tcCity,
+      );
       settings.emailBody = settings.emailBody.replaceAll(
         '[TRAINING_SITE_NAME]',
         settings.trainingSiteName,
@@ -1429,6 +1447,7 @@ export class CertificatesService {
 
     return result;
   }
+
   async deleteCertificate(id: string): Promise<void> {
     const certificate = await this.certificateRepository.findOneBy({ id });
     if (!certificate) {

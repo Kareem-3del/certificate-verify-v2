@@ -13,7 +13,7 @@ export class PaypalService {
     private subscriptionService: SubscriptionsService,
   ) {
     this.paypalClient = new core.PayPalHttpClient(
-      new core.SandboxEnvironment(
+      new core.LiveEnvironment(
         this.configService.get<string>('PAYPAL_CLIENT_ID'),
         this.configService.get<string>('PAYPAL_CLIENT_SECRET'),
       ),
