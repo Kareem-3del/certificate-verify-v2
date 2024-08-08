@@ -35,7 +35,6 @@
     </nav>
 
 
-
     <div class="flex flex-1">
         <!-- Sidebar -->
         <aside class="bg-white shadow-md w-64 py-6">
@@ -493,12 +492,12 @@
       loadCertificates(document.getElementById("searchInput").value);
     });
 
-    window.addEventListener("scroll", () => {
-      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-      if (scrollTop + clientHeight >= scrollHeight - 20 && !loading) {
-        loadCertificates(document.getElementById("searchInput").value);
-      }
-    });
+    /*   window.addEventListener("scroll", () => {
+         const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+         if (scrollTop + clientHeight >= scrollHeight - 20 && !loading) {
+           loadCertificates(document.getElementById("searchInput").value);
+         }
+       });*/
     // Delete certificate event listener
     document.getElementById("certificatesList").addEventListener("click", async (event) => {
       if (event.target.classList.contains("delete-btn")) {
