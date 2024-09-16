@@ -19,6 +19,7 @@ export class SubscriptionsService {
     public readonly usersService: UsersService,
     public emailService: EmailService,
   ) {}
+
   create(createSubscriptionDto: CreateSubscriptionDto) {
     return this.subscriptionRepository.save(createSubscriptionDto);
   }

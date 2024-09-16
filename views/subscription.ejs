@@ -11,6 +11,8 @@
 <body>
 <div class="py-16">
   <form action="/subscriptions/<%= sub.id %>/checkout" method="post" class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+    <input type="hidden" name="pay_with" id="pay_with" value="">
+
     <div class="hidden lg:block lg:w-1/2 bg-cover"
          style="background-image:url('https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80')">
     </div>
@@ -85,8 +87,30 @@
 
 
 
-      <div class="mt-8">
-        <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Checkout & Register</button>
+      <div class="mt-8 grid grid-cols-2 gap-4">
+        <!-- Checkout Button (Stripe) -->
+        <button type="button" class="bg-indigo-400 col-span-2 text-white font-bold py-2 px-4 w-full rounded flex items-center justify-center hover:bg-blue-500" onclick="setPaymentMethod('stripe')">
+          Checkout
+        </button>
+
+        <!-- Pay with PayPal Button -->
+        <button type="button" class="bg-blue-600 text-white font-bold py-2 px-4 w-full rounded flex items-center justify-center hover:bg-blue-500" onclick="setPaymentMethod('paypal')">
+          <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.626 3.002c-.247-.005-.592-.005-.839-.005-3.683 0-6.469 1.43-7.727 5.438-.735 2.307-1.465 4.625-2.185 6.937-.073.227-.088.475-.088.712 0 1.068.876 1.914 1.942 1.914h2.289l.522-2.543h.013c.073-.34.298-.498.636-.498h.859c2.44 0 4.538-.952 5.317-3.68.147-.533.195-.976.195-1.458 0-1.888-1.266-3.353-3.034-3.627.046-.276.068-.548.068-.827.001-2.042-1.33-3.717-3.371-3.717zm-1.563 8.748h-.848c-.546 0-.857.226-1.035.772h-1.158c.207-.935.783-1.382 1.563-1.382h.848c.546 0 .857-.226 1.035-.772h1.158c-.207.935-.783 1.382-1.563 1.382zm-1.563-2.448h-.848c-.546 0-.857-.226-1.035-.772h-1.158c.207.935.783 1.382 1.563 1.382h.848c.546 0 .857.226 1.035.772h1.158c-.207-.935-.783-1.382-1.563-1.382z"/>
+          </svg>
+          Pay with PayPal
+        </button>
+
+        <!-- Pay with BTC Button -->
+        <button type="button" class="bg-yellow-500 text-white font-bold py-2 px-4 w-full rounded flex items-center justify-center hover:bg-yellow-400" onclick="setPaymentMethod('crypto')">
+          <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 2h8v8H2V2zm4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6-6h8v8h-8V2zm6 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-6 6h8v8h-8v-8zm6 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM2 12h8v8H2v-8zm4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+          </svg>
+          Pay with BTC
+        </button>
+      </div>
+      <div>
+
       </div>
       <div class="mt-4 flex items-center justify-between">
         <span class="border-b w-1/5 md:w-1/4"></span>
@@ -96,6 +120,13 @@
     </div>
   </form>
 </div>
-
+<script>
+  function setPaymentMethod(method) {
+    // Set the hidden input value
+    document.getElementById('pay_with').value = method;
+    // Submit the form
+    document.querySelector('form').submit();
+  }
+</script>
 </body>
 </html>

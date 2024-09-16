@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { StripeService } from './stripe.service';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
@@ -18,17 +18,22 @@ export class StripeController {
     this.stripe = this.stripeService.stripe;
   }
 
-  /*  @Post('create-payment-link')
+  @Post('create-payment-link')
   async createPaymentLink(@Req() req: Request, @Res() res: Response) {
-    const { userId, subId } = req.body;
+    const { userId, subId, instructor_id, instructor_name, center_name } =
+      req.body;
     const sub = await this.subscriptionService.findOne(subId);
     const url = await this.stripeService.createPaymentLink(
       userId,
       sub.price,
       sub.id.toString(),
+      sub.name,
+      instructor_name,
+      instructor_id,
+      center_name,
     );
     return res.send({ url });
-  }*/
+  }
 
   @Get('payment-success/')
   async handlePaymentSuccess(
@@ -39,6 +44,7 @@ export class StripeController {
       const session = await this.stripeService.retrieveSession(sessionId);
       const subId = session.metadata.subId;
       const email = session.metadata.email;
+      console.log(session.metadata);
       const sub = await this.subscriptionService.findOne(+subId);
 
       if (!email) throw new Error('Email not found in session');

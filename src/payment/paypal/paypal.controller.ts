@@ -11,6 +11,7 @@ export class PaypalController {
     private readonly paypalService: PaypalService,
     private readonly subscriptionService: SubscriptionsService,
   ) {}
+
   @Get('payment-success/')
   async handlePaymentSuccess(
     @Query('session_id') sessionId: string,
