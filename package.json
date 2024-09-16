@@ -35,6 +35,7 @@
     "@paypal/checkout-server-sdk": "^1.0.3",
     "@pdf-lib/fontkit": "^1.1.1",
     "@types/paypal__checkout-server-sdk": "^1.0.8",
+    "axios": "^1.7.7",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "csv-stringify": "^6.5.0",
