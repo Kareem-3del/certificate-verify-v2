@@ -48,4 +48,7 @@ export class User {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @Column({ default: 'Egypt' })
+  country: string;
 }
