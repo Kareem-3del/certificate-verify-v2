@@ -9,6 +9,7 @@ import {
   Render,
   Res,
   Put,
+  Query,
 } from '@nestjs/common';
 import { SubscriptionsService } from './subscriptions.service';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
@@ -36,16 +37,21 @@ export class SubscriptionsController {
     return this.subscriptionsService.findAll();
   }
   @Get('analysis')
-  async analysis() {
+  async analysis(@Query('days') days: number) {
+    const fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() - days); // Set the start date to the past 'days'
+
     const totalEarnings =
-      await this.subscriptionsService.calculateTotalEarnings();
+      await this.subscriptionsService.calculateTotalEarnings(fromDate);
     const mostSubscription =
-      await this.subscriptionsService.getMostSubscribed();
+      await this.subscriptionsService.getMostSubscribed(fromDate);
     const rateOfReSubscribe =
-      await this.subscriptionsService.calculateReSubscribeRate();
+      await this.subscriptionsService.calculateReSubscribeRate(fromDate);
     const rateOfSameUserReSubscribe =
-      await this.subscriptionsService.calculateSameUserReSubscribeRate();
-    const growth = await this.subscriptionsService.calculateGrowth();
+      await this.subscriptionsService.calculateSameUserReSubscribeRate(
+        fromDate,
+      );
+    const growth = await this.subscriptionsService.calculateGrowth(fromDate);
 
     return {
       totalEarnings,

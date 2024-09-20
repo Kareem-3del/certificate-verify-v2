@@ -33,18 +33,30 @@ export class UsersService {
     return await this.userRepository.save(newUser);
   }
 
-  async getUserSubscriptions(userId: number): Promise<Subscription[]> {
+  async getUserSubscriptions(
+    userId: number,
+    fromDate?: Date,
+  ): Promise<Subscription[]> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['subscriptions'], // Ensure this relation is loaded
+      relations: ['subscriptions'], // Load the user's subscriptions
     });
 
     if (!user) {
       throw new HttpException('User not found', 404);
     }
 
-    return user.subscriptions; // Return the subscriptions of the user
+    // If a date filter is provided, filter subscriptions by creation date
+    if (fromDate) {
+      return user.subscriptions.filter(
+        (subscription) => new Date(subscription.created_at) > fromDate,
+      );
+    }
+
+    // Return all subscriptions if no date filter is provided
+    return user.subscriptions;
   }
+
   async delete(id: number): Promise<void> {
     const user = await this.userRepository.findOneBy({ id });
     if (!user) {

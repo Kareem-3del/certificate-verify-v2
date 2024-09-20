@@ -24,33 +24,42 @@ export class SubscriptionsService {
     return this.subscriptionRepository.save(createSubscriptionDto);
   }
 
-  async calculateTotalEarnings(): Promise<number> {
+  async calculateTotalEarnings(fromDate: Date): Promise<number> {
     const subscriptions = await this.subscriptionRepository.find({
+      where: {
+        created_at: MoreThan(fromDate), // Filter by date range
+      },
       relations: ['users'],
     });
+
     return subscriptions.reduce(
       (total, sub) => total + sub.price * sub.purchased,
       0,
     );
   }
 
-  async getMostSubscribed(): Promise<Subscription> {
+  async getMostSubscribed(fromDate: Date): Promise<Subscription> {
     const subscriptions = await this.subscriptionRepository.find({
+      where: {
+        created_at: MoreThan(fromDate), // Filter by date range
+      },
       relations: ['users'],
     });
+
     return subscriptions.reduce((most, sub) => {
       return sub.users.length > most.users.length ? sub : most;
     });
   }
 
-  async calculateReSubscribeRate(): Promise<number> {
-    const users = await this.usersService.findAll(); // Assuming you have a method to get all users
+  async calculateReSubscribeRate(fromDate: Date): Promise<number> {
+    const users = await this.usersService.findAll();
     let reSubscribedCount = 0;
 
     for (const user of users) {
       const subscriptions = await this.usersService.getUserSubscriptions(
         user.id,
-      ); // Replace with actual method to get subscriptions
+        fromDate,
+      ); // Get user subscriptions from date
       if (subscriptions.length > 1) {
         reSubscribedCount++;
       }
@@ -59,13 +68,14 @@ export class SubscriptionsService {
     return (reSubscribedCount / users.length) * 100; // Percentage
   }
 
-  async calculateSameUserReSubscribeRate(): Promise<number> {
+  async calculateSameUserReSubscribeRate(fromDate: Date): Promise<number> {
     const users = await this.usersService.findAll();
     let sameUserReSubscribedCount = 0;
 
     for (const user of users) {
       const subscriptions = await this.usersService.getUserSubscriptions(
         user.id,
+        fromDate,
       );
       const uniqueSubscriptions = new Set(subscriptions.map((sub) => sub.id));
       if (uniqueSubscriptions.size < subscriptions.length) {
@@ -76,13 +86,19 @@ export class SubscriptionsService {
     return (sameUserReSubscribedCount / users.length) * 100; // Percentage
   }
 
-  async calculateGrowth(): Promise<number> {
-    const currentPeriodSubscriptions =
-      await this.subscriptionRepository.count();
+  async calculateGrowth(fromDate: Date): Promise<number> {
+    const currentPeriodSubscriptions = await this.subscriptionRepository.count({
+      where: {
+        created_at: MoreThan(fromDate), // Count from start date
+      },
+    });
+
     const previousPeriodSubscriptions = await this.subscriptionRepository.count(
       {
         where: {
-          created_at: MoreThan(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)),
+          created_at: MoreThan(
+            new Date(fromDate.getTime() - 30 * 24 * 60 * 60 * 1000),
+          ), // Count from 30 days before the 'fromDate'
         },
       },
     );
