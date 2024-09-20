@@ -3,7 +3,7 @@ import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Subscription } from './entities/subscription.entity';
-import { Between, MoreThan, Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { PaymentService } from '../payment/payment.service';
 import { UsersService } from '../users/users.service';
 import { EmailService } from '../email/email.service';
@@ -12,9 +12,8 @@ import { EmailService } from '../email/email.service';
 export class SubscriptionsService {
   constructor(
     // Inject the repository
-
     @InjectRepository(Subscription)
-    public subscriptionRepository: Repository<Subscription>,
+    private subscriptionRepository: Repository<Subscription>,
     public readonly paymentService: PaymentService,
     @Inject(forwardRef(() => UsersService))
     public readonly usersService: UsersService,
@@ -29,73 +28,36 @@ export class SubscriptionsService {
     return this.subscriptionRepository.find();
   }
 
-  async toDayEarnings(): Promise<number> {
-    const subscriptions = await this.subscriptionRepository.find({
-      where: {
-        created_at: MoreThan(new Date(new Date().setHours(0, 0, 0, 0))),
-      },
-    });
-    return subscriptions.reduce(
-      (total, sub) => total + sub.price * sub.purchased,
-      0,
-    );
-  }
-
   async calculateTotalEarnings(fromDate: Date): Promise<number> {
-    const subscriptions = await this.subscriptionRepository.find({
-      where: {
-        // created_at: MoreThan(fromDate), // Filter by date range
-      },
-      relations: ['users'],
-    });
-
-    return subscriptions.reduce(
-      (total, sub) => total + sub.price * sub.purchased,
-      0,
-    );
-  }
-  async calculateEarningsPerDay(
-    fromDate: Date,
-    toDate: Date,
-  ): Promise<Record<string, number>> {
-    const subscriptions = await this.subscriptionRepository.find({
-      where: {
-        created_at: Between(fromDate, toDate), // Filter by date range
-      },
-      relations: ['users'],
-    });
-
-    const earningsPerDay: Record<string, number> = {};
-
-    subscriptions.forEach((sub) => {
-      const date = sub.created_at.toISOString().split('T')[0]; // Get the date part (YYYY-MM-DD)
-      if (!earningsPerDay[date]) {
-        earningsPerDay[date] = 0;
-      }
-      earningsPerDay[date] += sub.price * sub.purchased; // Accumulate earnings per day
-    });
-
-    return earningsPerDay;
-  }
-
-  async getMostSubscribed(fromDate: Date): Promise<Subscription[]> {
     const subscriptions = await this.subscriptionRepository.find({
       where: {
         created_at: MoreThan(fromDate), // Filter by date range
       },
-      take: 10, // Get the top 5 subscriptions
-      relations: ['users'], // Include users in the query
+      relations: ['users'],
     });
 
-    // Sort subscriptions by the number of users in descending order
-    // Delete users after sorting
-    return subscriptions
-      .sort((a, b) => b.users.length - a.users.length)
-      .map((sub) => {
-        delete sub.users;
-        delete sub.emailMessage;
-        return sub;
-      });
+    return subscriptions.reduce(
+      (total, sub) => total + sub.price * sub.purchased,
+      0,
+    );
+  }
+
+  async getMostSubscribed(fromDate: Date): Promise<Subscription> {
+    const subscriptions = await this.subscriptionRepository.find({
+      where: {
+        users: {
+          created_at: MoreThan(fromDate),
+        },
+      },
+      order: {
+        users: 'DESC',
+      },
+      relations: ['users'],
+    });
+
+    return subscriptions.reduce((most, sub) => {
+      return sub.users.length > most.users.length ? sub : most;
+    });
   }
 
   async calculateReSubscribeRate(fromDate: Date): Promise<number> {
@@ -131,24 +93,6 @@ export class SubscriptionsService {
     }
 
     return (sameUserReSubscribedCount / users.length) * 100; // Percentage
-  }
-
-  async recentSubscriptions(): Promise<Subscription[]> {
-    // take last 10
-    return this.subscriptionRepository.find({
-      order: {
-        created_at: 'DESC',
-      },
-      take: 10,
-    });
-  }
-
-  async totalSubscriptions(formDate: Date): Promise<number> {
-    return this.subscriptionRepository.count({
-      where: {
-        created_at: MoreThan(formDate), // Count from start date
-      },
-    });
   }
 
   async calculateGrowth(fromDate: Date): Promise<number> {
