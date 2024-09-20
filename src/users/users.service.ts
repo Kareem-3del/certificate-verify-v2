@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { SubscriptionsService } from '../subscriptions/subscriptions.service';
 import { ConfigService } from '@nestjs/config';
+import { Subscription } from '../subscriptions/entities/subscription.entity';
 
 @Injectable()
 export class UsersService {
@@ -21,6 +22,30 @@ export class UsersService {
       }
     });
     console.log('UsersService created');
+  }
+
+  async getUserSubscriptions(
+    userId: number,
+    fromDate?: Date,
+  ): Promise<Subscription[]> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['subscriptions'], // Load the user's subscriptions
+    });
+
+    if (!user) {
+      throw new HttpException('User not found', 404);
+    }
+
+    // If a date filter is provided, filter subscriptions by creation date
+    if (fromDate) {
+      return user.subscriptions.filter(
+        (subscription) => new Date(subscription.created_at) > fromDate,
+      );
+    }
+
+    // Return all subscriptions if no date filter is provided
+    return user.subscriptions;
   }
 
   async create(
