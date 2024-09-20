@@ -24,6 +24,10 @@ export class SubscriptionsService {
     return this.subscriptionRepository.save(createSubscriptionDto);
   }
 
+  findAll() {
+    return this.subscriptionRepository.find();
+  }
+
   async calculateTotalEarnings(fromDate: Date): Promise<number> {
     const subscriptions = await this.subscriptionRepository.find({
       where: {
@@ -38,17 +42,24 @@ export class SubscriptionsService {
     );
   }
 
-  async getMostSubscribed(fromDate: Date): Promise<Subscription> {
+  async getMostSubscribed(fromDate: Date): Promise<Subscription[]> {
     const subscriptions = await this.subscriptionRepository.find({
       where: {
         created_at: MoreThan(fromDate), // Filter by date range
       },
-      relations: ['users'],
+      take: 10, // Get the top 5 subscriptions
+      relations: ['users'], // Include users in the query
     });
 
-    return subscriptions.reduce((most, sub) => {
-      return sub.users.length > most.users.length ? sub : most;
-    });
+    // Sort subscriptions by the number of users in descending order
+    // Delete users after sorting
+    return subscriptions
+      .sort((a, b) => b.users.length - a.users.length)
+      .map((sub) => {
+        delete sub.users;
+        delete sub.emailMessage;
+        return sub;
+      });
   }
 
   async calculateReSubscribeRate(fromDate: Date): Promise<number> {
@@ -86,6 +97,16 @@ export class SubscriptionsService {
     return (sameUserReSubscribedCount / users.length) * 100; // Percentage
   }
 
+  async recentSubscriptions(): Promise<Subscription[]> {
+    // take last 10
+    return this.subscriptionRepository.find({
+      order: {
+        created_at: 'DESC',
+      },
+      take: 10,
+    });
+  }
+
   async calculateGrowth(fromDate: Date): Promise<number> {
     const currentPeriodSubscriptions = await this.subscriptionRepository.count({
       where: {
@@ -109,11 +130,6 @@ export class SubscriptionsService {
       100
     ); // Percentage
   }
-
-  findAll() {
-    return this.subscriptionRepository.find();
-  }
-
   findOne(id: number) {
     return this.subscriptionRepository.findOne({
       where: { id },
