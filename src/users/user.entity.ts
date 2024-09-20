@@ -6,6 +6,7 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
+  CreateDateColumn,
 } from 'typeorm';
 import { Subscription } from '../subscriptions/entities/subscription.entity';
 import { Transaction } from '../payment/entities';
@@ -44,4 +45,10 @@ export class User {
 
   @OneToMany(() => Transaction, (transaction) => transaction.user)
   transactions: Transaction[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @Column({ default: 'Egypt' })
+  country: string;
 }
