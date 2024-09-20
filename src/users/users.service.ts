@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { SubscriptionsService } from '../subscriptions/subscriptions.service';
 import { ConfigService } from '@nestjs/config';
+import { Subscription } from '../subscriptions/entities/subscription.entity';
 
 @Injectable()
 export class UsersService {
@@ -32,6 +33,18 @@ export class UsersService {
     return await this.userRepository.save(newUser);
   }
 
+  async getUserSubscriptions(userId: number): Promise<Subscription[]> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['subscriptions'], // Ensure this relation is loaded
+    });
+
+    if (!user) {
+      throw new HttpException('User not found', 404);
+    }
+
+    return user.subscriptions; // Return the subscriptions of the user
+  }
   async delete(id: number): Promise<void> {
     const user = await this.userRepository.findOneBy({ id });
     if (!user) {

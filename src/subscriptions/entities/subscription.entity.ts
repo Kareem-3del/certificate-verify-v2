@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -48,4 +49,7 @@ export class Subscription {
   })
   @JoinTable()
   users: User[];
+
+  @CreateDateColumn()
+  created_at: Date;
 }

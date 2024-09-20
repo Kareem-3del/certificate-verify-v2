@@ -35,6 +35,26 @@ export class SubscriptionsController {
   findAll() {
     return this.subscriptionsService.findAll();
   }
+  @Get('analysis')
+  async analysis() {
+    const totalEarnings =
+      await this.subscriptionsService.calculateTotalEarnings();
+    const mostSubscription =
+      await this.subscriptionsService.getMostSubscribed();
+    const rateOfReSubscribe =
+      await this.subscriptionsService.calculateReSubscribeRate();
+    const rateOfSameUserReSubscribe =
+      await this.subscriptionsService.calculateSameUserReSubscribeRate();
+    const growth = await this.subscriptionsService.calculateGrowth();
+
+    return {
+      totalEarnings,
+      mostSubscription,
+      rateOfReSubscribe,
+      rateOfSameUserReSubscribe,
+      growth,
+    };
+  }
 
   @Get(':id')
   @Render('subscription')
