@@ -45,7 +45,12 @@ export class SubscriptionsService {
   async getMostSubscribed(fromDate: Date): Promise<Subscription> {
     const subscriptions = await this.subscriptionRepository.find({
       where: {
-        created_at: MoreThan(fromDate), // Filter by date range
+        users: {
+          created_at: MoreThan(fromDate),
+        },
+      },
+      order: {
+        users: 'DESC',
       },
       relations: ['users'],
     });
