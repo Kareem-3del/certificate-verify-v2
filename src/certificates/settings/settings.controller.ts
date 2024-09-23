@@ -57,6 +57,11 @@ export class SettingsController {
     throw new Error('No user found');
   }
 
+  @Get('/json')
+  async getSettings(): Promise<Settings[]> {
+    return this.settingsService.findAll();
+  }
+
   @Redirect('/settings')
   @Post(':id')
   async updateSettings(

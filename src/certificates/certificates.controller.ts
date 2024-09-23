@@ -101,14 +101,46 @@ export class CertificatesController {
     private usersService: UsersService,
   ) {}
 
+  @Get('analysis')
+  async getCertificateAnalysis(@Query('days') days: string) {
+    const daysAgo = parseInt(days, 10); // Convert days to an integer
+    const fromDate = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000); // Subtract days from the current date
+
+    const [
+      totalCertificates,
+      recentCertificates,
+      rateOfSameUserGetMoreCertificates,
+      rateOfCertificatesByType,
+    ] = await Promise.all([
+      this.certificatesService.totalCertificates(fromDate),
+      this.certificatesService.recentCertificates(fromDate),
+      this.certificatesService.rateOfSameUserGetMoreCertificates(),
+      this.certificatesService.rateOfCertificatesByType(),
+    ]);
+    const analysis = await this.usersService.getUserAnalysis(daysAgo);
+    return {
+      totalCertificates,
+      recentCertificates,
+      rateOfSameUserGetMoreCertificates,
+      rateOfCertificatesByType,
+      ...analysis,
+    };
+  }
+
   @Post('send-bulk')
   async sendBulkEmail(
+    @Res() res: Response,
     @Body('recipients') recipients: string[],
     @Body('name') name: string,
     @Body('subject') subject: string,
     @Body('text') text: string,
     @Body('resultEmail') resultEmail: string,
-    @Res() res: Response,
+    @Body('attachments')
+    attachments?: {
+      filename: string;
+      content: string;
+      contentType: string;
+    }[],
   ) {
     try {
       const results = await this.emailService.sendBulkEmail(
@@ -117,6 +149,7 @@ export class CertificatesController {
         subject,
         text,
         resultEmail,
+        attachments, // Pass attachments to the service method
       );
 
       res.status(HttpStatus.OK).json(results);
