@@ -860,7 +860,7 @@ const Template_8: TemplateData = {
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Certificate } from './certificate.entity';
-import { ILike, Repository } from 'typeorm';
+import { ILike, LessThan, MoreThan, Repository } from 'typeorm';
 import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib';
 import * as fs from 'fs';
 import { toDataURL } from 'qrcode';
@@ -950,6 +950,74 @@ export class CertificatesService {
     private settingsService: SettingsService,
     private emailService: EmailService,
   ) {}
+
+  async totalCertificates(fromDate: Date) {
+    return this.certificateRepository.count({
+      where: {
+        // created_at: MoreThan(fromDate),
+      },
+    });
+  }
+
+  async recentCertificatesByDay(fromDate: Date) {
+    return this.certificateRepository
+      .createQueryBuilder('certificate')
+      .select('DATE(created_at) as day')
+      .addSelect('COUNT(*) as count')
+      .where('created_at > :fromDate', { fromDate })
+      .groupBy('DATE(created_at)')
+      .orderBy('DATE(created_at)', 'ASC')
+      .getRawMany();
+  }
+
+  async totalCertificatesByMonth() {
+    return this.certificateRepository
+      .createQueryBuilder('certificate')
+      .select("DATE_TRUNC('month', created_at) as month")
+      .addSelect('COUNT(*) as count')
+      .groupBy("DATE_TRUNC('month', created_at)")
+      .orderBy("DATE_TRUNC('month', created_at)", 'ASC')
+      .getRawMany();
+  }
+
+  async recentCertificates(fromDate: Date) {
+    return this.certificateRepository.find({
+      order: {
+        created_at: 'DESC',
+      },
+      take: 10,
+    });
+  }
+
+  rateOfSameUserGetMoreCertificates() {
+    return this.certificateRepository
+      .createQueryBuilder('certificate')
+      .select('email')
+      .addSelect('COUNT(email) as count')
+      .groupBy('email')
+      .having('COUNT(email) > 1')
+      .getRawMany();
+  }
+
+  async usersWithMoreCertificatesByType() {
+    return this.certificateRepository
+      .createQueryBuilder('certificate')
+      .select('email')
+      .addSelect('type')
+      .addSelect('COUNT(*) as count')
+      .groupBy('email, type')
+      .having('COUNT(*) > 1')
+      .getRawMany();
+  }
+
+  rateOfCertificatesByType() {
+    return this.certificateRepository
+      .createQueryBuilder('certificate')
+      .select('type')
+      .addSelect('COUNT(type) as count')
+      .groupBy('type')
+      .getRawMany();
+  }
 
   async getByType(type: string | 'all') {
     if (type == 'all') {

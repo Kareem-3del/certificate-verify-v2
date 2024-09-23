@@ -27,11 +27,6 @@ export class SubscriptionsController {
     private readonly payid19Service: Payid19Service,
   ) {}
 
-  @Post()
-  create(@Body() createSubscriptionDto: CreateSubscriptionDto) {
-    return this.subscriptionsService.create(createSubscriptionDto);
-  }
-
   @Get()
   findAll() {
     return this.subscriptionsService.findAll();
@@ -44,6 +39,8 @@ export class SubscriptionsController {
 
     const totalEarnings =
       await this.subscriptionsService.calculateTotalEarnings(fromDate);
+    const toDayEarnings = await this.subscriptionsService.toDayEarnings();
+
     const mostSubscription =
       await this.subscriptionsService.getMostSubscribed(fromDate);
     const rateOfReSubscribe =
@@ -53,12 +50,25 @@ export class SubscriptionsController {
         fromDate,
       );
     const growth = await this.subscriptionsService.calculateGrowth(fromDate);
+    const totalSubscriptions =
+      await this.subscriptionsService.totalSubscriptions(fromDate);
+    const recentSubscriptions =
+      await this.subscriptionsService.recentSubscriptions();
 
+    const earningsPerDay =
+      await this.subscriptionsService.calculateEarningsPerDay(
+        fromDate,
+        new Date(),
+      );
     return {
       totalEarnings,
+      toDayEarnings,
+      totalSubscriptions,
+      earningsPerDay,
       mostSubscription,
       rateOfReSubscribe,
       rateOfSameUserReSubscribe,
+      recentSubscriptions,
       growth,
     };
   }
@@ -177,6 +187,10 @@ export class SubscriptionsController {
     }
   }
 
+  @Post()
+  create(@Body() createSubscriptionDto: CreateSubscriptionDto) {
+    return this.subscriptionsService.create(createSubscriptionDto);
+  }
   @Put(':id')
   update(
     @Param('id') id: string,

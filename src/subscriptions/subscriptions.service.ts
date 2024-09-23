@@ -3,7 +3,7 @@ import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Subscription } from './entities/subscription.entity';
-import { MoreThan, Repository } from 'typeorm';
+import { Between, MoreThan, Repository } from 'typeorm';
 import { PaymentService } from '../payment/payment.service';
 import { UsersService } from '../users/users.service';
 import { EmailService } from '../email/email.service';
@@ -13,7 +13,7 @@ export class SubscriptionsService {
   constructor(
     // Inject the repository
     @InjectRepository(Subscription)
-    private subscriptionRepository: Repository<Subscription>,
+    public subscriptionRepository: Repository<Subscription>,
     public readonly paymentService: PaymentService,
     @Inject(forwardRef(() => UsersService))
     public readonly usersService: UsersService,
@@ -28,10 +28,22 @@ export class SubscriptionsService {
     return this.subscriptionRepository.find();
   }
 
+  async toDayEarnings(): Promise<number> {
+    const subscriptions = await this.subscriptionRepository.find({
+      where: {
+        created_at: MoreThan(new Date(new Date().setHours(0, 0, 0, 0))),
+      },
+    });
+    return subscriptions.reduce(
+      (total, sub) => total + sub.price * sub.purchased,
+      0,
+    );
+  }
+
   async calculateTotalEarnings(fromDate: Date): Promise<number> {
     const subscriptions = await this.subscriptionRepository.find({
       where: {
-        created_at: MoreThan(fromDate), // Filter by date range
+        // created_at: MoreThan(fromDate), // Filter by date range
       },
       relations: ['users'],
     });
@@ -40,6 +52,29 @@ export class SubscriptionsService {
       (total, sub) => total + sub.price * sub.purchased,
       0,
     );
+  }
+  async calculateEarningsPerDay(
+    fromDate: Date,
+    toDate: Date,
+  ): Promise<Record<string, number>> {
+    const subscriptions = await this.subscriptionRepository.find({
+      where: {
+        created_at: Between(fromDate, toDate), // Filter by date range
+      },
+      relations: ['users'],
+    });
+
+    const earningsPerDay: Record<string, number> = {};
+
+    subscriptions.forEach((sub) => {
+      const date = sub.created_at.toISOString().split('T')[0]; // Get the date part (YYYY-MM-DD)
+      if (!earningsPerDay[date]) {
+        earningsPerDay[date] = 0;
+      }
+      earningsPerDay[date] += sub.price * sub.purchased; // Accumulate earnings per day
+    });
+
+    return earningsPerDay;
   }
 
   async getMostSubscribed(fromDate: Date): Promise<Subscription[]> {
@@ -104,6 +139,14 @@ export class SubscriptionsService {
         created_at: 'DESC',
       },
       take: 10,
+    });
+  }
+
+  async totalSubscriptions(formDate: Date): Promise<number> {
+    return this.subscriptionRepository.count({
+      where: {
+        created_at: MoreThan(formDate), // Count from start date
+      },
     });
   }
 
