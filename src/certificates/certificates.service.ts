@@ -860,7 +860,7 @@ const Template_8: TemplateData = {
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Certificate } from './certificate.entity';
-import { ILike, Repository } from 'typeorm';
+import { ILike, LessThan, MoreThan, Repository } from 'typeorm';
 import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib';
 import * as fs from 'fs';
 import { toDataURL } from 'qrcode';
