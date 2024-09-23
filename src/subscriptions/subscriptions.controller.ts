@@ -61,6 +61,7 @@ export class SubscriptionsController {
       );
     return {
       totalEarnings,
+
       toDayEarnings,
       totalSubscriptions,
       earningsPerDay,
