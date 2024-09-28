@@ -2,856 +2,865 @@ import * as path from 'path';
 import { Parser } from 'json2csv';
 
 const Template_1: TemplateData = {
-  image_cert: path.resolve('./views/templates/v1/template-1.png'),
-  image_id: path.resolve('./views/templates/v1/template-1-card.png'),
+  image_cert: path.resolve('./views/templates/v2/template-1.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
   settings: 1,
 
   id_card: {
-    fontSize: 8,
+    fontSize: 18,
     fullName: {
-      x: 170,
-      y: 720,
+      x: 590,
+      y: 390,
+      scale: 2.0,
       center: true,
     },
     issued: {
-      x: 59,
-      y: 660,
+      x: 380 + 70,
+      y: 200,
+      i: true,
     },
     expires: {
-      x: 118,
-      y: 660,
+      x: 600 + 150,
+      y: 200,
+      i: true,
     },
     instructorId: {
-      x: 348,
-      y: 652,
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 275,
+      scale: 1.8,
+      center: true,
     },
     instructorName: {
-      x: 348,
+      x: 34008,
       y: 665,
     },
     TrainingCenterName: {
-      x: 348,
+      x: 30408,
       y: 745,
     },
     TrainingCenterId: {
-      x: 348,
+      x: 34008,
       y: 725,
     },
     eCardCode: {
-      x: 175,
-      y: 660,
+      x: 110404,
+      y: 1848,
     },
     city: {
-      x: 348,
+      x: 340008,
       y: 705,
     },
     training_site_name: {
-      x: 348,
-      y: 685,
+      x: 50,
+      fontSize: 12,
+      y: 240,
     },
     qrCode: {
-      x: 233,
-      y: 635,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
   cert_card: {
-    fontSize: 12,
+    fontSize: 15,
     fullName: {
-      x: 595.28 / 2,
-      y: 585,
-      center: true,
-    },
-    expires: {
-      x: 445,
-      y: 465,
-      center: true,
-    },
-    instructorName: {
-      x: 435,
-      y: 425,
-      center: true,
-    },
-    instructorId: {
-      x: 435,
-      y: 385,
-      center: true,
-    },
-    eCardCode: {
-      x: 435,
-      y: 345,
-      center: true,
-    },
-    qrCode: {
-      x: 405,
-      y: 260,
+      x: 150,
+      y: 930,
+      scale: 1.9,
+      center: false,
     },
     issued: {
-      x: 175,
-      y: 465,
-      center: true,
+      x: 275,
+      y: 876,
+    },
+    expires: {
+      x: 275,
+      y: 856,
+    },
+    eCardCode: {
+      x: 275,
+      y: 836,
+    },
+    instructorName: {
+      x: 220005,
+      y: 816,
     },
     TrainingCenterName: {
-      x: 165,
-      y: 425,
-      center: true,
+      x: 275,
+      y: 816,
     },
+    instructorId: {
+      x: 275,
+      y: 896,
+    },
+
+    qrCode: {
+      x: 700 - 20,
+      y: 800 - 20,
+      w: 150,
+      h: 150,
+    },
+
     TrainingCenterId: {
-      x: 165,
+      x: 16005,
       y: 385,
       center: true,
     },
     city: {
-      x: 165,
+      x: 16005,
       y: 345,
       center: true,
     },
     training_site_name: {
-      x: 165,
+      x: 16005,
       y: 305,
+      fontSize: 12,
+
       center: true,
     },
   },
 };
 const Template_2: TemplateData = {
-  image_cert: path.resolve('./views/templates/v1/template-2.png'),
-  image_id: path.resolve('./views/templates/v1/template-2-card.png'),
+  image_cert: path.resolve('./views/templates/v2/template-2.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
   settings: 2,
+
   id_card: {
-    fontSize: 8,
+    fontSize: 18,
     fullName: {
-      x: 170,
-      y: 720,
+      x: 590,
+      y: 390,
+      scale: 2.0,
       center: true,
     },
     issued: {
-      x: 59,
-      y: 660,
+      x: 380 + 70,
+      y: 200,
+      i: true,
     },
     expires: {
-      x: 118,
-      y: 660,
+      x: 600 + 150,
+      y: 200,
+      i: true,
     },
     instructorId: {
-      x: 348,
-      y: 655,
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 275,
+      scale: 1.8,
+      center: true,
     },
     instructorName: {
-      x: 3048,
+      x: 34008,
       y: 665,
     },
     TrainingCenterName: {
-      x: 348,
+      x: 30408,
       y: 745,
     },
     TrainingCenterId: {
-      x: 348,
-      y: 720,
+      x: 34008,
+      y: 725,
     },
     eCardCode: {
-      x: 175,
-      y: 660,
+      x: 110404,
+      y: 1848,
     },
     city: {
-      x: 348,
-      y: 700,
+      x: 340008,
+      y: 705,
     },
     training_site_name: {
-      x: 348,
-      y: 675,
+      x: 50,
+      fontSize: 12,
+      y: 240,
     },
     qrCode: {
-      w: 60,
-      h: 55,
-      x: 235,
-      y: 632,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
   cert_card: {
-    fontSize: 12,
+    fontSize: 15,
     fullName: {
-      x: 595.28 / 2,
-      y: 575,
-      center: true,
-    },
-    expires: {
-      x: 428,
-      y: 475,
-      center: true,
-    },
-    instructorName: {
-      x: 41500000,
-      y: 425,
-      center: true,
-    },
-    instructorId: {
-      x: 415,
-      y: 435,
-      center: true,
-    },
-    eCardCode: {
-      x: 415,
-      y: 395,
-      center: true,
-    },
-    qrCode: {
-      x: 385,
-      y: 310,
+      x: 150,
+      y: 930,
+      scale: 1.9,
+      center: false,
     },
     issued: {
-      x: 175,
-      y: 475,
-      center: true,
+      x: 275,
+      y: 876,
+    },
+    expires: {
+      x: 275,
+      y: 856,
+    },
+    eCardCode: {
+      x: 275,
+      y: 836,
+    },
+    instructorName: {
+      x: 220005,
+      y: 816,
     },
     TrainingCenterName: {
-      x: 165,
-      y: 435,
-      center: true,
+      x: 275,
+      y: 816,
     },
+    instructorId: {
+      x: 275,
+      y: 896,
+    },
+
+    qrCode: {
+      x: 700 - 20,
+      y: 800 - 20,
+      w: 150,
+      h: 150,
+    },
+
     TrainingCenterId: {
-      x: 165,
+      x: 16005,
       y: 385,
       center: true,
     },
     city: {
-      x: 165,
+      x: 16005,
       y: 345,
       center: true,
     },
     training_site_name: {
-      x: 165,
-      y: 310,
+      x: 16005,
+      y: 305,
+      fontSize: 12,
       center: true,
     },
   },
 };
 const Template_3: TemplateData = {
-  image_cert: path.resolve('./views/templates/v1/template-3.png'),
-  image_id: path.resolve('./views/templates/v1/template-3-card.png'),
+  image_cert: path.resolve('./views/templates/v2/template-3.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
   settings: 3,
+
   id_card: {
-    fontSize: 8,
+    fontSize: 18,
     fullName: {
-      x: 180,
-      y: 720,
+      x: 590,
+      y: 390,
+      scale: 2.0,
       center: true,
     },
     issued: {
-      x: 59,
-      y: 660,
+      x: 380 + 70,
+      y: 200,
+      i: true,
     },
     expires: {
-      x: 118,
-      y: 660,
+      x: 600 + 150,
+      y: 200,
+      i: true,
     },
     instructorId: {
-      x: 348,
-      y: 655,
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 275,
+      scale: 1.8,
+      center: true,
     },
     instructorName: {
-      x: 3048,
+      x: 34008,
       y: 665,
     },
     TrainingCenterName: {
-      x: 348,
+      x: 30408,
       y: 745,
     },
     TrainingCenterId: {
-      x: 348,
-      y: 720,
+      x: 34008,
+      y: 725,
     },
     eCardCode: {
-      x: 175,
-      y: 660,
+      x: 110404,
+      y: 1848,
     },
     city: {
-      x: 348,
-      y: 700,
+      x: 340008,
+      y: 705,
     },
     training_site_name: {
-      x: 348,
-      y: 675,
+      x: 50,
+      fontSize: 12,
+      y: 240,
     },
     qrCode: {
-      w: 60,
-      h: 55,
-      x: 235,
-      y: 632,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
   cert_card: {
-    fontSize: 12,
+    fontSize: 15,
     fullName: {
-      x: 595.28 / 2,
-      y: 575,
-      center: true,
-    },
-    expires: {
-      x: 438,
-      y: 475,
-      center: true,
-    },
-    instructorName: {
-      x: 41500000,
-      y: 425,
-      center: true,
-    },
-    instructorId: {
-      x: 425,
-      y: 435,
-      center: true,
-    },
-    eCardCode: {
-      x: 425,
-      y: 395,
-      center: true,
-    },
-    qrCode: {
-      x: 395,
-      y: 310,
+      x: 150,
+      y: 930,
+      scale: 1.9,
+      center: false,
     },
     issued: {
-      x: 175,
-      y: 475,
-      center: true,
+      x: 275,
+      y: 876,
+    },
+    expires: {
+      x: 275,
+      y: 856,
+    },
+    eCardCode: {
+      x: 275,
+      y: 836,
+    },
+    instructorName: {
+      x: 220005,
+      y: 816,
     },
     TrainingCenterName: {
-      x: 165,
-      y: 435,
-      center: true,
+      x: 275,
+      y: 816,
     },
+    instructorId: {
+      x: 275,
+      y: 896,
+    },
+
+    qrCode: {
+      x: 700 - 20,
+      y: 800 - 20,
+      w: 150,
+      h: 150,
+    },
+
     TrainingCenterId: {
-      x: 165,
+      x: 16005,
       y: 385,
       center: true,
     },
     city: {
-      x: 165,
+      x: 16005,
       y: 345,
       center: true,
     },
     training_site_name: {
-      x: 165,
-      y: 310,
+      x: 16005,
+      fontSize: 12,
+      y: 305,
       center: true,
     },
   },
 };
 const Template_4: TemplateData = {
-  image_cert: path.resolve('./views/templates/v1/template-4.png'),
-  image_id: path.resolve('./views/templates/v1/template-4-card.png'),
+  image_cert: path.resolve('./views/templates/v2/template-4.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
   settings: 4,
 
   id_card: {
-    fontSize: 8,
+    fontSize: 18,
     fullName: {
-      x: 170,
-      y: 720,
+      x: 590,
+      y: 390,
+      scale: 2.0,
       center: true,
     },
     issued: {
-      x: 59,
-      y: 660,
+      x: 380 + 70,
+      y: 200,
+      i: true,
     },
     expires: {
-      x: 118,
-      y: 660,
+      x: 600 + 150,
+      y: 200,
+      i: true,
     },
     instructorId: {
-      x: 348,
-      y: 648,
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 275,
+      scale: 1.8,
+      center: true,
     },
     instructorName: {
-      x: 348,
+      x: 34008,
       y: 665,
     },
     TrainingCenterName: {
-      x: 348,
+      x: 30408,
       y: 745,
     },
     TrainingCenterId: {
-      x: 348,
-      y: 720,
+      x: 34008,
+      y: 725,
     },
     eCardCode: {
-      x: 175,
-      y: 660,
+      x: 110404,
+      y: 1848,
     },
     city: {
-      x: 348,
-      y: 700,
+      x: 340008,
+      y: 705,
     },
     training_site_name: {
-      x: 348,
-      y: 685,
+      x: 50,
+      fontSize: 12,
+      y: 240,
     },
     qrCode: {
-      x: 233,
-      y: 635,
-      w: 55,
-      h: 55,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
   cert_card: {
-    fontSize: 12,
+    fontSize: 15,
     fullName: {
-      x: 595.28 / 2,
-      y: 585,
-      center: true,
+      x: 150,
+      y: 930,
+      scale: 1.9,
+      center: false,
+    },
+    issued: {
+      x: 275,
+      y: 876,
     },
     expires: {
-      x: 435,
-      y: 465,
-      center: true,
+      x: 275,
+      y: 856,
+    },
+    eCardCode: {
+      x: 275,
+      y: 836,
     },
     instructorName: {
-      x: 420,
-      y: 425,
-      center: true,
+      x: 220005,
+      y: 816,
+    },
+    TrainingCenterName: {
+      x: 275,
+      y: 816,
     },
     instructorId: {
-      x: 420,
+      x: 275,
+      y: 896,
+    },
+
+    qrCode: {
+      x: 700 - 20,
+      y: 800 - 20,
+      w: 150,
+      h: 150,
+    },
+
+    TrainingCenterId: {
+      x: 16005,
       y: 385,
       center: true,
     },
-    eCardCode: {
-      x: 420,
+    city: {
+      x: 16005,
       y: 345,
       center: true,
     },
-    qrCode: {
-      x: 390,
-      y: 260,
-    },
-    issued: {
-      x: 162,
-      y: 465,
-      center: true,
-    },
-    TrainingCenterName: {
-      x: 155,
-      y: 430,
-      center: true,
-    },
-    TrainingCenterId: {
-      x: 155,
-      y: 375,
-      center: true,
-    },
-    city: {
-      x: 155,
-      y: 335,
-      center: true,
-    },
     training_site_name: {
-      x: 155,
-      y: 285,
+      x: 16005,
+      fontSize: 12,
+      y: 305,
       center: true,
     },
   },
 };
 const Template_5: TemplateData = {
-  image_cert: path.resolve('./views/templates/v1/template-5.png'),
-  image_id: path.resolve('./views/templates/v1/template-5-card.png'),
+  image_cert: path.resolve('./views/templates/v2/template-5.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
   settings: 5,
 
   id_card: {
-    fontSize: 8,
+    fontSize: 18,
     fullName: {
-      x: 170,
-      y: 715,
+      x: 590,
+      y: 390,
+      scale: 2.0,
       center: true,
-    },
-    TrainingCenterName: {
-      x: 348,
-      y: 740,
-    },
-    TrainingCenterId: {
-      x: 348,
-      y: 720,
-    },
-    city: {
-      x: 348,
-      y: 700,
-    },
-    training_site_name: {
-      x: 348,
-      y: 680,
-    },
-    instructorName: {
-      x: 348,
-      y: 660,
-    },
-    instructorId: {
-      x: 348,
-      y: 648,
     },
     issued: {
-      x: 59,
-      y: 660,
+      x: 380 + 70,
+      y: 200,
+      i: true,
     },
     expires: {
-      x: 118,
-      y: 660,
+      x: 600 + 150,
+      y: 200,
+      i: true,
     },
-    eCardCode: {
-      x: 202,
-      y: 660,
+    instructorId: {
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 275,
+      scale: 1.8,
       center: true,
     },
-
+    instructorName: {
+      x: 34008,
+      y: 665,
+    },
+    TrainingCenterName: {
+      x: 30408,
+      y: 745,
+    },
+    TrainingCenterId: {
+      x: 34008,
+      y: 725,
+    },
+    eCardCode: {
+      x: 110404,
+      y: 1848,
+    },
+    city: {
+      x: 340008,
+      y: 705,
+    },
+    training_site_name: {
+      x: 50,
+      fontSize: 12,
+      y: 240,
+    },
     qrCode: {
-      x: 233,
-      y: 635,
-      w: 55,
-      h: 55,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
   cert_card: {
-    fontSize: 12,
+    fontSize: 24,
     fullName: {
-      x: 595.28 / 2,
-      y: 545,
-      center: true,
-    },
-    expires: {
-      x: 450,
-      y: 430,
-      center: true,
-    },
-    instructorName: {
-      x: 438,
-      y: 425 - 35,
-      center: true,
-    },
-    instructorId: {
-      x: 438,
-      y: 385 - 35,
-      center: true,
-    },
-    eCardCode: {
-      x: 438,
-      y: 345 - 35,
-      center: true,
-    },
-    qrCode: {
-      x: 410,
-      y: 260 - 35,
+      x: 150,
+      y: 940,
+      scale: 2.0,
+      center: false,
     },
     issued: {
-      x: 180,
-      y: 430,
-      center: true,
+      x: 350,
+      y: 852,
+    },
+    expires: {
+      x: 346,
+      y: 822,
+    },
+    eCardCode: {
+      x: 350,
+      y: 794,
+    },
+    instructorName: {
+      x: 220005,
+      y: 816,
     },
     TrainingCenterName: {
-      x: 172,
-      y: 425 - 35,
-      center: true,
+      x: 350,
+      y: 764,
     },
+    instructorId: {
+      x: 350,
+      y: 880,
+    },
+
+    qrCode: {
+      x: 700 - 25,
+      y: 800 - 25,
+      w: 150,
+      h: 150,
+    },
+
     TrainingCenterId: {
-      x: 172,
-      y: 335,
+      x: 16005,
+      y: 385,
       center: true,
     },
     city: {
-      x: 172,
-      y: 300,
+      x: 16005,
+      y: 345,
       center: true,
     },
     training_site_name: {
-      x: 172,
-      y: 245,
+      x: 16005,
+      fontSize: 12,
+      y: 305,
       center: true,
     },
   },
 };
 const Template_6: TemplateData = {
-  image_cert: path.resolve('./views/templates/v1/template-6.png'),
-  image_id: path.resolve('./views/templates/v1/template-7-card.png'),
+  image_cert: path.resolve('./views/templates/v2/template-6.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
   settings: 6,
 
   id_card: {
-    fontSize: 8,
+    fontSize: 18,
     fullName: {
-      x: 170,
-      y: 710,
+      x: 590,
+      y: 390,
+      scale: 2.0,
       center: true,
     },
     issued: {
-      x: 78,
-      y: 653,
-      center: true,
+      x: 380 + 70,
+      y: 200,
+      i: true,
     },
     expires: {
-      x: 138,
-      y: 653,
-      center: true,
-    },
-    eCardCode: {
-      x: 194,
-      y: 653,
-      center: true,
+      x: 600 + 150,
+      y: 200,
+      i: true,
     },
     instructorId: {
-      x: 352,
-      y: 640,
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 275,
+      scale: 1.8,
+      center: true,
     },
     instructorName: {
-      x: 352,
-      y: 655,
+      x: 34008,
+      y: 665,
     },
     TrainingCenterName: {
-      x: 352,
-      y: 738,
+      x: 30408,
+      y: 745,
     },
     TrainingCenterId: {
-      x: 352,
-      y: 718,
+      x: 34008,
+      y: 725,
     },
-
+    eCardCode: {
+      x: 110404,
+      y: 1848,
+    },
     city: {
-      x: 352,
-      y: 695,
+      x: 340008,
+      y: 705,
     },
     training_site_name: {
-      x: 352,
-      y: 675,
+      x: 50,
+      fontSize: 12,
+      y: 240,
     },
     qrCode: {
-      w: 60,
-      h: 55,
-      x: 235,
-      y: 622,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
   cert_card: {
-    fontSize: 12,
+    fontSize: 24,
     fullName: {
-      x: 595.28 / 2,
-      y: 585,
-      center: true,
-    },
-    expires: {
-      x: 448,
-      y: 465 - 5,
-      center: true,
-    },
-    instructorName: {
-      x: 435,
-      y: 415,
-      center: true,
-    },
-    instructorId: {
-      x: 435,
-      y: 375,
-      center: true,
-    },
-    eCardCode: {
-      x: 435,
-      y: 335,
-      center: true,
-    },
-    qrCode: {
-      x: 405,
-      y: 250,
+      x: 150,
+      y: 930,
+      scale: 1.9,
+      center: false,
     },
     issued: {
-      x: 170,
-      y: 460,
-      center: true,
+      x: 350,
+      y: 852,
+    },
+    expires: {
+      x: 346,
+      y: 822,
+    },
+    eCardCode: {
+      x: 350,
+      y: 794,
+    },
+    instructorName: {
+      x: 220005,
+      y: 816,
     },
     TrainingCenterName: {
-      x: 155,
-      y: 420,
-      center: true,
+      x: 350,
+      y: 764,
     },
+    instructorId: {
+      x: 350,
+      y: 880,
+    },
+
+    qrCode: {
+      x: 700 - 25,
+      y: 800 - 25,
+      w: 150,
+      h: 150,
+    },
+
     TrainingCenterId: {
-      x: 155,
-      y: 365,
+      x: 16005,
+      y: 385,
       center: true,
     },
     city: {
-      x: 155,
-      y: 325,
+      x: 16005,
+      y: 345,
       center: true,
     },
     training_site_name: {
-      x: 155,
-      y: 285,
+      x: 16005,
+      fontSize: 12,
+      y: 305,
       center: true,
     },
   },
 };
 const Template_7: TemplateData = {
-  image_cert: path.resolve('./views/templates/v1/template-7.png'),
-  image_id: path.resolve('./views/templates/v1/template-6-card.png'),
+  image_cert: path.resolve('./views/templates/v2/template-7.jpg'),
+  image_id: path.resolve('./views/templates/v2/card.jpg'),
   settings: 7,
-  cert_card: {
-    fontSize: 12,
-    fullName: {
-      x: 595.28 / 2,
-      y: 575,
-      center: true,
-    },
-    expires: {
-      x: 440,
-      y: 467,
-      center: true,
-    },
-    instructorName: {
-      x: 41500000,
-      y: 425,
-      center: true,
-    },
-    instructorId: {
-      x: 428,
-      y: 428,
-      center: true,
-    },
-    eCardCode: {
-      x: 428,
-      y: 388,
-      center: true,
-    },
-    qrCode: {
-      x: 400,
-      y: 300,
-    },
-    issued: {
-      x: 175,
-      y: 468,
-      center: true,
-    },
-    TrainingCenterName: {
-      x: 162,
-      y: 430,
-      center: true,
-    },
-    TrainingCenterId: {
-      x: 162,
-      y: 378,
-      center: true,
-    },
-    city: {
-      x: 162,
-      y: 338,
-      center: true,
-    },
-    training_site_name: {
-      x: 162,
-      y: 304,
-      center: true,
-    },
-  },
-  id_card: {
-    fontSize: 8,
-    fullName: {
-      x: 170,
-      y: 710,
-      center: true,
-    },
-    issued: {
-      x: 82,
-      y: 650,
-      center: true,
-    },
-    expires: {
-      x: 142,
-      y: 650,
-      center: true,
-    },
-    eCardCode: {
-      x: 194,
-      y: 650,
-      center: true,
-    },
-    instructorId: {
-      x: 352,
-      y: 647,
-    },
-    instructorName: {
-      x: 3048,
-      y: 665,
-    },
-    TrainingCenterName: {
-      x: 352,
-      y: 735,
-    },
-    TrainingCenterId: {
-      x: 352,
-      y: 710,
-    },
 
-    city: {
-      x: 352,
-      y: 690,
+  id_card: {
+    fontSize: 18,
+    fullName: {
+      x: 590,
+      y: 390,
+      scale: 2.0,
+      center: true,
     },
-    training_site_name: {
-      x: 352,
+    issued: {
+      x: 380 + 70,
+      y: 200,
+      i: true,
+    },
+    expires: {
+      x: 600 + 150,
+      y: 200,
+      i: true,
+    },
+    instructorId: {
+      x: 34008,
+      y: 4489,
+    },
+    name: {
+      x: 585,
+      y: 275,
+      scale: 1.8,
+      center: true,
+    },
+    instructorName: {
+      x: 34008,
       y: 665,
     },
+    TrainingCenterName: {
+      x: 30408,
+      y: 745,
+    },
+    TrainingCenterId: {
+      x: 34008,
+      y: 725,
+    },
+    eCardCode: {
+      x: 110404,
+      y: 1848,
+    },
+    city: {
+      x: 340008,
+      y: 705,
+    },
+    training_site_name: {
+      x: 50,
+      fontSize: 12,
+      y: 240,
+    },
     qrCode: {
-      w: 60,
-      h: 55,
-      x: 235,
-      y: 622,
+      x: 905,
+      y: 45,
+      w: 200,
+      h: 200,
     },
   },
-};
-const Template_8: TemplateData = {
-  image_id: path.resolve('./views/templates/v1/custom.png'),
-  settings: 8,
-  id_card: {
-    fontSize: 8,
+  cert_card: {
+    fontSize: 15,
     fullName: {
-      x: 27,
-      y: 696,
-      scale: 1.1,
+      x: 150,
+      y: 930,
+      scale: 1.9,
       center: false,
     },
     issued: {
-      x: 108,
-      y: 672.5,
-      fontSize: 6.5,
+      x: 275,
+      y: 876,
     },
     expires: {
-      x: 240,
-      y: 672.5,
-      fontSize: 6.5,
+      x: 275,
+      y: 856,
     },
     eCardCode: {
-      x: 70,
-      y: 660.5,
-    },
-    instructorId: {
-      x: 220,
-      y: 660,
+      x: 275,
+      y: 836,
     },
     instructorName: {
-      x: 68,
-      y: 684.5,
+      x: 220005,
+      y: 816,
     },
     TrainingCenterName: {
-      x: 3502,
-      y: 735,
+      x: 275,
+      y: 816,
     },
-    TrainingCenterId: {
-      x: 3520,
-      y: 710,
+    instructorId: {
+      x: 275,
+      y: 896,
     },
 
+    qrCode: {
+      x: 700 - 20,
+      y: 800 - 20,
+      w: 150,
+      h: 150,
+    },
+
+    TrainingCenterId: {
+      x: 16005,
+      y: 385,
+      center: true,
+    },
     city: {
-      x: 3520,
-      y: 690,
+      x: 16005,
+      y: 345,
+      center: true,
     },
     training_site_name: {
-      x: 3520,
-      y: 665,
-    },
-    qrCode: {
-      w: 60,
-      h: 60,
-      x: 508,
-      y: 618,
+      x: 16005,
+      y: 305,
+      fontSize: 12,
+
+      center: true,
     },
   },
 };
