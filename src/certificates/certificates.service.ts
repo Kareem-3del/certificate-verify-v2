@@ -887,17 +887,25 @@ interface TemplatePosition {
     center?: boolean;
     scale?: number;
   };
+  name?: {
+    x: number;
+    y: number;
+    center?: boolean;
+    scale?: number;
+  };
   issued: {
     x: number;
     y: number;
     center?: boolean;
     fontSize?: number;
+    i?: boolean;
   };
   expires: {
     x: number;
     y: number;
     center?: boolean;
     fontSize?: number;
+    i?: boolean;
   };
   instructorId: {
     x: number;
@@ -931,6 +939,7 @@ interface TemplatePosition {
     center?: boolean;
   };
   training_site_name: {
+    fontSize: number;
     x: number;
     y: number;
     center?: boolean;
@@ -941,6 +950,14 @@ interface TemplatePosition {
     x: number;
     y: number;
   };
+}
+
+interface TemplateData {
+  image_cert?: string;
+  image_id: string;
+  settings: number;
+  id_card: TemplatePosition;
+  cert_card?: TemplatePosition;
 }
 
 interface TemplateData {
@@ -1090,7 +1107,6 @@ export class CertificatesService {
         Template_5,
         Template_6,
         Template_7,
-        Template_8,
       ][templateIndex - 1];
       if (!template) {
         console.log('Template not found', templateIndex);
