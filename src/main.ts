@@ -16,8 +16,9 @@ async function bootstrap() {
   app.use(
     session({
       secret: 'my-secret2',
-      resave: false,
-      saveUninitialized: false,
+      resave: true,
+      saveUninitialized: true,
+      cookie: { maxAge: 3600000 },
     }),
   );
   app.useStaticAssets(join(__dirname, '..', 'views'), {

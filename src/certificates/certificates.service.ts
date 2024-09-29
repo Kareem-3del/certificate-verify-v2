@@ -1299,12 +1299,17 @@ export class CertificatesService {
       textSize: number,
       i?: boolean,
     ): number => {
-      if (i) {
-        const textWidth = TimesRomanItalic.widthOfTextAtSize(text, textSize);
+      try {
+        if (i) {
+          const textWidth = TimesRomanItalic.widthOfTextAtSize(text, textSize);
+          return textWidth / 2;
+        }
+        const textWidth = helveticaFontBold.widthOfTextAtSize(text, textSize);
         return textWidth / 2;
+      } catch (e) {
+        console.log('Error calculating text width:', e);
+        return 0;
       }
-      const textWidth = helveticaFontBold.widthOfTextAtSize(text, textSize);
-      return textWidth / 2;
     };
 
     if (data.name) {
@@ -1464,6 +1469,8 @@ export class CertificatesService {
     console.log('QR code drawn successfully.');
 
     // Draw the text on the certificate at the specified positions
+    data.fullName = data.fullName.replace(/[^\x00-\x7F]/g, ''); // Removes non-ASCII characters
+
     page.drawText(data.fullName, {
       x:
         (data.positions.fullName.x || 180) -
