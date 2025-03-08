@@ -65,7 +65,7 @@ export class SubscriptionsService {
     });
 
     const earningsPerDay: Record<string, number> = {};
-
+    console.log(subscriptions);
     subscriptions.forEach((sub) => {
       const date = sub.created_at.toISOString().split('T')[0]; // Get the date part (YYYY-MM-DD)
       if (!earningsPerDay[date]) {
@@ -73,7 +73,7 @@ export class SubscriptionsService {
       }
       earningsPerDay[date] += sub.price * sub.purchased; // Accumulate earnings per day
     });
-
+    console.log(earningsPerDay);
     return earningsPerDay;
   }
 

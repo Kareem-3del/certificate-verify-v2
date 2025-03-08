@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multi-Pixel Purchase Tracking</title>
+</head>
+<body>
+
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '513490967820135'); // Replace with your Meta Pixel ID
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+               src="https://www.facebook.com/tr?id=513490967820135&ev=PageView&noscript=1"
+/></noscript>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SQMLE1JQJZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SQMLE1JQJZ'); // Replace with your Google Analytics ID
+</script>
+
+
+<script>
+  !function (w, d, t) {
+    w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+      var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+    ;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+
+    ttq.load('CSOQF13C77U9A53MR4U0'); // Replace with your TikTok Pixel ID
+    ttq.page();
+  }(window, document, 'ttq');
+</script>
+<script type='text/javascript'>
+  (function(e,t,n){if(e.snaptr)return;var a=e.snaptr=function()
+  {a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};
+    a.queue=[];var s='script';r=t.createElement(s);r.async=!0;
+    r.src=n;var u=t.getElementsByTagName(s)[0];
+    u.parentNode.insertBefore(r,u);})(window,document,
+    'https://sc-static.net/scevent.min.js');
+
+  snaptr('init', '5ec5982f-66a9-466c-86ce-fc6b828b29fe', { // Replace with your Snap Pixel ID
+    'user_email': '__INSERT_USER_EMAIL__' // Replace with user's email or remove this line
+  });
+
+  snaptr('track', 'PAGE_VIEW');
+</script>
+<h1>Product Page</h1>
+
+<button id="buyButton">Buy Now</button>
+
+<script>
+  document.getElementById('buyButton').addEventListener('click', function() {
+    // --- Meta Pixel ---
+    fbq('track', 'Purchase', {
+      value: 25.00, // Replace with actual value
+      currency: 'USD' // Replace with actual currency
+    });
+
+    // --- Google Analytics ---
+    gtag('event', 'purchase', {
+      transaction_id: 'order_12345', // Replace with actual transaction ID
+      value: 25.00, // Replace with actual value
+      currency: 'USD' // Replace with actual currency
+    });
+
+    // --- TikTok Pixel ---
+    ttq.track('CompletePayment', {
+      "contents": [
+        {
+          "content_id": "product_xyz", // Replace with actual product ID
+          "content_type": "product",
+          "content_name": "Cool Gadget" // Replace with actual product name
+        }
+      ],
+      "value": 25.00, // Replace with actual value
+      "currency": "USD" // Replace with actual currency
+    });
+
+    // --- Snap Pixel ---
+    snaptr('track', 'PURCHASE', {
+      'price': 25.00, // Replace with actual value
+      'currency': 'USD', // Replace with actual currency
+      'transaction_id': 'order_12345', // Replace with actual transaction ID
+      'item_ids': ['product_xyz'], // Replace with actual product ID
+      'item_category': 'Gadgets', // Replace with actual category
+      'number_items': 1
+    });
+
+    // Optional: Redirect to a thank you page
+    // window.location.href = "thankyou.html";
+  });
+</script>
+</body>
+</html>

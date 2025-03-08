@@ -9,6 +9,8 @@ import {
   Session,
   Res,
   Param,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { Settings } from './settings.entity';
@@ -26,17 +28,27 @@ export class SettingsController {
   ) {
     const currentUser: User = session.user;
     if (!currentUser) {
-      res.redirect('/login');
+      return res.redirect('/login');
     }
-    const settings = await this.settingsService.findAll();
-    if (currentUser.role === 'moderator') {
-      res.render('settings/mod', { settings });
-    }
-    if (currentUser.role === 'admin') {
-      return res.render('settings/index', { settings });
-    }
-    if (currentUser.role === 'customer') {
-      return res.render('index', { settings });
+
+    try {
+      const settings = await this.settingsService.findAll();
+      switch (currentUser.role) {
+        case 'moderator':
+          return res.render('settings/mod', { settings });
+        case 'admin':
+          return res.render('settings/index', { settings });
+        case 'customer':
+          return res.render('index', { settings });
+        default:
+          throw new HttpException('Unauthorized role', HttpStatus.FORBIDDEN);
+      }
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'Error retrieving settings',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -47,19 +59,36 @@ export class SettingsController {
   ) {
     const currentUser: User = session.user;
     if (!currentUser) {
-      throw new Error('No user found');
+      throw new HttpException('No user found', HttpStatus.UNAUTHORIZED);
     }
-    const settings = await this.settingsService.findAll();
-    if (currentUser.role === 'admin') {
-      console.log(currentUser.role);
-      res.render('settings/sub', { settings });
+
+    try {
+      const settings = await this.settingsService.findAll();
+      if (currentUser.role === 'admin') {
+        return res.render('settings/sub', { settings });
+      } else {
+        throw new HttpException('Unauthorized role', HttpStatus.FORBIDDEN);
+      }
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'Error retrieving settings',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-    throw new Error('No user found');
   }
 
   @Get('/json')
   async getSettings(): Promise<Settings[]> {
-    return this.settingsService.findAll();
+    try {
+      return await this.settingsService.findAll();
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'Error retrieving settings',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Redirect('/settings')
@@ -68,7 +97,18 @@ export class SettingsController {
     @Body() settings: Settings,
     @Param('id') id: string,
   ): Promise<void> {
-    if (!id) throw new Error('No ID provided');
-    await this.settingsService.update(Number(id), settings);
+    if (!id) {
+      throw new HttpException('No ID provided', HttpStatus.BAD_REQUEST);
+    }
+
+    try {
+      await this.settingsService.update(Number(id), settings);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException(
+        'Error updating settings',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

@@ -1,115 +1,42 @@
 // settings.service.ts
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Settings } from './settings.entity';
 
 @Injectable()
-export class SettingsService {
+export class SettingsService implements OnApplicationBootstrap {
   constructor(
     @InjectRepository(Settings)
     private readonly settingsRepository: Repository<Settings>,
-  ) {
-    // check if config is set or not else create one with emtry strings
-    this.findOne(1).then((data) => {
-      if (!data) {
-        this.create({
-          name: 'TEMPLATE 1',
-          id: 1,
-          instructorName: '',
-          instructorId: '',
-          trainingCenterName: '',
-          trainingCenterId: '',
-          tcCity: '',
-          trainingSiteName: '',
-        }).then((value) => {
-          console.log('SETTINGS ARE CREATED', value);
-        });
+  ) {}
 
-        this.create({
-          name: 'TEMPLATE 2',
-          id: 2,
-          instructorName: '',
-          instructorId: '',
-          trainingCenterName: '',
-          trainingCenterId: '',
-          tcCity: '',
-          trainingSiteName: '',
-        }).then((value) => {
-          console.log('SETTINGS ARE CREATED', value);
-        });
+  async onApplicationBootstrap() {
+    const templates = Array.from({ length: 9 }, (_, index) => ({
+      name: `TEMPLATE ${index + 1}`,
+      id: index + 1,
+      instructorName: '',
+      instructorId: '',
+      trainingCenterName: '',
+      trainingCenterId: '',
+      tcCity: '',
+      trainingSiteName: '',
+    }));
 
-        this.create({
-          name: 'TEMPLATE 3',
-          id: 3,
-          instructorName: '',
-          instructorId: '',
-          trainingCenterName: '',
-          trainingCenterId: '',
-          tcCity: '',
-          trainingSiteName: '',
-        }).then((value) => {
-          console.log('SETTINGS ARE CREATED', value);
-        });
-
-        this.create({
-          name: 'TEMPLATE 4',
-          id: 4,
-          instructorName: '',
-          instructorId: '',
-          trainingCenterName: '',
-          trainingCenterId: '',
-          tcCity: '',
-          trainingSiteName: '',
-        }).then((value) => {
-          console.log('SETTINGS ARE CREATED', value);
-        });
-
-        this.create({
-          name: 'TEMPLATE 5',
-          id: 5,
-          instructorName: '',
-          instructorId: '',
-          trainingCenterName: '',
-          trainingCenterId: '',
-          tcCity: '',
-          trainingSiteName: '',
-        }).then((value) => {
-          console.log('SETTINGS ARE CREATED', value);
-        });
-        this.create({
-          name: 'TEMPLATE 6',
-          id: 6,
-          instructorName: '',
-          instructorId: '',
-          trainingCenterName: '',
-          trainingCenterId: '',
-          tcCity: '',
-          trainingSiteName: '',
-        }).then((value) => {
-          console.log('SETTINGS ARE CREATED', value);
-        });
-
-        this.create({
-          name: 'TEMPLATE 7',
-          id: 7,
-          instructorName: '',
-          instructorId: '',
-          trainingCenterName: '',
-          trainingCenterId: '',
-          tcCity: '',
-          trainingSiteName: '',
-        }).then((value) => {
-          console.log('SETTINGS ARE CREATED', value);
-        });
+    for (const template of templates) {
+      const existing = await this.findOne(template.id);
+      if (!existing) {
+        await this.create(template);
+        console.log(`SETTINGS CREATED: `, template);
       }
-    });
+    }
   }
 
   findAll(): Promise<Settings[]> {
     return this.settingsRepository.find();
   }
+
   findOne(id: number): Promise<Settings> {
     return this.settingsRepository.findOneBy({ id });
   }

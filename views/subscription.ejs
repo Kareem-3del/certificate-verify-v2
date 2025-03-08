@@ -6,7 +6,91 @@
   <title>Document</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Facebook Pixel -->
 
+  <script>
+
+    !function(f,b,e,v,n,t,s)
+
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+
+      n.queue=[];t=b.createElement(e);t.async=!0;
+
+      t.src=v;s=b.getElementsByTagName(e)[0];
+
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+
+            'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '513490967820135'); // Replace with your Meta Pixel ID
+
+    fbq('track', 'PageView');
+
+  </script>
+
+
+
+  <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SQMLE1JQJZ"></script>
+
+  <script>
+
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag(){dataLayer.push(arguments);}
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-SQMLE1JQJZ'); // Replace with your Google Analytics ID
+
+  </script>
+
+
+
+  <!-- TikTok Analytics -->
+
+  <script>
+
+    !function(w, d, t) {
+
+      w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"];
+
+      ttq.factory=function(e) {
+
+        return function(){var i=Array.prototype.slice.call(arguments);i.unshift(e);ttq.push(i)};
+
+      };
+
+      var i;for(i=0;i<ttq.methods.length;i++) {ttq[ttq.methods[i]]=ttq.factory(ttq.methods[i]);}
+
+      ttq.load = function(e) {
+
+        var n = d.createElement('script');
+
+        n.type = 'text/javascript';
+
+        n.async = true;
+
+        n.src = 'https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=' + e;
+
+        var s = d.getElementsByTagName('script')[0];
+
+        s.parentNode.insertBefore(n, s);
+
+      };
+
+      ttq.load('CSOQF13C77U9A53MR4U0'); // Replace with your TikTok Pixel ID
+
+      ttq.page();
+
+    }(window, document, 'ttq');
+
+  </script>
 </head>
 <body>
 <div class="py-16">
@@ -122,8 +206,34 @@
 </div>
 <script>
   function setPaymentMethod(method) {
-    // Set the hidden input value
+    // Fetch the dynamic values from the input fields or backend variables
+    const price = document.querySelector('input[value="<%= sub.price %>$"]').value.replace('$', '');
+    const contentName = '<%= sub.name %>';
+
+    // Facebook Pixel Event
+    fbq('track', 'Purchase', {
+      value: price, // Use the dynamic price
+      currency: 'USD',
+      content_name: contentName, // Use the dynamic content name
+    });
+
+    // Google Analytics Event
+    gtag('event', 'purchase', {
+      event_category: 'ecommerce',
+      event_label: method,
+      value: parseFloat(price || 0), // Convert the price to a float
+    });
+
+    // TikTok Event
+    ttq.track('CompletePayment', {
+      value: parseFloat(price || 0), // Use the dynamic price
+      currency: 'USD',
+      content_name: contentName, // Use the dynamic content name
+    });
+
+    // Set the payment method in a hidden input field
     document.getElementById('pay_with').value = method;
+
     // Submit the form
     document.querySelector('form').submit();
   }
