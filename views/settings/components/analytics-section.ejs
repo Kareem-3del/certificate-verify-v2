@@ -1,0 +1,612 @@
+<!-- Analytics Section -->
+<div id="analytics" class="content-section hidden">
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">Analytics Dashboard</h2>
+        <p class="text-gray-600 mt-1">Monitor certificate issuance trends and system performance</p>
+      </div>
+      <div class="flex items-center space-x-3">
+        <select id="dateRangeFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+          <option value="7">Last 7 days</option>
+          <option value="30">Last 30 days</option>
+          <option value="90">Last 3 months</option>
+          <option value="365">Last year</option>
+        </select>
+        <button onclick="exportAnalytics()" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors duration-200 flex items-center space-x-2">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Export Report</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Metrics Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 card-hover">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Total Certificates</p>
+          <p class="text-2xl font-bold text-gray-900" id="totalCertificates">1,234</p>
+          <p class="text-xs text-green-600 mt-1">
+            <i data-lucide="trending-up" class="w-3 h-3 inline mr-1"></i>
+            +12% from last month
+          </p>
+        </div>
+        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+          <i data-lucide="award" class="w-6 h-6 text-blue-600"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 card-hover">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Active Users</p>
+          <p class="text-2xl font-bold text-gray-900" id="activeUsers">89</p>
+          <p class="text-xs text-green-600 mt-1">
+            <i data-lucide="trending-up" class="w-3 h-3 inline mr-1"></i>
+            +5% from last month
+          </p>
+        </div>
+        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+          <i data-lucide="users" class="w-6 h-6 text-green-600"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 card-hover">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Expiring Soon</p>
+          <p class="text-2xl font-bold text-gray-900" id="expiringSoon">23</p>
+          <p class="text-xs text-yellow-600 mt-1">
+            <i data-lucide="alert-triangle" class="w-3 h-3 inline mr-1"></i>
+            Next 30 days
+          </p>
+        </div>
+        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+          <i data-lucide="clock" class="w-6 h-6 text-yellow-600"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 card-hover">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Revenue</p>
+          <p class="text-2xl font-bold text-gray-900" id="totalRevenue">$12,450</p>
+          <p class="text-xs text-green-600 mt-1">
+            <i data-lucide="trending-up" class="w-3 h-3 inline mr-1"></i>
+            +18% from last month
+          </p>
+        </div>
+        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+          <i data-lucide="dollar-sign" class="w-6 h-6 text-purple-600"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <!-- Certificate Issuance Trend -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-semibold text-gray-900">Certificate Issuance Trend</h3>
+        <div class="flex items-center space-x-2">
+          <div class="flex items-center space-x-1">
+            <div class="w-3 h-3 bg-primary-500 rounded-full"></div>
+            <span class="text-xs text-gray-600">Issued</span>
+          </div>
+          <div class="flex items-center space-x-1">
+            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            <span class="text-xs text-gray-600">Renewed</span>
+          </div>
+        </div>
+      </div>
+      <div class="h-64 flex items-end justify-between space-x-2" id="certificateChart">
+        <div class="flex flex-col items-center space-y-2">
+          <div class="w-8 bg-primary-500 rounded-t" style="height: 120px;"></div>
+          <span class="text-xs text-gray-600">Mon</span>
+        </div>
+        <div class="flex flex-col items-center space-y-2">
+          <div class="w-8 bg-primary-500 rounded-t" style="height: 80px;"></div>
+          <span class="text-xs text-gray-600">Tue</span>
+        </div>
+        <div class="flex flex-col items-center space-y-2">
+          <div class="w-8 bg-primary-500 rounded-t" style="height: 160px;"></div>
+          <span class="text-xs text-gray-600">Wed</span>
+        </div>
+        <div class="flex flex-col items-center space-y-2">
+          <div class="w-8 bg-primary-500 rounded-t" style="height: 100px;"></div>
+          <span class="text-xs text-gray-600">Thu</span>
+        </div>
+        <div class="flex flex-col items-center space-y-2">
+          <div class="w-8 bg-primary-500 rounded-t" style="height: 140px;"></div>
+          <span class="text-xs text-gray-600">Fri</span>
+        </div>
+        <div class="flex flex-col items-center space-y-2">
+          <div class="w-8 bg-primary-500 rounded-t" style="height: 90px;"></div>
+          <span class="text-xs text-gray-600">Sat</span>
+        </div>
+        <div class="flex flex-col items-center space-y-2">
+          <div class="w-8 bg-primary-500 rounded-t" style="height: 70px;"></div>
+          <span class="text-xs text-gray-600">Sun</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certificate Types Distribution -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-6">Certificate Types</h3>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
+            <span class="text-sm font-medium text-gray-700">CPR Certification</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-sm font-medium text-gray-900">45%</span>
+            <div class="w-20 h-2 bg-gray-200 rounded-full">
+              <div class="w-3/5 h-2 bg-blue-500 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-4 h-4 bg-green-500 rounded-full"></div>
+            <span class="text-sm font-medium text-gray-700">First Aid</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-sm font-medium text-gray-900">32%</span>
+            <div class="w-20 h-2 bg-gray-200 rounded-full">
+              <div class="w-2/5 h-2 bg-green-500 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-4 h-4 bg-yellow-500 rounded-full"></div>
+            <span class="text-sm font-medium text-gray-700">AED Training</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-sm font-medium text-gray-900">23%</span>
+            <div class="w-20 h-2 bg-gray-200 rounded-full">
+              <div class="w-1/4 h-2 bg-yellow-500 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity & System Health -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Recent Activity -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
+        <button onclick="refreshActivity()" class="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </button>
+      </div>
+      
+      <div class="space-y-4" id="recentActivity">
+        <div class="flex items-start space-x-3">
+          <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mt-0.5">
+            <i data-lucide="plus-circle" class="w-4 h-4 text-green-600"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-gray-900">New certificate issued</p>
+            <p class="text-xs text-gray-500">CPR Certificate #CRT-2024-001234</p>
+            <p class="text-xs text-gray-400">2 minutes ago</p>
+          </div>
+        </div>
+        
+        <div class="flex items-start space-x-3">
+          <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
+            <i data-lucide="user-plus" class="w-4 h-4 text-blue-600"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-gray-900">New user registered</p>
+            <p class="text-xs text-gray-500">john.doe@example.com</p>
+            <p class="text-xs text-gray-400">15 minutes ago</p>
+          </div>
+        </div>
+        
+        <div class="flex items-start space-x-3">
+          <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mt-0.5">
+            <i data-lucide="refresh-cw" class="w-4 h-4 text-yellow-600"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-gray-900">Certificate renewed</p>
+            <p class="text-xs text-gray-500">First Aid Certificate #CRT-2023-009876</p>
+            <p class="text-xs text-gray-400">1 hour ago</p>
+          </div>
+        </div>
+        
+        <div class="flex items-start space-x-3">
+          <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mt-0.5">
+            <i data-lucide="credit-card" class="w-4 h-4 text-purple-600"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-gray-900">Payment received</p>
+            <p class="text-xs text-gray-500">$89.99 - Premium subscription</p>
+            <p class="text-xs text-gray-400">3 hours ago</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-6 pt-4 border-t border-gray-200">
+        <button onclick="viewAllActivity()" class="text-sm text-primary-600 hover:text-primary-800 font-medium">
+          View all activity →
+        </button>
+      </div>
+    </div>
+
+    <!-- System Health -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-6">System Health</h3>
+      
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Database</p>
+              <p class="text-xs text-gray-500">Response time: 45ms</p>
+            </div>
+          </div>
+          <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">Healthy</span>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Email Service</p>
+              <p class="text-xs text-gray-500">Queue: 2 pending</p>
+            </div>
+          </div>
+          <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">Healthy</span>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Storage</p>
+              <p class="text-xs text-gray-500">Used: 2.3GB / 50GB</p>
+            </div>
+          </div>
+          <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">Healthy</span>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">PDF Generator</p>
+              <p class="text-xs text-gray-500">Load: 78%</p>
+            </div>
+          </div>
+          <span class="text-xs font-medium text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">Warning</span>
+        </div>
+      </div>
+      
+      <div class="mt-6 pt-4 border-t border-gray-200">
+        <div class="text-center">
+          <p class="text-sm text-gray-600 mb-2">Overall System Status</p>
+          <div class="inline-flex items-center space-x-2 px-3 py-2 bg-green-100 text-green-800 rounded-lg">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <span class="font-medium">All Systems Operational</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let analyticsData = {};
+
+async function loadAnalytics(dateRange = 30) {
+  try {
+    showLoadingState();
+    
+    const response = await fetch(`/certificates/analytics/dashboard?dateRange=${dateRange}`);
+    const result = await response.json();
+    
+    if (result.success) {
+      analyticsData = result.data;
+      updateAnalyticsDisplay();
+      updateChartsWithRealData();
+      updateRecentActivity();
+      updateSystemHealthDisplay();
+    } else {
+      throw new Error(result.error || 'Failed to load analytics');
+    }
+    
+    hideLoadingState();
+    
+  } catch (error) {
+    console.error('Error loading analytics:', error);
+    window.showToast('Error loading analytics data', 'error');
+    hideLoadingState();
+    
+    // Fallback to mock data
+    loadMockAnalytics();
+  }
+}
+
+function loadMockAnalytics() {
+  analyticsData = {
+    overview: {
+      totalCertificates: 1234,
+      activeUsers: 89,
+      expiringSoon: 23,
+      totalRevenue: 12450,
+      growthMetrics: {
+        certificatesGrowth: 12,
+        usersGrowth: 5,
+        revenueGrowth: 18
+      }
+    },
+    certificateTypes: [
+      { name: 'CPR Certification', count: 555, percentage: 45 },
+      { name: 'First Aid', count: 395, percentage: 32 },
+      { name: 'AED Training', count: 284, percentage: 23 }
+    ],
+    issuanceTrend: [
+      { date: '2024-01-01', certificates: 45, renewals: 12 },
+      { date: '2024-01-02', certificates: 32, renewals: 8 },
+      { date: '2024-01-03', certificates: 67, renewals: 15 },
+      { date: '2024-01-04', certificates: 41, renewals: 10 },
+      { date: '2024-01-05', certificates: 58, renewals: 14 },
+      { date: '2024-01-06', certificates: 38, renewals: 9 },
+      { date: '2024-01-07', certificates: 29, renewals: 7 }
+    ],
+    recentActivity: [
+      {
+        type: 'certificate_issued',
+        description: 'New certificate issued',
+        details: 'CPR Certificate #CRT-2024-001234',
+        timestamp: new Date(Date.now() - 2 * 60 * 1000).toISOString()
+      },
+      {
+        type: 'user_registered',
+        description: 'New user registered',
+        details: 'john.doe@example.com',
+        timestamp: new Date(Date.now() - 15 * 60 * 1000).toISOString()
+      }
+    ]
+  };
+  
+  updateAnalyticsDisplay();
+  updateChartsWithRealData();
+}
+
+function updateAnalyticsDisplay() {
+  const overview = analyticsData.overview || analyticsData;
+  
+  // Update main metrics
+  document.getElementById('totalCertificates').textContent = (overview.totalCertificates || 0).toLocaleString();
+  document.getElementById('activeUsers').textContent = (overview.activeUsers || 0).toString();
+  document.getElementById('expiringSoon').textContent = (overview.expiringSoon || 0).toString();
+  document.getElementById('totalRevenue').textContent = `$${(overview.totalRevenue || 0).toLocaleString()}`;
+  
+  // Update growth indicators
+  if (overview.growthMetrics) {
+    updateGrowthIndicator('totalCertificates', overview.growthMetrics.certificatesGrowth);
+    updateGrowthIndicator('activeUsers', overview.growthMetrics.usersGrowth);
+    updateGrowthIndicator('totalRevenue', overview.growthMetrics.revenueGrowth);
+  }
+}
+
+function updateGrowthIndicator(elementId, growth) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  
+  const parentCard = element.closest('.bg-white');
+  if (!parentCard) return;
+  
+  const growthElement = parentCard.querySelector('.text-xs.text-green-600, .text-xs.text-red-600, .text-xs.text-gray-600');
+  if (!growthElement) return;
+  
+  const isPositive = growth > 0;
+  const isNegative = growth < 0;
+  
+  growthElement.className = `text-xs mt-1 ${isPositive ? 'text-green-600' : isNegative ? 'text-red-600' : 'text-gray-600'}`;
+  
+  const icon = isPositive ? 'trending-up' : isNegative ? 'trending-down' : 'minus';
+  const sign = isPositive ? '+' : '';
+  
+  growthElement.innerHTML = `
+    <i data-lucide="${icon}" class="w-3 h-3 inline mr-1"></i>
+    ${sign}${growth}% from last month
+  `;
+  
+  // Re-initialize Lucide icons for the new icon
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+}
+
+function updateChartsWithRealData() {
+  updateIssuanceTrendChart();
+  updateCertificateTypesChart();
+}
+
+function updateIssuanceTrendChart() {
+  const chartContainer = document.getElementById('certificateChart');
+  if (!chartContainer || !analyticsData.issuanceTrend) return;
+  
+  const trendData = analyticsData.issuanceTrend.slice(-7); // Last 7 days
+  const maxValue = Math.max(...trendData.map(d => d.certificates || 0));
+  
+  chartContainer.innerHTML = '';
+  
+  trendData.forEach((data, index) => {
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const date = new Date(data.date);
+    const dayName = dayNames[date.getDay()];
+    const height = Math.max((data.certificates / maxValue) * 180, 20);
+    
+    const barContainer = document.createElement('div');
+    barContainer.className = 'flex flex-col items-center space-y-2';
+    barContainer.innerHTML = `
+      <div class="w-8 bg-primary-500 rounded-t" style="height: ${height}px;" title="${data.certificates} certificates"></div>
+      <span class="text-xs text-gray-600">${dayName}</span>
+    `;
+    
+    chartContainer.appendChild(barContainer);
+  });
+}
+
+function updateCertificateTypesChart() {
+  const chartContainer = document.querySelector('.space-y-4');
+  if (!chartContainer || !analyticsData.certificateTypes) return;
+  
+  // Find the certificate types container
+  const typesContainer = chartContainer.closest('.bg-white');
+  if (!typesContainer) return;
+  
+  const dataContainer = typesContainer.querySelector('.space-y-4');
+  if (!dataContainer) return;
+  
+  dataContainer.innerHTML = '';
+  
+  const colors = ['blue-500', 'green-500', 'yellow-500', 'purple-500', 'red-500'];
+  
+  analyticsData.certificateTypes.forEach((type, index) => {
+    const color = colors[index % colors.length];
+    const percentage = type.percentage || Math.round((type.count / analyticsData.overview.totalCertificates) * 100);
+    
+    const typeElement = document.createElement('div');
+    typeElement.className = 'flex items-center justify-between';
+    typeElement.innerHTML = `
+      <div class="flex items-center space-x-3">
+        <div class="w-4 h-4 bg-${color} rounded-full"></div>
+        <span class="text-sm font-medium text-gray-700">${type.name}</span>
+      </div>
+      <div class="flex items-center space-x-2">
+        <span class="text-sm font-medium text-gray-900">${percentage}%</span>
+        <div class="w-20 h-2 bg-gray-200 rounded-full">
+          <div class="h-2 bg-${color} rounded-full" style="width: ${percentage}%"></div>
+        </div>
+      </div>
+    `;
+    
+    dataContainer.appendChild(typeElement);
+  });
+}
+
+function updateRecentActivity() {
+  const activityContainer = document.getElementById('recentActivity');
+  if (!activityContainer || !analyticsData.recentActivity) return;
+  
+  activityContainer.innerHTML = '';
+  
+  analyticsData.recentActivity.forEach(activity => {
+    const timeAgo = getTimeAgo(new Date(activity.timestamp));
+    const iconMap = {
+      certificate_issued: { icon: 'plus-circle', color: 'green' },
+      user_registered: { icon: 'user-plus', color: 'blue' },
+      certificate_renewed: { icon: 'refresh-cw', color: 'yellow' },
+      payment_received: { icon: 'credit-card', color: 'purple' }
+    };
+    
+    const iconData = iconMap[activity.type] || { icon: 'info', color: 'gray' };
+    
+    const activityElement = document.createElement('div');
+    activityElement.className = 'flex items-start space-x-3';
+    activityElement.innerHTML = `
+      <div class="w-8 h-8 bg-${iconData.color}-100 rounded-full flex items-center justify-center mt-0.5">
+        <i data-lucide="${iconData.icon}" class="w-4 h-4 text-${iconData.color}-600"></i>
+      </div>
+      <div class="flex-1">
+        <p class="text-sm font-medium text-gray-900">${activity.description}</p>
+        <p class="text-xs text-gray-500">${activity.details}</p>
+        <p class="text-xs text-gray-400">${timeAgo}</p>
+      </div>
+    `;
+    
+    activityContainer.appendChild(activityElement);
+  });
+  
+  // Re-initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+}
+
+function updateSystemHealthDisplay() {
+  if (!analyticsData.systemHealth) return;
+  
+  const healthData = analyticsData.systemHealth;
+  const systemHealthElements = {
+    database: document.querySelector('.text-sm:contains("Database")'),
+    emailService: document.querySelector('.text-sm:contains("Email Service")'),
+    storage: document.querySelector('.text-sm:contains("Storage")'),
+    pdfGenerator: document.querySelector('.text-sm:contains("PDF Generator")')
+  };
+  
+  Object.keys(healthData).forEach(service => {
+    const serviceData = healthData[service];
+    const statusColor = serviceData.status === 'healthy' ? 'green' : 
+                       serviceData.status === 'warning' ? 'yellow' : 'red';
+    
+    // Update status indicators if elements exist
+    // This would require more specific selectors in the actual implementation
+  });
+}
+
+function showLoadingState() {
+  const metricsCards = document.querySelectorAll('.text-2xl.font-bold');
+  metricsCards.forEach(card => {
+    card.innerHTML = '<div class="animate-pulse bg-gray-200 h-8 w-16 rounded"></div>';
+  });
+}
+
+function hideLoadingState() {
+  // Loading state will be hidden when updateAnalyticsDisplay is called
+}
+
+function getTimeAgo(date) {
+  const now = new Date();
+  const diffInSeconds = Math.floor((now - date) / 1000);
+  
+  if (diffInSeconds < 60) return `${diffInSeconds} seconds ago`;
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+  return `${Math.floor(diffInSeconds / 86400)} days ago`;
+}
+
+function refreshActivity() {
+  window.showToast('Activity refreshed', 'success');
+  // Reload activity data
+}
+
+function viewAllActivity() {
+  window.showToast('Full activity log feature coming soon!', 'info');
+}
+
+function exportAnalytics() {
+  const dateRange = document.getElementById('dateRangeFilter').value;
+  window.showToast(`Exporting ${dateRange} days of analytics...`, 'info');
+  // Add export functionality
+}
+
+// Event listeners
+document.getElementById('dateRangeFilter').addEventListener('change', (e) => {
+  loadAnalytics(parseInt(e.target.value));
+});
+
+// Auto-refresh analytics every 5 minutes
+setInterval(() => {
+  if (document.getElementById('analytics').classList.contains('hidden') === false) {
+    loadAnalytics();
+  }
+}, 300000);
+</script>

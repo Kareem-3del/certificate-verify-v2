@@ -1,0 +1,222 @@
+<!-- Modern Sidebar Navigation -->
+<aside class="w-64 bg-white border-r border-gray-200 h-full overflow-y-auto">
+  <div class="p-6">
+    <!-- Navigation Menu -->
+    <nav class="space-y-2">
+      <div class="mb-6">
+        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Settings</h3>
+        
+        <!-- General Settings -->
+        <a href="#" 
+           onclick="showSettingsPage('general')" 
+           class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:text-white group active"
+           data-page="general">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span class="font-medium">General Settings</span>
+        </a>
+        
+        <!-- Certificate Settings -->
+        <a href="#" 
+           onclick="showSettingsPage('certificates')" 
+           class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:text-white group"
+           data-page="certificates">
+          <i data-lucide="sliders" class="w-5 h-5"></i>
+          <span class="font-medium">Certificate Settings</span>
+        </a>
+        
+        <!-- Email Settings -->
+        <a href="#" 
+           onclick="showSettingsPage('email')" 
+           class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:text-white group"
+           data-page="email">
+          <i data-lucide="mail" class="w-5 h-5"></i>
+          <span class="font-medium">Email & Bulk Mail</span>
+        </a>
+        
+        <!-- Subscription Settings -->
+        <a href="#" 
+           onclick="showSettingsPage('subscriptions')" 
+           class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:text-white group"
+           data-page="subscriptions">
+          <i data-lucide="credit-card" class="w-5 h-5"></i>
+          <span class="font-medium">Subscriptions</span>
+        </a>
+      </div>
+      
+      <div class="mb-6">
+        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Management</h3>
+        
+        <!-- Certificates Tab -->
+        <a href="#" 
+           onclick="showSection('certificates')" 
+           class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:text-white group"
+           data-section="certificates">
+          <i data-lucide="award" class="w-5 h-5"></i>
+          <span class="font-medium">Certificates</span>
+          <span class="ml-auto bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full group-hover:bg-white group-hover:text-gray-900" id="certificates-count">0</span>
+        </a>
+        
+        <!-- Users Tab -->
+        <a href="#" 
+           onclick="showSection('users')" 
+           class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:text-white group"
+           data-section="users">
+          <i data-lucide="users" class="w-5 h-5"></i>
+          <span class="font-medium">User Management</span>
+        </a>
+      </div>
+      
+      <div class="mb-6">
+        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Analytics</h3>
+        
+        <!-- Analytics Tab -->
+        <a href="#" 
+           onclick="showSection('analytics')" 
+           class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:text-white group"
+           data-section="analytics">
+          <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+          <span class="font-medium">Analytics</span>
+        </a>
+      </div>
+      
+      <div class="mb-6">
+        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Tools</h3>
+        
+        <!-- Import/Export -->
+        <a href="#" 
+           onclick="showSection('import-export')" 
+           class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:text-white group"
+           data-section="import-export">
+          <i data-lucide="upload" class="w-5 h-5"></i>
+          <span class="font-medium">Import/Export</span>
+        </a>
+        
+        <!-- Legacy Subscriptions (External) -->
+        <a href="/settings/sub" 
+           class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:text-white group">
+          <i data-lucide="external-link" class="w-5 h-5"></i>
+          <span class="font-medium">Legacy Subscriptions</span>
+          <i data-lucide="external-link" class="w-4 h-4 ml-auto"></i>
+        </a>
+      </div>
+    </nav>
+    
+    <!-- System Status Card -->
+    <div class="mt-8 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg border border-green-200">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+          <i data-lucide="check" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-green-900">System Online</p>
+          <p class="text-xs text-green-700">All services operational</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="mt-6 space-y-2">
+      <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Quick Actions</h4>
+      
+      <button onclick="exportAllData()" class="w-full flex items-center space-x-3 px-4 py-2 text-left text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+        <i data-lucide="download" class="w-4 h-4"></i>
+        <span class="text-sm">Export Data</span>
+      </button>
+      
+      <button onclick="showBackupModal()" class="w-full flex items-center space-x-3 px-4 py-2 text-left text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+        <i data-lucide="database" class="w-4 h-4"></i>
+        <span class="text-sm">Backup System</span>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<script>
+function showSection(sectionName) {
+  // Hide all sections and settings pages
+  document.querySelectorAll('.content-section').forEach(section => {
+    section.classList.add('hidden');
+  });
+  document.querySelectorAll('.settings-page').forEach(page => {
+    page.classList.add('hidden');
+  });
+  
+  // Show selected section
+  const targetSection = document.getElementById(sectionName);
+  if (targetSection) {
+    targetSection.classList.remove('hidden');
+  }
+  
+  // Update sidebar active state
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  const activeItem = document.querySelector(`[data-section="${sectionName}"]`);
+  if (activeItem) {
+    activeItem.classList.add('active');
+  }
+  
+  // Load section-specific data
+  if (sectionName === 'certificates') {
+    loadCertificates();
+  } else if (sectionName === 'users') {
+    loadUsers();
+  } else if (sectionName === 'analytics') {
+    loadAnalytics();
+  }
+}
+
+function showSettingsPage(pageName) {
+  // Hide all sections and settings pages
+  document.querySelectorAll('.content-section').forEach(section => {
+    section.classList.add('hidden');
+  });
+  document.querySelectorAll('.settings-page').forEach(page => {
+    page.classList.add('hidden');
+  });
+  
+  // Show the settings container and specific page
+  const settingsSection = document.getElementById('settings');
+  if (settingsSection) {
+    settingsSection.classList.remove('hidden');
+  }
+  
+  const targetPage = document.getElementById(`${pageName}-settings`);
+  if (targetPage) {
+    targetPage.classList.remove('hidden');
+  }
+  
+  // Update sidebar active state
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  const activeItem = document.querySelector(`[data-page="${pageName}"]`);
+  if (activeItem) {
+    activeItem.classList.add('active');
+  }
+  
+  // Update page title
+  const titles = {
+    general: 'General Settings',
+    certificates: 'Certificate Settings',
+    email: 'Email & Bulk Mail Settings',
+    subscriptions: 'Subscription Management'
+  };
+  
+  if (titles[pageName]) {
+    document.title = `${titles[pageName]} - CertifyPro`;
+  }
+}
+
+function exportAllData() {
+  window.showToast('Starting data export...', 'info');
+  // Add export functionality here
+}
+
+function showBackupModal() {
+  window.showToast('Backup feature coming soon!', 'info');
+  // Add backup modal functionality here
+}
+</script>

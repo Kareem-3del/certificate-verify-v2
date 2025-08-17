@@ -1,0 +1,311 @@
+<!-- Settings Configuration Section -->
+<div id="settings" class="content-section">
+  
+  <!-- Include General Settings Page -->
+  <%- include('../pages/general') %>
+  
+  <!-- Include Certificate Settings Page -->
+  <%- include('../pages/certificates') %>
+  
+  <!-- Include Email Settings Page -->
+  <%- include('../pages/email') %>
+  
+  <!-- Include Subscriptions Settings Page -->
+  <%- include('../pages/subscriptions') %>
+
+  <!-- Legacy Certificate Settings (kept for compatibility) -->
+  <div id="legacy-settings" class="hidden">
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">Certificate Settings</h2>
+        <p class="text-gray-600 mt-1">Configure certificate templates and email settings</p>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button onclick="exportSettings()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 flex items-center space-x-2">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Export Settings</span>
+        </button>
+        <button onclick="addNewSetting()" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors duration-200 flex items-center space-x-2">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span>Add Configuration</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Grid -->
+  <div class="space-y-8">
+    <% settings.forEach((setting, index) => { %>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden card-hover animate-on-scroll">
+      <!-- Card Header -->
+      <div class="bg-gradient-to-r from-primary-50 to-blue-50 px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
+              <i data-lucide="settings" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900"><%= setting.name %></h3>
+              <p class="text-sm text-gray-600">Configuration ID: <%= setting.id %></p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i>
+              Active
+            </span>
+            <button onclick="toggleSettingCard(<%= index %>)" class="p-2 hover:bg-white rounded-lg transition-colors duration-200">
+              <i data-lucide="chevron-down" class="w-4 h-4 text-gray-600 transform transition-transform duration-200" id="chevron-<%= index %>"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Content -->
+      <div class="setting-content p-6" id="setting-content-<%= index %>">
+        <form action="/settings/<%= setting.id %>" method="POST" onsubmit="handleFormSubmit(this, () => submitSettingForm(this))">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Basic Information -->
+            <div class="space-y-4">
+              <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4 flex items-center">
+                <i data-lucide="info" class="w-4 h-4 mr-2"></i>
+                Basic Information
+              </h4>
+              
+              <div>
+                <label for="name-<%= setting.id %>" class="block text-sm font-medium text-gray-700 mb-2">
+                  Certificate Name
+                </label>
+                <input 
+                  type="text" 
+                  id="name-<%= setting.id %>" 
+                  name="name"
+                  value="<%= setting.name %>"
+                  class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                  placeholder="Enter certificate name"
+                />
+              </div>
+
+              <div>
+                <label for="emailSubject-<%= setting.id %>" class="block text-sm font-medium text-gray-700 mb-2">
+                  Email Subject
+                </label>
+                <input 
+                  type="text" 
+                  id="emailSubject-<%= setting.id %>" 
+                  name="emailSubject"
+                  value="<%= setting.emailSubject %>"
+                  class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                  placeholder="Enter email subject"
+                />
+              </div>
+
+              <div>
+                <label for="emailBody-<%= setting.id %>" class="block text-sm font-medium text-gray-700 mb-2">
+                  Email Body Template
+                </label>
+                <textarea 
+                  id="emailBody-<%= setting.id %>" 
+                  name="emailBody" 
+                  rows="6"
+                  class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                  placeholder="Enter email body template with placeholders"
+                ><%= setting.emailBody %></textarea>
+                <p class="text-xs text-gray-500 mt-1">
+                  Use placeholders: [NAME], [CERTIFICATE_ID], [TYPE], [ISSUED], [EXPIRES]
+                </p>
+              </div>
+            </div>
+
+            <!-- Training Information -->
+            <div class="space-y-4">
+              <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4 flex items-center">
+                <i data-lucide="graduation-cap" class="w-4 h-4 mr-2"></i>
+                Training Information
+              </h4>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="instructorName-<%= setting.id %>" class="block text-sm font-medium text-gray-700 mb-2">
+                    Instructor Name
+                  </label>
+                  <input 
+                    type="text" 
+                    id="instructorName-<%= setting.id %>" 
+                    name="instructorName"
+                    value="<%= setting.instructorName %>"
+                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                    placeholder="Instructor name"
+                  />
+                </div>
+
+                <div>
+                  <label for="instructorId-<%= setting.id %>" class="block text-sm font-medium text-gray-700 mb-2">
+                    Instructor ID
+                  </label>
+                  <input 
+                    type="text" 
+                    id="instructorId-<%= setting.id %>" 
+                    name="instructorId"
+                    value="<%= setting.instructorId %>"
+                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                    placeholder="Instructor ID"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="trainingCenterName-<%= setting.id %>" class="block text-sm font-medium text-gray-700 mb-2">
+                  Training Center Name
+                </label>
+                <input 
+                  type="text" 
+                  id="trainingCenterName-<%= setting.id %>" 
+                  name="trainingCenterName"
+                  value="<%= setting.trainingCenterName %>"
+                  class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                  placeholder="Training center name"
+                />
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="trainingCenterId-<%= setting.id %>" class="block text-sm font-medium text-gray-700 mb-2">
+                    Training Center ID
+                  </label>
+                  <input 
+                    type="text" 
+                    id="trainingCenterId-<%= setting.id %>" 
+                    name="trainingCenterId"
+                    value="<%= setting.trainingCenterId %>"
+                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                    placeholder="Center ID"
+                  />
+                </div>
+
+                <div>
+                  <label for="tcCity-<%= setting.id %>" class="block text-sm font-medium text-gray-700 mb-2">
+                    Training Center City
+                  </label>
+                  <input 
+                    type="text" 
+                    id="tcCity-<%= setting.id %>" 
+                    name="tcCity"
+                    value="<%= setting.tcCity %>"
+                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                    placeholder="City"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="trainingSiteName-<%= setting.id %>" class="block text-sm font-medium text-gray-700 mb-2">
+                  Training Site Name
+                </label>
+                <input 
+                  type="text" 
+                  id="trainingSiteName-<%= setting.id %>" 
+                  name="trainingSiteName"
+                  value="<%= setting.trainingSiteName %>"
+                  class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                  placeholder="Training site name"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="flex items-center justify-between pt-6 mt-6 border-t border-gray-200">
+            <div class="flex items-center space-x-4">
+              <button type="button" onclick="previewTemplate(<%= setting.id %>)" class="flex items-center space-x-2 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200">
+                <i data-lucide="eye" class="w-4 h-4"></i>
+                <span>Preview Template</span>
+              </button>
+              <button type="button" onclick="testEmail(<%= setting.id %>)" class="flex items-center space-x-2 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200">
+                <i data-lucide="mail" class="w-4 h-4"></i>
+                <span>Test Email</span>
+              </button>
+            </div>
+            <div class="flex items-center space-x-3">
+              <button type="button" onclick="resetForm(<%= setting.id %>)" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors duration-200">
+                Reset
+              </button>
+              <button type="submit" class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors duration-200 flex items-center space-x-2">
+                <i data-lucide="save" class="w-4 h-4"></i>
+                <span>Save Changes</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  </div>
+  <!-- End Legacy Settings -->
+
+</div>
+
+<script>
+function toggleSettingCard(index) {
+  const content = document.getElementById(`setting-content-${index}`);
+  const chevron = document.getElementById(`chevron-${index}`);
+  
+  if (content.style.display === 'none') {
+    content.style.display = 'block';
+    chevron.style.transform = 'rotate(0deg)';
+  } else {
+    content.style.display = 'none';
+    chevron.style.transform = 'rotate(-90deg)';
+  }
+}
+
+async function submitSettingForm(form) {
+  return new Promise((resolve, reject) => {
+    const formData = new FormData(form);
+    
+    fetch(form.action, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (response.ok) {
+        window.showToast('Settings saved successfully!', 'success');
+        resolve();
+      } else {
+        throw new Error('Failed to save settings');
+      }
+    })
+    .catch(error => {
+      window.showToast('Error saving settings: ' + error.message, 'error');
+      reject(error);
+    });
+  });
+}
+
+function previewTemplate(settingId) {
+  window.showToast('Template preview feature coming soon!', 'info');
+}
+
+function testEmail(settingId) {
+  window.showToast('Sending test email...', 'info');
+  // Add test email functionality
+}
+
+function resetForm(settingId) {
+  if (confirm('Are you sure you want to reset this form? All unsaved changes will be lost.')) {
+    location.reload();
+  }
+}
+
+function exportSettings() {
+  window.showToast('Exporting settings...', 'info');
+  // Add export functionality
+}
+
+function addNewSetting() {
+  window.showToast('Add new setting feature coming soon!', 'info');
+}
+</script>

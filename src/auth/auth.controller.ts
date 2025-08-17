@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Post,
-  Query,
   Redirect,
   Render,
   Res,

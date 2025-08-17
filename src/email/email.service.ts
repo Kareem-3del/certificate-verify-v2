@@ -145,4 +145,201 @@ export class EmailService {
 
     return results;
   }
+
+  async sendEnhancedBulkEmail(emailData: {
+    campaignName: string;
+    campaignType: string;
+    recipients: string[];
+    subject: string;
+    fromName: string;
+    content: string;
+    resultEmail: string;
+    sendTime?: string;
+    scheduleDateTime?: string;
+    priority?: string;
+    trackOpens?: boolean;
+    trackClicks?: boolean;
+    allowUnsubscribe?: boolean;
+  }) {
+    const {
+      campaignName,
+      campaignType,
+      recipients,
+      subject,
+      fromName,
+      content,
+      resultEmail,
+      sendTime,
+      scheduleDateTime,
+      priority,
+      trackOpens,
+      trackClicks,
+      allowUnsubscribe,
+    } = emailData;
+
+    const results = {
+      success: 0,
+      failure: 0,
+      failedEmails: [] as string[],
+      totalRecipients: recipients.length,
+      campaignName,
+      campaignType,
+      startTime: new Date().toISOString(),
+      endTime: '',
+      processedEmails: [] as string[],
+    };
+
+    console.log(`Starting enhanced bulk email campaign: ${campaignName}`);
+    console.log(`Campaign type: ${campaignType}`);
+    console.log(`Recipients: ${recipients.length}`);
+
+    if (!recipients || recipients.length === 0) {
+      throw new Error('No recipients provided');
+    }
+
+    // Handle scheduling (for now, we'll process immediately but could add queue logic)
+    if (sendTime === 'schedule' && scheduleDateTime) {
+      console.log(`Campaign scheduled for: ${scheduleDateTime}`);
+      // In a real implementation, you would queue this for later processing
+    }
+
+    // Process each recipient
+    for (const recipient of recipients) {
+      try {
+        // Replace template variables in content
+        let personalizedContent = content;
+        personalizedContent = personalizedContent.replace(
+          /{{name}}/g,
+          recipient.split('@')[0],
+        );
+        personalizedContent = personalizedContent.replace(
+          /{{email}}/g,
+          recipient,
+        );
+
+        // Add unsubscribe link if enabled
+        if (allowUnsubscribe) {
+          personalizedContent += `\n\n---\nTo unsubscribe from future emails, click here: ${process.env.BASE_URL}/unsubscribe?email=${encodeURIComponent(recipient)}`;
+        }
+
+        // Add tracking pixels if enabled (simplified implementation)
+        if (trackOpens) {
+          personalizedContent += `<img src="${process.env.BASE_URL}/track/open?campaign=${campaignName}&email=${encodeURIComponent(recipient)}" width="1" height="1" style="display:none;" />`;
+        }
+
+        const mailOptions: Mail.Options = {
+          from: `"${fromName}" <certificates@precertificationn.com>`,
+          to: recipient,
+          subject: subject,
+          html: personalizedContent,
+          text: personalizedContent.replace(/<[^>]*>/g, ''), // Strip HTML for text version
+          priority:
+            priority === 'high'
+              ? 'high'
+              : priority === 'low'
+                ? 'low'
+                : 'normal',
+        };
+
+        // Add campaign headers
+        mailOptions.headers = {
+          'X-Campaign-Name': campaignName,
+          'X-Campaign-Type': campaignType,
+          'X-Mailer': 'CertifyPro-BulkEmail',
+        };
+
+        await this.transporter.sendMail(mailOptions);
+        results.success++;
+        results.processedEmails.push(recipient);
+        console.log(`Email sent successfully to ${recipient}`);
+      } catch (error) {
+        console.error(`Failed to send email to ${recipient}:`, error);
+        results.failure++;
+        results.failedEmails.push(recipient);
+      }
+
+      // Rate limiting - adjust delay based on priority
+      const delayMs =
+        priority === 'high' ? 500 : priority === 'low' ? 2000 : 1000;
+      await this.delay(delayMs);
+    }
+
+    results.endTime = new Date().toISOString();
+
+    console.log('Enhanced bulk email campaign completed.');
+    console.log(`Campaign: ${campaignName}`);
+    console.log(`Success: ${results.success}, Failure: ${results.failure}`);
+
+    // Prepare detailed results summary
+    const resultsSummary = this.formatEnhancedResults(results);
+
+    // Send results summary email to the requesting user
+    try {
+      await this.sendEmail(
+        resultEmail,
+        `Campaign Results - ${campaignName}`,
+        `Bulk Email Campaign Results: ${campaignName}`,
+        resultsSummary,
+        [], // No attachments for the summary email
+      );
+    } catch (error) {
+      console.error('Failed to send results summary email:', error);
+    }
+
+    return results;
+  }
+
+  private formatEnhancedResults(results: {
+    success: number;
+    failure: number;
+    failedEmails: string[];
+    totalRecipients: number;
+    campaignName: string;
+    campaignType: string;
+    startTime: string;
+    endTime: string;
+    processedEmails: string[];
+  }) {
+    const duration =
+      new Date(results.endTime).getTime() -
+      new Date(results.startTime).getTime();
+    const durationMinutes = Math.round(duration / 60000);
+    const successRate = Math.round(
+      (results.success / results.totalRecipients) * 100,
+    );
+
+    return `
+Enhanced Bulk Email Campaign Results
+=====================================
+
+Campaign: ${results.campaignName}
+Type: ${results.campaignType}
+Started: ${new Date(results.startTime).toLocaleString()}
+Completed: ${new Date(results.endTime).toLocaleString()}
+Duration: ${durationMinutes} minutes
+
+SUMMARY
+-------
+Total Recipients: ${results.totalRecipients}
+Successfully Sent: ${results.success}
+Failed: ${results.failure}
+Success Rate: ${successRate}%
+
+${
+  results.failedEmails.length > 0
+    ? `
+FAILED EMAILS
+------------
+${results.failedEmails.join('\n')}
+`
+    : 'All emails were sent successfully! 🎉'
+}
+
+PROCESSED EMAILS
+---------------
+${results.processedEmails.slice(0, 10).join('\n')}${results.processedEmails.length > 10 ? `\n... and ${results.processedEmails.length - 10} more` : ''}
+
+This report was generated automatically by CertifyPro.
+    `;
+  }
 }

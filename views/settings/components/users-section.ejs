@@ -1,0 +1,427 @@
+<!-- Users Management Section -->
+<div id="users" class="content-section hidden">
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">User Management</h2>
+        <p class="text-gray-600 mt-1">Manage admin users and their permissions</p>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button onclick="exportUsers()" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200 flex items-center space-x-2">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Export Users</span>
+        </button>
+        <button onclick="addNewUser()" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors duration-200 flex items-center space-x-2">
+          <i data-lucide="user-plus" class="w-4 h-4"></i>
+          <span>Add User</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Search Users</label>
+        <div class="relative">
+          <input 
+            type="text" 
+            id="userSearchInput" 
+            placeholder="Search by name, email, or role..."
+            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+          />
+          <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-3 top-3.5"></i>
+        </div>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Role</label>
+        <select id="roleFilter" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+          <option value="">All Roles</option>
+          <option value="admin">Admin</option>
+          <option value="moderator">Moderator</option>
+          <option value="viewer">Viewer</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Users Cards Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6" id="usersGrid">
+    <!-- Users will be loaded here -->
+  </div>
+
+  <!-- Users Table (Alternative View) -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hidden" id="usersTable">
+    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-medium text-gray-900">All Users</h3>
+        <div class="flex items-center space-x-2">
+          <button onclick="toggleView('grid')" class="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100" id="gridViewBtn">
+            <i data-lucide="grid-3x3" class="w-4 h-4"></i>
+          </button>
+          <button onclick="toggleView('table')" class="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100 bg-gray-200" id="tableViewBtn">
+            <i data-lucide="list" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Active</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody" class="bg-white divide-y divide-gray-200">
+          <!-- Table rows will be loaded here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div id="usersLoadingState" class="flex items-center justify-center py-12 hidden">
+    <div class="text-center">
+      <div class="loading-spinner mx-auto mb-4"></div>
+      <p class="text-gray-500">Loading users...</p>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div id="usersEmptyState" class="flex items-center justify-center py-12 hidden">
+    <div class="text-center">
+      <i data-lucide="users" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
+      <p class="text-gray-500">No users found</p>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit User Modal -->
+<div id="userModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+  <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 transform scale-95 transition-transform duration-200">
+    <div class="flex items-center justify-between p-6 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900" id="modalTitle">Add New User</h3>
+      <button onclick="closeUserModal()" class="text-gray-400 hover:text-gray-600">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    
+    <form id="userForm" class="p-6 space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+        <input type="text" id="userName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" placeholder="Enter full name">
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+        <input type="email" id="userEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" placeholder="Enter email address">
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+        <select id="userRole" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+          <option value="viewer">Viewer</option>
+          <option value="moderator">Moderator</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      
+      <div id="passwordField">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+        <input type="password" id="userPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" placeholder="Enter password">
+      </div>
+      
+      <div class="flex items-center justify-end space-x-3 pt-4">
+        <button type="button" onclick="closeUserModal()" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
+        <button type="submit" class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg">Save User</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+let usersData = [];
+let currentView = 'grid';
+
+async function loadUsers(searchQuery = '') {
+  try {
+    document.getElementById('usersLoadingState').classList.remove('hidden');
+    document.getElementById('usersEmptyState').classList.add('hidden');
+    
+    // Mock data for demonstration
+    const mockUsers = [
+      {
+        id: 1,
+        name: 'John Administrator',
+        email: 'admin@certifypro.com',
+        role: 'admin',
+        lastActive: '2024-01-15T10:30:00Z',
+        status: 'active',
+        avatar: 'JA'
+      },
+      {
+        id: 2,
+        name: 'Sarah Moderator',
+        email: 'sarah@certifypro.com',
+        role: 'moderator',
+        lastActive: '2024-01-14T15:45:00Z',
+        status: 'active',
+        avatar: 'SM'
+      },
+      {
+        id: 3,
+        name: 'Mike Viewer',
+        email: 'mike@certifypro.com',
+        role: 'viewer',
+        lastActive: '2024-01-13T09:15:00Z',
+        status: 'inactive',
+        avatar: 'MV'
+      }
+    ];
+    
+    usersData = searchQuery ? 
+      mockUsers.filter(user => 
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.role.toLowerCase().includes(searchQuery.toLowerCase())
+      ) : mockUsers;
+    
+    if (currentView === 'grid') {
+      updateUsersGrid();
+    } else {
+      updateUsersTable();
+    }
+    
+  } catch (error) {
+    console.error('Error loading users:', error);
+    window.showToast('Error loading users', 'error');
+  } finally {
+    document.getElementById('usersLoadingState').classList.add('hidden');
+  }
+}
+
+function updateUsersGrid() {
+  const grid = document.getElementById('usersGrid');
+  
+  if (usersData.length === 0) {
+    document.getElementById('usersEmptyState').classList.remove('hidden');
+    grid.innerHTML = '';
+    return;
+  }
+  
+  document.getElementById('usersEmptyState').classList.add('hidden');
+  
+  grid.innerHTML = usersData.map(user => `
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 card-hover animate-on-scroll">
+      <div class="flex items-center space-x-4 mb-4">
+        <div class="w-12 h-12 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white font-semibold">
+          ${user.avatar}
+        </div>
+        <div class="flex-1">
+          <h3 class="text-lg font-medium text-gray-900">${user.name}</h3>
+          <p class="text-sm text-gray-500">${user.email}</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          ${getRoleBadge(user.role)}
+          ${getStatusBadge(user.status)}
+        </div>
+      </div>
+      
+      <div class="text-sm text-gray-600 mb-4">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="clock" class="w-4 h-4"></i>
+          <span>Last active: ${new Date(user.lastActive).toLocaleDateString()}</span>
+        </div>
+      </div>
+      
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <button onclick="editUser(${user.id})" class="p-2 text-primary-600 hover:text-primary-800 hover:bg-primary-50 rounded-lg">
+            <i data-lucide="edit" class="w-4 h-4"></i>
+          </button>
+          <button onclick="resetUserPassword(${user.id})" class="p-2 text-yellow-600 hover:text-yellow-800 hover:bg-yellow-50 rounded-lg">
+            <i data-lucide="key" class="w-4 h-4"></i>
+          </button>
+          <button onclick="deleteUser(${user.id})" class="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <button onclick="viewUserDetails(${user.id})" class="text-sm text-primary-600 hover:text-primary-800 font-medium">
+          View Details
+        </button>
+      </div>
+    </div>
+  `).join('');
+  
+  lucide.createIcons();
+}
+
+function updateUsersTable() {
+  const tbody = document.getElementById('usersTableBody');
+  
+  tbody.innerHTML = usersData.map(user => `
+    <tr class="hover:bg-gray-50">
+      <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+          <div class="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+            ${user.avatar}
+          </div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">${user.name}</div>
+            <div class="text-sm text-gray-500">${user.email}</div>
+          </div>
+        </div>
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap">
+        ${getRoleBadge(user.role)}
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        ${new Date(user.lastActive).toLocaleDateString()}
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap">
+        ${getStatusBadge(user.status)}
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+        <div class="flex items-center space-x-2">
+          <button onclick="editUser(${user.id})" class="text-primary-600 hover:text-primary-900 p-1 rounded hover:bg-primary-50">
+            <i data-lucide="edit" class="w-4 h-4"></i>
+          </button>
+          <button onclick="resetUserPassword(${user.id})" class="text-yellow-600 hover:text-yellow-900 p-1 rounded hover:bg-yellow-50">
+            <i data-lucide="key" class="w-4 h-4"></i>
+          </button>
+          <button onclick="deleteUser(${user.id})" class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+  
+  lucide.createIcons();
+}
+
+function getRoleBadge(role) {
+  const badges = {
+    admin: '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Admin</span>',
+    moderator: '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Moderator</span>',
+    viewer: '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Viewer</span>'
+  };
+  return badges[role] || badges.viewer;
+}
+
+function getStatusBadge(status) {
+  const badges = {
+    active: '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>',
+    inactive: '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Inactive</span>'
+  };
+  return badges[status] || badges.inactive;
+}
+
+function toggleView(view) {
+  currentView = view;
+  
+  if (view === 'grid') {
+    document.getElementById('usersGrid').classList.remove('hidden');
+    document.getElementById('usersTable').classList.add('hidden');
+    document.getElementById('gridViewBtn').classList.add('bg-gray-200');
+    document.getElementById('tableViewBtn').classList.remove('bg-gray-200');
+    updateUsersGrid();
+  } else {
+    document.getElementById('usersGrid').classList.add('hidden');
+    document.getElementById('usersTable').classList.remove('hidden');
+    document.getElementById('gridViewBtn').classList.remove('bg-gray-200');
+    document.getElementById('tableViewBtn').classList.add('bg-gray-200');
+    updateUsersTable();
+  }
+}
+
+function addNewUser() {
+  document.getElementById('modalTitle').textContent = 'Add New User';
+  document.getElementById('userForm').reset();
+  document.getElementById('passwordField').style.display = 'block';
+  document.getElementById('userModal').classList.remove('hidden');
+  document.getElementById('userModal').querySelector('.bg-white').classList.remove('scale-95');
+  document.getElementById('userModal').querySelector('.bg-white').classList.add('scale-100');
+}
+
+function editUser(id) {
+  const user = usersData.find(u => u.id === id);
+  if (user) {
+    document.getElementById('modalTitle').textContent = 'Edit User';
+    document.getElementById('userName').value = user.name;
+    document.getElementById('userEmail').value = user.email;
+    document.getElementById('userRole').value = user.role;
+    document.getElementById('passwordField').style.display = 'none';
+    document.getElementById('userModal').classList.remove('hidden');
+    document.getElementById('userModal').querySelector('.bg-white').classList.remove('scale-95');
+    document.getElementById('userModal').querySelector('.bg-white').classList.add('scale-100');
+  }
+}
+
+function closeUserModal() {
+  document.getElementById('userModal').querySelector('.bg-white').classList.remove('scale-100');
+  document.getElementById('userModal').querySelector('.bg-white').classList.add('scale-95');
+  setTimeout(() => {
+    document.getElementById('userModal').classList.add('hidden');
+  }, 200);
+}
+
+async function deleteUser(id) {
+  if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+    try {
+      window.showToast('User deleted successfully!', 'success');
+      loadUsers();
+    } catch (error) {
+      window.showToast('Error deleting user', 'error');
+    }
+  }
+}
+
+function resetUserPassword(id) {
+  if (confirm('Are you sure you want to reset this user\'s password? They will receive an email with reset instructions.')) {
+    window.showToast('Password reset email sent!', 'success');
+  }
+}
+
+function viewUserDetails(id) {
+  window.showToast('User details feature coming soon!', 'info');
+}
+
+function exportUsers() {
+  window.showToast('Exporting users...', 'info');
+}
+
+// Event listeners
+document.getElementById('userSearchInput').addEventListener('input', (e) => {
+  clearTimeout(window.userSearchTimeout);
+  window.userSearchTimeout = setTimeout(() => {
+    loadUsers(e.target.value);
+  }, 500);
+});
+
+document.getElementById('roleFilter').addEventListener('change', (e) => {
+  const filteredUsers = e.target.value ? 
+    usersData.filter(user => user.role === e.target.value) : 
+    usersData;
+  
+  if (currentView === 'grid') {
+    updateUsersGrid();
+  } else {
+    updateUsersTable();
+  }
+});
+
+document.getElementById('userForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  window.showToast('User saved successfully!', 'success');
+  closeUserModal();
+  loadUsers();
+});
+</script>

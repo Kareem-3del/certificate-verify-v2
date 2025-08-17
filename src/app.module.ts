@@ -17,6 +17,7 @@ import { CookieParserMiddleware } from '@nest-middlewares/cookie-parser';
 import { EmailModule } from './email/email.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { PaymentModule } from './payment/payment.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { PaymentModule } from './payment/payment.module';
     EmailModule,
     PaymentModule,
     SubscriptionsModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

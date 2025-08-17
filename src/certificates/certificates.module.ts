@@ -12,6 +12,7 @@ import { Settings } from './settings/settings.entity';
 import { EmailModule } from '../email/email.module';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '../users/users.module';
+import { AnalyticsModule } from '../analytics/analytics.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UsersModule } from '../users/users.module';
     EmailModule,
     ConfigModule,
     UsersModule,
+    AnalyticsModule,
   ],
   providers: [CertificatesService, SettingsService],
   controllers: [CertificatesController, SettingsController, AppController],

@@ -26,11 +26,11 @@ export class SettingsController {
   ) {
     const currentUser: User = session.user;
     if (!currentUser) {
-      res.redirect('/login');
+      return res.redirect('/login');
     }
     const settings = await this.settingsService.findAll();
     if (currentUser.role === 'moderator') {
-      res.render('settings/mod', { settings });
+      return res.render('settings/mod', { settings });
     }
     if (currentUser.role === 'admin') {
       return res.render('settings/index', { settings });
@@ -49,10 +49,9 @@ export class SettingsController {
     if (!currentUser) {
       throw new Error('No user found');
     }
-    const settings = await this.settingsService.findAll();
     if (currentUser.role === 'admin') {
-      console.log(currentUser.role);
-      res.render('settings/sub', { settings });
+      // Redirect to the new modern subscriptions page
+      return res.redirect('/settings/#subscriptions');
     }
     throw new Error('No user found');
   }

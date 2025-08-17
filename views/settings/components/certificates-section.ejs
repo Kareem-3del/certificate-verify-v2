@@ -1,0 +1,385 @@
+<!-- Certificates Management Section -->
+<div id="certificates" class="content-section hidden">
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">Certificate Management</h2>
+        <p class="text-gray-600 mt-1">View, manage and analyze issued certificates</p>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button onclick="exportAllCertificates()" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200 flex items-center space-x-2">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Export All</span>
+        </button>
+        <button onclick="deleteSelectedCertificates()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 flex items-center space-x-2">
+          <i data-lucide="trash-2" class="w-4 h-4"></i>
+          <span>Delete Selected</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Search Certificates</label>
+        <div class="relative">
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search by name, ID, city, instructor..."
+            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+          />
+          <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-3 top-3.5"></i>
+        </div>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Type</label>
+        <select id="typeFilter" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+          <option value="">All Types</option>
+          <option value="CPR">CPR</option>
+          <option value="First Aid">First Aid</option>
+          <option value="AED">AED</option>
+        </select>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+        <select id="dateFilter" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+          <option value="">All Time</option>
+          <option value="today">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+          <option value="year">This Year</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificates Table -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <label class="flex items-center space-x-2">
+            <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+            <span class="text-sm font-medium text-gray-700">Select All</span>
+          </label>
+          <span class="text-sm text-gray-500">
+            Total: <span id="certificatesCount" class="font-medium text-gray-900">0</span> certificates
+          </span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button onclick="refreshCertificates()" class="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          </button>
+          <div class="flex items-center space-x-1 text-sm text-gray-500">
+            <span>View:</span>
+            <button onclick="setViewMode('grid')" class="p-1 rounded hover:bg-gray-200" id="gridView">
+              <i data-lucide="grid-3x3" class="w-4 h-4"></i>
+            </button>
+            <button onclick="setViewMode('list')" class="p-1 rounded hover:bg-gray-200 bg-gray-200" id="listView">
+              <i data-lucide="list" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table View -->
+    <div id="tableView" class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <input type="checkbox" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Certificate</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Recipient</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issued</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expires</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="certificatesList" class="bg-white divide-y divide-gray-200">
+          <!-- Certificates will be loaded here -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="flex items-center justify-center py-12 hidden">
+      <div class="text-center">
+        <div class="loading-spinner mx-auto mb-4"></div>
+        <p class="text-gray-500">Loading certificates...</p>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="flex items-center justify-center py-12 hidden">
+      <div class="text-center">
+        <i data-lucide="file-x" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
+        <p class="text-gray-500">No certificates found</p>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="bg-gray-50 px-6 py-3 border-t border-gray-200">
+      <div class="flex items-center justify-between">
+        <div class="text-sm text-gray-700">
+          Showing <span id="showingStart">1</span> to <span id="showingEnd">10</span> of <span id="totalCertificates">0</span> results
+        </div>
+        <div class="flex items-center space-x-2">
+          <button onclick="previousPage()" id="prevBtn" class="px-3 py-1 text-sm text-gray-500 hover:text-gray-700 disabled:opacity-50" disabled>
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+          </button>
+          <span id="currentPage" class="px-3 py-1 text-sm font-medium text-gray-900">1</span>
+          <button onclick="nextPage()" id="nextBtn" class="px-3 py-1 text-sm text-gray-500 hover:text-gray-700">
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let certificatesData = [];
+let currentPage = 1;
+let totalPages = 1;
+const itemsPerPage = 20;
+
+async function loadCertificates(searchQuery = "", page = 1) {
+  try {
+    document.getElementById('loadingState').classList.remove('hidden');
+    document.getElementById('emptyState').classList.add('hidden');
+    
+    const response = await fetch(`/certificates?limit=${itemsPerPage}&offset=${(page - 1) * itemsPerPage}&search=${searchQuery}`);
+    const data = await response.json();
+    
+    certificatesData = data.certificates || [];
+    currentPage = page;
+    totalPages = Math.ceil((data.total || 0) / itemsPerPage);
+    
+    updateCertificatesTable();
+    updatePagination();
+    updateCertificatesCount(data.total || 0);
+    
+  } catch (error) {
+    console.error('Error loading certificates:', error);
+    window.showToast('Error loading certificates', 'error');
+  } finally {
+    document.getElementById('loadingState').classList.add('hidden');
+  }
+}
+
+function updateCertificatesTable() {
+  const tbody = document.getElementById('certificatesList');
+  
+  if (certificatesData.length === 0) {
+    document.getElementById('emptyState').classList.remove('hidden');
+    tbody.innerHTML = '';
+    return;
+  }
+  
+  document.getElementById('emptyState').classList.add('hidden');
+  
+  tbody.innerHTML = certificatesData.map(cert => `
+    <tr class="hover:bg-gray-50 transition-colors duration-200">
+      <td class="px-6 py-4 whitespace-nowrap">
+        <input type="checkbox" value="${cert.id}" class="certificateCheckbox rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+          <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+            <i data-lucide="award" class="w-5 h-5 text-primary-600"></i>
+          </div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">${cert.id}</div>
+            <div class="text-sm text-gray-500">${cert.training_site_name || 'N/A'}</div>
+          </div>
+        </div>
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm font-medium text-gray-900">${cert.name}</div>
+        <div class="text-sm text-gray-500">${cert.city || 'N/A'}</div>
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+          ${cert.type || 'Standard'}
+        </span>
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        ${new Date(cert.issued).toLocaleDateString()}
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        ${new Date(cert.express).toLocaleDateString()}
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap">
+        ${getStatusBadge(cert)}
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+        <div class="flex items-center space-x-2">
+          <button onclick="viewCertificate('${cert.id}')" class="text-primary-600 hover:text-primary-900 p-1 rounded hover:bg-primary-50">
+            <i data-lucide="eye" class="w-4 h-4"></i>
+          </button>
+          <button onclick="renewCertificate('${cert.id}')" class="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          </button>
+          <button onclick="resendCertificate('${cert.id}')" class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+          </button>
+          <button onclick="deleteCertificate('${cert.id}')" class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+  
+  // Reinitialize icons
+  lucide.createIcons();
+}
+
+function getStatusBadge(cert) {
+  const now = new Date();
+  const expiry = new Date(cert.express);
+  
+  if (expiry < now) {
+    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Expired</span>';
+  } else if (expiry - now < 30 * 24 * 60 * 60 * 1000) {
+    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Expiring Soon</span>';
+  } else {
+    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Valid</span>';
+  }
+}
+
+function updatePagination() {
+  document.getElementById('currentPage').textContent = currentPage;
+  document.getElementById('prevBtn').disabled = currentPage === 1;
+  document.getElementById('nextBtn').disabled = currentPage === totalPages;
+  
+  const start = (currentPage - 1) * itemsPerPage + 1;
+  const end = Math.min(currentPage * itemsPerPage, certificatesData.length);
+  
+  document.getElementById('showingStart').textContent = start;
+  document.getElementById('showingEnd').textContent = end;
+}
+
+function updateCertificatesCount(total) {
+  document.getElementById('certificatesCount').textContent = total;
+  document.getElementById('totalCertificates').textContent = total;
+  document.getElementById('certificates-count').textContent = total;
+}
+
+// Event listeners
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  clearTimeout(window.searchTimeout);
+  window.searchTimeout = setTimeout(() => {
+    loadCertificates(e.target.value, 1);
+  }, 500);
+});
+
+document.getElementById('selectAll').addEventListener('change', (e) => {
+  document.querySelectorAll('.certificateCheckbox').forEach(checkbox => {
+    checkbox.checked = e.target.checked;
+  });
+});
+
+// Certificate actions
+function viewCertificate(id) {
+  window.open(`/certificates/verify/${id}`, '_blank');
+}
+
+async function renewCertificate(id) {
+  if (confirm('Are you sure you want to renew this certificate?')) {
+    try {
+      const response = await fetch(`/certificates/renew/${id}`, { method: 'POST' });
+      if (response.ok) {
+        window.showToast('Certificate renewed successfully!', 'success');
+        loadCertificates();
+      } else {
+        throw new Error('Failed to renew certificate');
+      }
+    } catch (error) {
+      window.showToast('Error renewing certificate', 'error');
+    }
+  }
+}
+
+async function resendCertificate(id) {
+  try {
+    const response = await fetch(`/certificates/resend/${id}`, { method: 'POST' });
+    if (response.ok) {
+      window.showToast('Certificate sent successfully!', 'success');
+    } else {
+      throw new Error('Failed to resend certificate');
+    }
+  } catch (error) {
+    window.showToast('Error sending certificate', 'error');
+  }
+}
+
+async function deleteCertificate(id) {
+  if (confirm('Are you sure you want to delete this certificate? This action cannot be undone.')) {
+    try {
+      const response = await fetch(`/certificates/${id}`, { method: 'DELETE' });
+      if (response.ok) {
+        window.showToast('Certificate deleted successfully!', 'success');
+        loadCertificates();
+      } else {
+        throw new Error('Failed to delete certificate');
+      }
+    } catch (error) {
+      window.showToast('Error deleting certificate', 'error');
+    }
+  }
+}
+
+function deleteSelectedCertificates() {
+  const selected = Array.from(document.querySelectorAll('.certificateCheckbox:checked')).map(cb => cb.value);
+  
+  if (selected.length === 0) {
+    window.showToast('Please select certificates to delete', 'error');
+    return;
+  }
+  
+  if (confirm(`Are you sure you want to delete ${selected.length} certificate(s)? This action cannot be undone.`)) {
+    selected.forEach(id => deleteCertificate(id));
+  }
+}
+
+function exportAllCertificates() {
+  window.open('/certificates/export/all', '_blank');
+  window.showToast('Export started...', 'info');
+}
+
+function refreshCertificates() {
+  loadCertificates(document.getElementById('searchInput').value, currentPage);
+}
+
+function previousPage() {
+  if (currentPage > 1) {
+    loadCertificates(document.getElementById('searchInput').value, currentPage - 1);
+  }
+}
+
+function nextPage() {
+  if (currentPage < totalPages) {
+    loadCertificates(document.getElementById('searchInput').value, currentPage + 1);
+  }
+}
+
+function setViewMode(mode) {
+  // Update view mode buttons
+  document.getElementById('gridView').classList.toggle('bg-gray-200', mode === 'grid');
+  document.getElementById('listView').classList.toggle('bg-gray-200', mode === 'list');
+  
+  // This could switch between table and grid views in the future
+  window.showToast(`${mode.charAt(0).toUpperCase() + mode.slice(1)} view selected`, 'info');
+}
+</script>

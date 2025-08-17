@@ -1,0 +1,549 @@
+<!-- Enhanced Subscription Management Page -->
+<div id="subscriptions-settings" class="settings-page hidden">
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">Subscription Management</h2>
+        <p class="text-gray-600 mt-1">Manage subscription plans, pricing, and user access</p>
+      </div>
+      <div class="flex space-x-3">
+        <button onclick="exportSubscriptions()" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200 flex items-center space-x-2">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Export Data</span>
+        </button>
+        <button onclick="showCreateSubscription()" class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors duration-200 flex items-center space-x-2">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span>Add Subscription</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscription Analytics Overview -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Total Subscriptions</p>
+          <p class="text-2xl font-bold text-gray-900" id="totalSubscriptions">0</p>
+          <p class="text-xs text-blue-600 mt-1">
+            <i data-lucide="package" class="w-3 h-3 inline mr-1"></i>
+            Active plans
+          </p>
+        </div>
+        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+          <i data-lucide="package" class="w-6 h-6 text-blue-600"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Total Revenue</p>
+          <p class="text-2xl font-bold text-gray-900" id="totalRevenue">$0</p>
+          <p class="text-xs text-green-600 mt-1">
+            <i data-lucide="trending-up" class="w-3 h-3 inline mr-1"></i>
+            This month
+          </p>
+        </div>
+        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+          <i data-lucide="dollar-sign" class="w-6 h-6 text-green-600"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Active Subscribers</p>
+          <p class="text-2xl font-bold text-gray-900" id="activeSubscribers">0</p>
+          <p class="text-xs text-purple-600 mt-1">
+            <i data-lucide="users" class="w-3 h-3 inline mr-1"></i>
+            Current users
+          </p>
+        </div>
+        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+          <i data-lucide="users" class="w-6 h-6 text-purple-600"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Conversion Rate</p>
+          <p class="text-2xl font-bold text-gray-900" id="conversionRate">0%</p>
+          <p class="text-xs text-yellow-600 mt-1">
+            <i data-lucide="target" class="w-3 h-3 inline mr-1"></i>
+            Last 30 days
+          </p>
+        </div>
+        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+          <i data-lucide="target" class="w-6 h-6 text-yellow-600"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscription Plans Management -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+            <i data-lucide="credit-card" class="w-5 h-5 mr-2 text-blue-600"></i>
+            Subscription Plans
+          </h3>
+          <p class="text-sm text-gray-600 mt-1">Manage pricing plans and subscription options</p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <div class="flex items-center space-x-2">
+            <label class="text-sm text-gray-600">Filter:</label>
+            <select id="planFilter" class="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+              <option value="all">All Plans</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+          <button onclick="refreshSubscriptions()" class="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="p-6">
+      <!-- Subscription Plans Grid -->
+      <div id="subscriptionsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Subscription cards will be dynamically loaded here -->
+      </div>
+      
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden text-center py-12">
+        <i data-lucide="package" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No subscription plans found</h3>
+        <p class="text-gray-600 mb-6">Get started by creating your first subscription plan</p>
+        <button onclick="showCreateSubscription()" class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors duration-200">
+          Create First Plan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Subscription Activity -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Recent Purchases -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-semibold text-gray-900">Recent Purchases</h3>
+        <button onclick="viewAllPurchases()" class="text-sm text-primary-600 hover:text-primary-800">
+          View All
+        </button>
+      </div>
+      
+      <div id="recentPurchases" class="space-y-4">
+        <!-- Recent purchases will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Popular Plans -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-semibold text-gray-900">Popular Plans</h3>
+        <button onclick="viewPlanAnalytics()" class="text-sm text-primary-600 hover:text-primary-800">
+          View Analytics
+        </button>
+      </div>
+      
+      <div id="popularPlans" class="space-y-4">
+        <!-- Popular plans will be loaded here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create/Edit Subscription Modal -->
+<div id="subscriptionModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+  <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between p-6 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900" id="modalTitle">Create Subscription Plan</h3>
+      <button onclick="closeSubscriptionModal()" class="text-gray-400 hover:text-gray-600">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    
+    <form id="subscriptionForm" class="p-6">
+      <input type="hidden" id="subscriptionId">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Basic Information -->
+        <div class="space-y-4">
+          <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider">Basic Information</h4>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Plan Name</label>
+            <input type="text" id="planName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" placeholder="e.g., Premium Plan" required>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Price ($)</label>
+            <input type="number" id="planPrice" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" placeholder="29.99" step="0.01" required>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Points Included</label>
+            <input type="number" id="planPoints" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" placeholder="100" required>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Details Link</label>
+            <input type="url" id="detailsLink" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" placeholder="https://example.com/plan-details">
+          </div>
+        </div>
+
+        <!-- Configuration -->
+        <div class="space-y-4">
+          <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider">Configuration</h4>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Certificate Template</label>
+            <select id="configId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" required>
+              <option value="">Select Template</option>
+              <!-- Will be populated dynamically -->
+            </select>
+          </div>
+          
+          <div class="space-y-3">
+            <label class="block text-sm font-medium text-gray-700">Included Features</label>
+            
+            <label class="flex items-center space-x-3">
+              <input type="checkbox" id="includeInstructorId" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+              <span class="text-sm text-gray-700">Include Instructor ID</span>
+            </label>
+            
+            <label class="flex items-center space-x-3">
+              <input type="checkbox" id="randomInstructorId" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+              <span class="text-sm text-gray-700">Random Instructor ID</span>
+            </label>
+            
+            <label class="flex items-center space-x-3">
+              <input type="checkbox" id="includeInstructorName" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+              <span class="text-sm text-gray-700">Include Instructor Name</span>
+            </label>
+            
+            <label class="flex items-center space-x-3">
+              <input type="checkbox" id="includeCenterName" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+              <span class="text-sm text-gray-700">Include Center Name</span>
+            </label>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Welcome Email Message</label>
+            <textarea id="emailMessage" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" placeholder="Welcome to our website! Your password is [PASSWORD], email: [EMAIL]"></textarea>
+            <p class="text-xs text-gray-500 mt-1">Use [PASSWORD] and [EMAIL] as placeholders</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
+        <button type="button" onclick="closeSubscriptionModal()" class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200">
+          Cancel
+        </button>
+        <button type="submit" class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors duration-200">
+          <span id="submitButtonText">Create Plan</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+let subscriptions = [];
+let isEditMode = false;
+
+// Initialize subscription management
+document.addEventListener('DOMContentLoaded', function() {
+  loadSubscriptions();
+  loadConfigOptions();
+  updateSubscriptionStats();
+  
+  // Setup form submission
+  document.getElementById('subscriptionForm').addEventListener('submit', handleFormSubmit);
+  
+  // Setup filter
+  document.getElementById('planFilter').addEventListener('change', filterSubscriptions);
+});
+
+async function loadSubscriptions() {
+  try {
+    const response = await fetch('/subscriptions');
+    subscriptions = await response.json();
+    renderSubscriptions();
+    updateSubscriptionStats();
+  } catch (error) {
+    console.error('Error loading subscriptions:', error);
+    window.showToast('Error loading subscriptions', 'error');
+  }
+}
+
+function renderSubscriptions() {
+  const grid = document.getElementById('subscriptionsGrid');
+  const emptyState = document.getElementById('emptyState');
+  
+  if (subscriptions.length === 0) {
+    grid.classList.add('hidden');
+    emptyState.classList.remove('hidden');
+    return;
+  }
+  
+  grid.classList.remove('hidden');
+  emptyState.classList.add('hidden');
+  
+  grid.innerHTML = '';
+  
+  subscriptions.forEach(subscription => {
+    const card = createSubscriptionCard(subscription);
+    grid.appendChild(card);
+  });
+  
+  // Re-initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+}
+
+function createSubscriptionCard(subscription) {
+  const div = document.createElement('div');
+  div.className = 'bg-gradient-to-br from-white to-gray-50 rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200';
+  
+  const isPopular = subscription.purchased > 10; // Example logic for popular plans
+  
+  div.innerHTML = `
+    ${isPopular ? '<div class="absolute -top-2 left-4 bg-primary-600 text-white text-xs px-3 py-1 rounded-full">Popular</div>' : ''}
+    
+    <div class="flex items-center justify-between mb-4">
+      <h4 class="text-lg font-semibold text-gray-900">${subscription.name}</h4>
+      <div class="flex items-center space-x-2">
+        <button onclick="editSubscription(${subscription.id})" class="p-2 text-gray-500 hover:text-blue-600 rounded-lg hover:bg-blue-50">
+          <i data-lucide="edit" class="w-4 h-4"></i>
+        </button>
+        <button onclick="deleteSubscription(${subscription.id})" class="p-2 text-gray-500 hover:text-red-600 rounded-lg hover:bg-red-50">
+          <i data-lucide="trash" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="mb-4">
+      <div class="text-2xl font-bold text-primary-600">$${subscription.price}</div>
+      <div class="text-sm text-gray-600">${subscription.points} points included</div>
+    </div>
+    
+    <div class="space-y-2 mb-4">
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-gray-600">Purchased:</span>
+        <span class="font-medium">${subscription.purchased || 0} times</span>
+      </div>
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-gray-600">Config ID:</span>
+        <span class="font-medium">${subscription.configId}</span>
+      </div>
+    </div>
+    
+    <div class="flex items-center space-x-2 mb-4">
+      ${subscription.instructor_id ? '<span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Instructor ID</span>' : ''}
+      ${subscription.instructor_name ? '<span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Instructor Name</span>' : ''}
+      ${subscription.center_name ? '<span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Center Name</span>' : ''}
+    </div>
+    
+    <div class="flex space-x-2">
+      <button onclick="copySubscriptionLink(${subscription.id})" class="flex-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm rounded-lg transition-colors duration-200 flex items-center justify-center">
+        <i data-lucide="link" class="w-4 h-4 mr-1"></i>
+        Copy Link
+      </button>
+      <button onclick="viewSubscriptionDetails(${subscription.id})" class="flex-1 px-3 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm rounded-lg transition-colors duration-200">
+        View Details
+      </button>
+    </div>
+  `;
+  
+  return div;
+}
+
+function updateSubscriptionStats() {
+  document.getElementById('totalSubscriptions').textContent = subscriptions.length;
+  
+  const totalRevenue = subscriptions.reduce((sum, sub) => sum + (sub.price * (sub.purchased || 0)), 0);
+  document.getElementById('totalRevenue').textContent = `$${totalRevenue.toLocaleString()}`;
+  
+  const activeSubscribers = subscriptions.reduce((sum, sub) => sum + (sub.purchased || 0), 0);
+  document.getElementById('activeSubscribers').textContent = activeSubscribers;
+  
+  // Mock conversion rate calculation
+  const conversionRate = subscriptions.length > 0 ? Math.round((activeSubscribers / (subscriptions.length * 10)) * 100) : 0;
+  document.getElementById('conversionRate').textContent = `${conversionRate}%`;
+}
+
+async function loadConfigOptions() {
+  try {
+    const response = await fetch('/settings/json');
+    const settings = await response.json();
+    const select = document.getElementById('configId');
+    
+    select.innerHTML = '<option value="">Select Template</option>';
+    settings.forEach(setting => {
+      const option = document.createElement('option');
+      option.value = setting.id;
+      option.textContent = setting.name;
+      select.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error loading config options:', error);
+  }
+}
+
+function showCreateSubscription() {
+  isEditMode = false;
+  document.getElementById('modalTitle').textContent = 'Create Subscription Plan';
+  document.getElementById('submitButtonText').textContent = 'Create Plan';
+  document.getElementById('subscriptionForm').reset();
+  document.getElementById('subscriptionId').value = '';
+  document.getElementById('subscriptionModal').classList.remove('hidden');
+}
+
+async function editSubscription(id) {
+  try {
+    const response = await fetch(`/subscriptions/json/${id}`);
+    const subscription = await response.json();
+    
+    isEditMode = true;
+    document.getElementById('modalTitle').textContent = 'Edit Subscription Plan';
+    document.getElementById('submitButtonText').textContent = 'Update Plan';
+    
+    // Populate form
+    document.getElementById('subscriptionId').value = subscription.id;
+    document.getElementById('planName').value = subscription.name;
+    document.getElementById('planPrice').value = subscription.price;
+    document.getElementById('planPoints').value = subscription.points;
+    document.getElementById('detailsLink').value = subscription.details_link || '';
+    document.getElementById('configId').value = subscription.configId;
+    document.getElementById('includeInstructorId').checked = subscription.instructor_id;
+    document.getElementById('randomInstructorId').checked = subscription.instructor_id_random;
+    document.getElementById('includeInstructorName').checked = subscription.instructor_name;
+    document.getElementById('includeCenterName').checked = subscription.center_name;
+    document.getElementById('emailMessage').value = subscription.emailMessage || '';
+    
+    document.getElementById('subscriptionModal').classList.remove('hidden');
+  } catch (error) {
+    console.error('Error loading subscription:', error);
+    window.showToast('Error loading subscription details', 'error');
+  }
+}
+
+async function handleFormSubmit(e) {
+  e.preventDefault();
+  
+  const formData = {
+    name: document.getElementById('planName').value,
+    price: parseFloat(document.getElementById('planPrice').value),
+    points: parseInt(document.getElementById('planPoints').value),
+    details_link: document.getElementById('detailsLink').value,
+    configId: parseInt(document.getElementById('configId').value),
+    instructor_id: document.getElementById('includeInstructorId').checked,
+    instructor_id_random: document.getElementById('randomInstructorId').checked,
+    instructor_name: document.getElementById('includeInstructorName').checked,
+    center_name: document.getElementById('includeCenterName').checked,
+    emailMessage: document.getElementById('emailMessage').value
+  };
+  
+  try {
+    const url = isEditMode ? `/subscriptions/${document.getElementById('subscriptionId').value}` : '/subscriptions';
+    const method = isEditMode ? 'PUT' : 'POST';
+    
+    const response = await fetch(url, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+    
+    if (response.ok) {
+      window.showToast(`Subscription ${isEditMode ? 'updated' : 'created'} successfully`, 'success');
+      closeSubscriptionModal();
+      loadSubscriptions();
+    } else {
+      throw new Error('Failed to save subscription');
+    }
+  } catch (error) {
+    console.error('Error saving subscription:', error);
+    window.showToast('Error saving subscription', 'error');
+  }
+}
+
+async function deleteSubscription(id) {
+  if (confirm('Are you sure you want to delete this subscription plan?')) {
+    try {
+      const response = await fetch(`/subscriptions/${id}`, {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
+        window.showToast('Subscription deleted successfully', 'success');
+        loadSubscriptions();
+      } else {
+        throw new Error('Failed to delete subscription');
+      }
+    } catch (error) {
+      console.error('Error deleting subscription:', error);
+      window.showToast('Error deleting subscription', 'error');
+    }
+  }
+}
+
+function closeSubscriptionModal() {
+  document.getElementById('subscriptionModal').classList.add('hidden');
+}
+
+function copySubscriptionLink(id) {
+  const link = `${window.location.origin}/subscriptions/${id}`;
+  navigator.clipboard.writeText(link).then(() => {
+    window.showToast('Subscription link copied to clipboard', 'success');
+  }).catch(() => {
+    // Fallback for older browsers
+    const textarea = document.createElement('textarea');
+    textarea.value = link;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    window.showToast('Subscription link copied to clipboard', 'success');
+  });
+}
+
+function viewSubscriptionDetails(id) {
+  window.open(`/subscriptions/${id}`, '_blank');
+}
+
+function filterSubscriptions() {
+  const filter = document.getElementById('planFilter').value;
+  // Implement filtering logic based on your needs
+  renderSubscriptions();
+}
+
+function refreshSubscriptions() {
+  loadSubscriptions();
+  window.showToast('Subscriptions refreshed', 'success');
+}
+
+function exportSubscriptions() {
+  window.showToast('Exporting subscription data...', 'info');
+  // Implement export functionality
+}
+
+function viewAllPurchases() {
+  window.showToast('Purchase history feature coming soon', 'info');
+}
+
+function viewPlanAnalytics() {
+  window.showToast('Plan analytics feature coming soon', 'info');
+}
+</script>

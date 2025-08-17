@@ -951,13 +951,7 @@ export class CertificatesService {
     private emailService: EmailService,
   ) {}
 
-  async totalCertificates(fromDate: Date) {
-    return this.certificateRepository.count({
-      where: {
-        // created_at: MoreThan(fromDate),
-      },
-    });
-  }
+  // This method is replaced by the enhanced version at the end of the class
 
   async recentCertificatesByDay(fromDate: Date) {
     return this.certificateRepository
@@ -1540,5 +1534,205 @@ export class CertificatesService {
     const certificate = await this.certificateRepository.findOneBy({ id });
     certificate.express = new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000);
     return this.certificateRepository.save(certificate);
+  }
+
+  async getDailyIssuanceData(days: number) {
+    const fromDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+
+    try {
+      const data = await this.certificateRepository
+        .createQueryBuilder('certificate')
+        .select('DATE(created_at) as date')
+        .addSelect('COUNT(*) as certificates')
+        .addSelect('0 as renewals') // Placeholder for renewals
+        .where('created_at >= :fromDate', { fromDate })
+        .groupBy('DATE(created_at)')
+        .orderBy('DATE(created_at)', 'ASC')
+        .getRawMany();
+
+      return data.map((item) => ({
+        date: item.date,
+        certificates: parseInt(item.certificates),
+        renewals: parseInt(item.renewals),
+      }));
+    } catch (error) {
+      console.error('Error fetching daily issuance data:', error);
+      return [];
+    }
+  }
+
+  async getExpiringCertificates(days: number) {
+    const futureDate = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+
+    try {
+      return await this.certificateRepository
+        .createQueryBuilder('certificate')
+        .where('express <= :futureDate', { futureDate })
+        .andWhere('express > :now', { now: new Date() })
+        .orderBy('express', 'ASC')
+        .getMany();
+    } catch (error) {
+      console.error('Error fetching expiring certificates:', error);
+      return [];
+    }
+  }
+
+  async getRevenueAnalytics(days: number) {
+    // Since this is a certificate system, we'll calculate revenue based on certificates issued
+    // This is a mock implementation - adjust based on your actual payment/pricing model
+    try {
+      const fromDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+      const previousFromDate = new Date(
+        Date.now() - days * 2 * 24 * 60 * 60 * 1000,
+      );
+
+      const currentPeriodCerts = await this.certificateRepository.count({
+        where: {
+          // Uncomment if you have created_at field filtering
+          // created_at: MoreThan(fromDate),
+        },
+      });
+
+      const previousPeriodCerts = await this.certificateRepository.count({
+        where: {
+          // Uncomment if you have created_at field filtering
+          // created_at: Between(previousFromDate, fromDate),
+        },
+      });
+
+      // Assuming $50 per certificate (adjust based on your pricing)
+      const certificatePrice = 50;
+      const currentRevenue = currentPeriodCerts * certificatePrice;
+      const previousRevenue = previousPeriodCerts * certificatePrice;
+
+      return {
+        total: currentRevenue,
+        previousTotal: previousRevenue,
+        dailyRevenue: await this.getDailyRevenueData(days),
+        averagePerCertificate: certificatePrice,
+      };
+    } catch (error) {
+      console.error('Error fetching revenue analytics:', error);
+      return {
+        total: 0,
+        previousTotal: 0,
+        dailyRevenue: [],
+        averagePerCertificate: 0,
+      };
+    }
+  }
+
+  async getDailyRevenueData(days: number) {
+    const fromDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+    const certificatePrice = 50; // Adjust based on your pricing
+
+    try {
+      const data = await this.certificateRepository
+        .createQueryBuilder('certificate')
+        .select('DATE(created_at) as date')
+        .addSelect('COUNT(*) as count')
+        .where('created_at >= :fromDate', { fromDate })
+        .groupBy('DATE(created_at)')
+        .orderBy('DATE(created_at)', 'ASC')
+        .getRawMany();
+
+      return data.map((item) => ({
+        date: item.date,
+        revenue: parseInt(item.count) * certificatePrice,
+        certificates: parseInt(item.count),
+      }));
+    } catch (error) {
+      console.error('Error fetching daily revenue data:', error);
+      return [];
+    }
+  }
+
+  async getFilteredCertificates(filters: any) {
+    try {
+      const queryBuilder =
+        this.certificateRepository.createQueryBuilder('certificate');
+
+      // Apply certificate type filter
+      if (filters.certType && filters.certType !== '') {
+        queryBuilder.andWhere('certificate.type = :certType', {
+          certType: filters.certType,
+        });
+      }
+
+      // Apply date range filter
+      if (filters.dateRange && filters.dateRange !== '') {
+        const days = parseInt(filters.dateRange);
+        const fromDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+        queryBuilder.andWhere('certificate.created_at >= :fromDate', {
+          fromDate,
+        });
+      }
+
+      // Apply status filter (this would require additional logic based on your certificate status system)
+      if (filters.status && filters.status !== '') {
+        const now = new Date();
+
+        switch (filters.status) {
+          case 'active':
+            queryBuilder.andWhere('certificate.express > :now', { now });
+            break;
+          case 'expiring':
+            const thirtyDaysFromNow = new Date(
+              Date.now() + 30 * 24 * 60 * 60 * 1000,
+            );
+            queryBuilder.andWhere('certificate.express <= :futureDate', {
+              futureDate: thirtyDaysFromNow,
+            });
+            queryBuilder.andWhere('certificate.express > :now', { now });
+            break;
+          case 'expired':
+            queryBuilder.andWhere('certificate.express <= :now', { now });
+            break;
+        }
+      }
+
+      return await queryBuilder.getMany();
+    } catch (error) {
+      console.error('Error fetching filtered certificates:', error);
+      return [];
+    }
+  }
+
+  // Enhanced totalCertificates method to support growth metrics
+  async totalCertificates(fromDate: Date) {
+    try {
+      const currentCount = await this.certificateRepository.count({
+        where: {
+          // Uncomment if you have created_at field filtering
+          // created_at: MoreThan(fromDate),
+        },
+      });
+
+      // Calculate previous period count for growth metrics
+      const daysDiff = Math.floor(
+        (new Date().getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24),
+      );
+      const previousFromDate = new Date(
+        fromDate.getTime() - daysDiff * 24 * 60 * 60 * 1000,
+      );
+
+      const previousCount = await this.certificateRepository.count({
+        where: {
+          // Uncomment if you have created_at field filtering
+          // created_at: Between(previousFromDate, fromDate),
+        },
+      });
+
+      return {
+        count: currentCount,
+        previousCount: previousCount,
+      };
+    } catch (error) {
+      console.error('Error fetching total certificates:', error);
+      return {
+        count: 0,
+        previousCount: 0,
+      };
+    }
   }
 }
